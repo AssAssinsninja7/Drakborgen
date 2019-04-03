@@ -1,0 +1,26 @@
+{
+    "logs": [
+        {
+            "outputFile": "C:\\Users\\Jasmine\\Documents\\Drakborgen\\Temp\\gradleOut\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-hi\\values-hi.xml",
+            "map": [
+                {
+                    "source": "C:\\Users\\Jasmine\\.gradle\\caches\\transforms-1\\files-1.1\\arcore_client.aar\\5c75c47860a875cbd8ffd75ebd5ec77f\\res\\values-hi\\values.xml",
+                    "from": {
+                        "startLines": "4,5,6,7,8",
+                        "startColumns": "0,0,0,0,0",
+                        "startOffsets": "199,248,300,395,491",
+                        "endColumns": "48,51,94,95,74",
+                        "endOffsets": "247,299,394,490,565"
+                    },
+                    "to": {
+                        "startLines": "2,3,4,5,6",
+                        "startColumns": "4,4,4,4,4",
+                        "startOffsets": "55,108,164,263,363",
+                        "endColumns": "52,55,98,99,78",
+                        "endOffsets": "103,159,258,358,437"
+                    }
+                }
+            ]
+        }
+    ]
+}

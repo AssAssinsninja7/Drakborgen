@@ -140,6 +140,7 @@
     <Compile Include="Assets\GoogleARCore\SDK\Scripts\Utility\ConversionHelper.cs" />
     <Compile Include="Assets\GoogleARCore\SDK\Scripts\Utility\IntPtrEqualityComparer.cs" />
     <Compile Include="Assets\GoogleARCore\SDK\Scripts\Utility\MarshalingHelper.cs" />
+    <Compile Include="Assets\Scripts\SelectionMenuScript.cs" />
     <None Include="Assets\GoogleARCore\SDK\Materials\ARBackground.shader" />
     <Reference Include="Unity.TextMeshPro.Editor">
       <HintPath>C:/Users/Jasmine/Documents/Drakborgen/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
