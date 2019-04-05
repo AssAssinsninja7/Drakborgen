@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement;
+
 
 public class SelectionMenuScript : MonoBehaviour
 {
@@ -19,6 +19,8 @@ public class SelectionMenuScript : MonoBehaviour
 
     private Player player1;
     private Player player2;
+
+    private GameManager gameManager;
 
     //All the objects loaded in through SerialieField are here below.
     #region LoadedIn
@@ -82,6 +84,11 @@ public class SelectionMenuScript : MonoBehaviour
         p2CharImg.enabled = false;
 
         startButton.image.enabled = false;
+
+        if (GameManager.instance == null) //Make sure that the gameMgr has been instantiated
+        {
+            Instantiate(gameManager);
+        }
     }
 
     // Update is called once per frame
@@ -256,7 +263,6 @@ public class SelectionMenuScript : MonoBehaviour
     void StartGame()
     {
         //send both players information to the game mgr, unload the scene, deaactivate the selection camera and activate the *ARcamera. 
-
-        SceneManager.UnloadScene(0);
+        gameManager.InitGame(player1, player2);       
     }
 }
