@@ -8,4 +8,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Selection_Scene.unity
     guid: c1a8063ed2a3a90479bd581bb15a520f
+  - enabled: 1
+    path: Assets/Scenes/DrakborgenARScene.unity
+    guid: e275273bd15437e4ebd357b6f18e865b
   m_configObjects: {}
