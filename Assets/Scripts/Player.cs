@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    public string playerID { get; set; }
-    public bool hasViking { get; set; }
-    public bool hasRotationRing { get; set; }
+    public string PlayerID { get; set; }
+    public bool HasViking { get; set; }
+    public bool HasRotationRing { get; set; }
 
-   
+    public Vector2 Position { get; set; }
 
 
     // Start is called before the first frame update

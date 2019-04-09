@@ -10,6 +10,8 @@ public class GameManager : MonoBehaviour
     private Player player1;
     private Player player2;
 
+    private GameBoard gameBoard; 
+
     // Start is called before the first frame update
     void Awake()
     {
@@ -43,6 +45,7 @@ public class GameManager : MonoBehaviour
         if (player1 != null && player2 != null)
         {
             SceneManager.LoadScene(1);
+            //gameBoard.InitGameBoard(); Send in player startpos
         }
     }
 }
