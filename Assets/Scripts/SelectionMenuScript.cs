@@ -19,6 +19,8 @@ public class SelectionMenuScript : MonoBehaviour
 
     private bool hasStartingPos;
 
+    private bool hasP2StartPos; //Temp just so that i can check which one has selected their pos apart from them both having selected
+
     private Player player1;
     private Player player2;
 
@@ -57,7 +59,7 @@ public class SelectionMenuScript : MonoBehaviour
     private Text infoText; //Displays the information for what to do in right now in the menu. 
 
     [SerializeField]
-    private Button startButton; 
+    private Button startButton;
 
     [SerializeField]
     private Dropdown p1StartposDropdown; //The chosen startpos for player1 
@@ -106,7 +108,7 @@ public class SelectionMenuScript : MonoBehaviour
 
         p1StartposDropdown.captionText.enabled = false;
         p2StartposDropdown.captionText.enabled = false;
-            
+
 
         if (GameManager.instance == null) //Make sure that the gameMgr has been instantiated
         {
@@ -136,47 +138,61 @@ public class SelectionMenuScript : MonoBehaviour
             {
                 if (player1Choosing)
                 {
+                    infoText.text = player1ID + " Choose a character";
+                    p1CharacterDropdown.image.enabled = true;
+
                     p1CharacterDropdown.captionText.enabled = true;
                     continueButton.onClick.AddListener(GetPlayerCharacter);
                 }
                 else
                 {
+                    infoText.text = player2ID + " Choose a magical ring";
+                    p2RingDropdown.image.enabled = true;
+
                     p2RingDropdown.captionText.enabled = true;
                     continueButton.onClick.AddListener(GetPlayerRings);
                 }
             }
-
-            if (player1ID != null && player2ID != null && player1ID != string.Empty && player2ID != string.Empty) //Player script object is suppose to be checked noot these temp variables
-            {
-                if (player1Choosing == true)
-                {
-                    infoText.text = player1ID + " Choose a character";
-                    p1CharacterDropdown.image.enabled = true;
-                }
-                else
-                {
-                    infoText.text = player2ID + " Choose a magical ring";
-                    p2RingDropdown.image.enabled = true;
-                }
-            }
         }
-        else if(hasPlayerInformation && !hasStartingPos)
+        else if (hasPlayerInformation && !hasStartingPos)
         {
-            
-            GetStartingPositions();
-            
-            if(hasStartingPos)
+            if (player1Choosing && !hasP2StartPos)
             {
-                continueButton.enabled = false;
-                continueButton.image.enabled = false;
-                continueButton.GetComponentInChildren<Text>().text = string.Empty;
+                infoText.text = player1ID + " choose your starting position.";
 
-                infoText.text = "Setup ready, Start the game";
+                p1StartposDropdown.image.enabled = true;
+                p1StartposDropdown.captionText.enabled = true;
 
-                SetPlayerInfo();
-
-                startButton.onClick.AddListener(StartGame); //connect the button to the method that starts the game
+                continueButton.onClick.AddListener(GetP1StartPos);
             }
+            else if (!player1Choosing && !hasP2StartPos)
+            {
+                infoText.text = player2ID + " choose your starting postion.";
+                player1Choosing = false;
+
+                p2StartposDropdown.image.enabled = true;
+                p2StartposDropdown.captionText.enabled = true;
+
+                p1StartposDropdown.image.enabled = false; //Deactivate player1 selection option     
+
+                continueButton.onClick.AddListener(GetP2StartPos);
+            }
+
+        }
+        else if (hasPlayerInformation && hasStartingPos)
+        {
+            continueButton.enabled = false; //disable the continue button
+            continueButton.image.enabled = false;
+            continueButton.GetComponentInChildren<Text>().text = string.Empty;
+
+            p2StartposDropdown.image.enabled = false; //disable player2 startpos dropdown
+            p2StartposDropdown.captionText.enabled = false;
+
+            infoText.text = "Setup ready, Start the game";
+
+            SetPlayerInfo();
+
+            startButton.onClick.AddListener(StartGame); //connect the button to the method that starts the game
         }
     }
 
@@ -220,7 +236,7 @@ public class SelectionMenuScript : MonoBehaviour
         if (p1CharacterDropdown.captionText.text == "Sven Viking")
         {
             playingVikingCharacter = true;
-            
+
             //Set image to vikin
         }
         else if (p1CharacterDropdown.captionText.text == "Fransiscus Monk")
@@ -254,87 +270,101 @@ public class SelectionMenuScript : MonoBehaviour
             HasRotationRing = true;
             //maybe even have a img for the rings but only if there's time
         }
-        else if(p2RingDropdown.captionText.text == "Ring of faith") 
+        else if (p2RingDropdown.captionText.text == "Ring of faith")
         {
             HasRotationRing = false;
         }
 
-        p1RingDropdown.image.enabled = true;
-        p1RingDropdown.enabled = false;
+        p1RingDropdown.image.enabled = true; //Show player1 ring result
+        p1RingDropdown.enabled = false; //Disable the interactibility with the dropdownbox for player1
 
-        p2RingDropdown.enabled = false;
+        p2RingDropdown.enabled = false; //Disable the interactibility with the dropdownbox for player2
 
         if (HasRotationRing) //if p2 selected the rot ring the selected text will be the opposite for the otehr player vice versa, aand only the player selecting can see
         {
             p1RingDropdown.value = 1;
         }
 
-        p1RingDropdown.captionText.enabled = true;     
+        p1RingDropdown.captionText.enabled = true;
         player1Choosing = true;
         hasPlayerInformation = true;
     }
 
-    void GetStartingPositions()
+    /// <summary>
+    /// Get player1 chosen startpos and disable that as an option for player2
+    /// </summary>
+    void GetP1StartPos()
     {
         string blockedPosName = p1StartposDropdown.captionText.text; //Player1 chosen starting position (is then blocked as an option for player2)
-        Vector2 chosenStartPosition = new Vector2();
+        Vector2 p1ChoosenStartPos = new Vector2(); //denna måste ligga utanför
 
-        if (player1Choosing)
+        if (player1Choosing && !hasP2StartPos)
         {
-            infoText.text = player1ID + "choose your starting position.";
-            p1StartposDropdown.image.enabled = true;
-                        
             if (p1StartposDropdown.captionText.text == "Top Left")
             {
-                chosenStartPosition = new Vector2(0, 0);
+                p1ChoosenStartPos = new Vector2(0, 0);
             }
             else if (blockedPosName == "Top Right")
             {
-                chosenStartPosition = new Vector2(9, 0);
+                p1ChoosenStartPos = new Vector2(9, 0);
             }
             else if (blockedPosName == "Bottom Left")
             {
-                chosenStartPosition = new Vector2(0, 6);
+                p1ChoosenStartPos = new Vector2(0, 6);
             }
             else if (blockedPosName == "Bottom Right")
             {
-                chosenStartPosition = new Vector2(9, 6);
+                p1ChoosenStartPos = new Vector2(9, 6);
             }
 
-            player1.Position = chosenStartPosition;
+            List<Dropdown.OptionData> p2startOptionList = p2StartposDropdown.options; //So that we can find which option to remove by text
+            for (int i = 0; i < p2startOptionList.Count; i++)
+            {
+                if (p2startOptionList[i].text.Equals(blockedPosName)) //remove player1 chosen start pos as an option for player2
+                {
+                    p2StartposDropdown.options.RemoveAt(i);
+                }
+            }
 
-            player1Choosing = false;
+            player1.Position = p1ChoosenStartPos;
+            player1Choosing = false; //player1 turn is now over
+            continueButton.onClick.AddListener(GetP2StartPos);
+        }      
+    }
 
-            continueButton.onClick.AddListener(GetStartingPositions);        
-        }
-        else
+    /// <summary>
+    /// Get player2 choosen startpos and then continue on to starting the game
+    /// </summary>
+    void GetP2StartPos()
+    {
+        string blockedPosName = p1StartposDropdown.captionText.text; //Player1 chosen starting position (is then blocked as an option for player2)
+        Vector2 p2ChoosenStartPos = new Vector2();
+    
+        if (!player1Choosing && !hasP2StartPos) //So long as they don't have the same start pos
         {
-            infoText.text = player2ID + "choose your starting postion.";
-
-            p1StartposDropdown.image.enabled = false;
-            p2StartposDropdown.image.enabled = true;
-
             if (p2StartposDropdown.captionText.text == "Top Left" && p2StartposDropdown.captionText.text != blockedPosName)
             {
-                chosenStartPosition = new Vector2(0, 0);
+                p2ChoosenStartPos = new Vector2(0, 0);
             }
             else if (p2StartposDropdown.captionText.text == "Top Right" && p2StartposDropdown.captionText.text != blockedPosName)
             {
-                chosenStartPosition = new Vector2(9, 0);
+                p2ChoosenStartPos = new Vector2(9, 0);
             }
             else if (p2StartposDropdown.captionText.text == "Bottom Left" && p2StartposDropdown.captionText.text != blockedPosName)
             {
-                chosenStartPosition = new Vector2(0, 6);
+                p2ChoosenStartPos = new Vector2(0, 6);
             }
             else if (p2StartposDropdown.captionText.text == "Bottom Right" && p2StartposDropdown.captionText.text != blockedPosName)
             {
-                chosenStartPosition = new Vector2(9, 6);
+                p2ChoosenStartPos = new Vector2(9, 6);
             }
+            hasP2StartPos = true;
+        }
 
-            player2.Position = chosenStartPosition;
+        if (player2.Position != player1.Position && hasP2StartPos) //So long as they haven't selected the same 
+        {
             hasStartingPos = true;
         }
-        
     }
 
     /// <summary>

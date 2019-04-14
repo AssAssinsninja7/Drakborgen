@@ -28,7 +28,9 @@ public class GameManager : MonoBehaviour
         //Sets this to not be destroyed when reloading scene
         DontDestroyOnLoad(gameObject);
 
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene(0); //When prgram starts load scene "0" which is selectionScene 
+
+        
     }
 
     // Update is called once per frame
@@ -44,7 +46,7 @@ public class GameManager : MonoBehaviour
 
         if (player1 != null && player2 != null)
         {
-            SceneManager.LoadScene(1);
+            SceneManager.LoadScene(1); //1= drakborgen scene
             //gameBoard.InitGameBoard(); Send in player startpos
         }
     }
