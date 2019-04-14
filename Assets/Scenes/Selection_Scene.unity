@@ -2609,6 +2609,7 @@ GameObject:
   m_Component:
   - component: {fileID: 750438747}
   - component: {fileID: 750438746}
+  - component: {fileID: 750438748}
   m_Layer: 0
   m_Name: SelectionMenu
   m_TagString: Untagged
@@ -2628,6 +2629,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ccacf224cbd34cf4e823354807cf6549, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameManager: {fileID: 656537765327984240, guid: dd36652943008d14c964b90a9397b6af,
+    type: 3}
   p1IDField: {fileID: 840033201}
   p2IDField: {fileID: 1166677976}
   p1RingDropdown: {fileID: 825591269}
@@ -2656,6 +2659,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &750438748
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 750438745}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 47342e3f1cc9b3d4b994245a440b9c26, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameMGR: {fileID: 6927770962766439326, guid: dd36652943008d14c964b90a9397b6af, type: 3}
 --- !u!1 &789905222
 GameObject:
   m_ObjectHideFlags: 0

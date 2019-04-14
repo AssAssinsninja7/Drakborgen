@@ -24,7 +24,7 @@ public class SelectionMenuScript : MonoBehaviour
     private Player player1;
     private Player player2;
 
-    private GameManager gameManager;
+    public GameManager gameManager;
 
     //All the objects loaded in through SerialieField are here below.
     #region LoadedIn
@@ -72,7 +72,8 @@ public class SelectionMenuScript : MonoBehaviour
 
     // Start is called before the first frame update
     void Start()
-    {
+    {     
+
         player1 = new Player();
         player2 = new Player();
 
@@ -140,23 +141,23 @@ public class SelectionMenuScript : MonoBehaviour
                 {
                     infoText.text = player1ID + " Choose a character";
                     p1CharacterDropdown.image.enabled = true;
-
                     p1CharacterDropdown.captionText.enabled = true;
+
                     continueButton.onClick.AddListener(GetPlayerCharacter);
                 }
                 else
                 {
                     infoText.text = player2ID + " Choose a magical ring";
                     p2RingDropdown.image.enabled = true;
-
                     p2RingDropdown.captionText.enabled = true;
+
                     continueButton.onClick.AddListener(GetPlayerRings);
                 }
             }
         }
         else if (hasPlayerInformation && !hasStartingPos)
         {
-            if (player1Choosing && !hasP2StartPos)
+            if (player1Choosing && !hasP2StartPos) //P1 turn and P2 hasn't chosen
             {
                 infoText.text = player1ID + " choose your starting position.";
 
@@ -165,7 +166,7 @@ public class SelectionMenuScript : MonoBehaviour
 
                 continueButton.onClick.AddListener(GetP1StartPos);
             }
-            else if (!player1Choosing && !hasP2StartPos)
+            else if (!player1Choosing && !hasP2StartPos)//P2 turn and P2 hasn't selected
             {
                 infoText.text = player2ID + " choose your starting postion.";
                 player1Choosing = false;
@@ -342,22 +343,24 @@ public class SelectionMenuScript : MonoBehaviour
     
         if (!player1Choosing && !hasP2StartPos) //So long as they don't have the same start pos
         {
-            if (p2StartposDropdown.captionText.text == "Top Left" && p2StartposDropdown.captionText.text != blockedPosName)
+            if (p2StartposDropdown.captionText.text == "Top Left")
             {
                 p2ChoosenStartPos = new Vector2(0, 0);
             }
-            else if (p2StartposDropdown.captionText.text == "Top Right" && p2StartposDropdown.captionText.text != blockedPosName)
+            else if (p2StartposDropdown.captionText.text == "Top Right")
             {
                 p2ChoosenStartPos = new Vector2(9, 0);
             }
-            else if (p2StartposDropdown.captionText.text == "Bottom Left" && p2StartposDropdown.captionText.text != blockedPosName)
+            else if (p2StartposDropdown.captionText.text == "Bottom Left")
             {
                 p2ChoosenStartPos = new Vector2(0, 6);
             }
-            else if (p2StartposDropdown.captionText.text == "Bottom Right" && p2StartposDropdown.captionText.text != blockedPosName)
+            else if (p2StartposDropdown.captionText.text == "Bottom Right")
             {
                 p2ChoosenStartPos = new Vector2(9, 6);
             }
+
+            player2.Position = p2ChoosenStartPos;
             hasP2StartPos = true;
         }
 
@@ -387,6 +390,6 @@ public class SelectionMenuScript : MonoBehaviour
     void StartGame()
     {
         //send both players information to the game mgr, unload the scene, deaactivate the selection camera and activate the *ARcamera. 
-        gameManager.InitGame(player1, player2);       
+        gameManager.InitGame(/*player1, player2*/); //The players arn't instansiated as gameobject but this will be fixed once they get their prefabs/ become full objects       
     }
 }

@@ -39,15 +39,17 @@ public class GameManager : MonoBehaviour
         
     }
 
-    public void InitGame(Player p1, Player p2)
+    public void InitGame(/*Player p1, Player p2*/)
     {
-        player1 = p1;
-        player2 = p2;
+        //player1 = p1;
+        //player2 = p2;
 
-        if (player1 != null && player2 != null)
-        {
+        //if (player1 != null && player2 != null)
+        //{
             SceneManager.LoadScene(1); //1= drakborgen scene
+            System.Console.WriteLine("We're in the AR scene");
+            //gameBoard.InitGameBoard(player1, player2);
             //gameBoard.InitGameBoard(); Send in player startpos
-        }
+        //}
     }
 }

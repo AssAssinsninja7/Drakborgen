@@ -10,16 +10,23 @@ public class Player : MonoBehaviour
 
     public Vector2 Position { get; set; }
 
+    public GameObject playerModel;
+
 
     // Start is called before the first frame update
     void Start()
     {
-      
+    
     }
 
     // Update is called once per frame
     void Update()
     {
         
+    }
+
+    void InitializePlayer()
+    {
+       
     }
 }

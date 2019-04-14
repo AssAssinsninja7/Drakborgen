@@ -44,17 +44,13 @@ public class GameBoard : MonoBehaviour
         Session.GetTrackables<TrackedPlane>(trackedPlanes, TrackableQueryFilter.New);
     }
 
-    public void InitGameBoard(Vector2 p1StartPos, Vector2 p2StartPos) //take in startpos
+    public void InitGameBoard(Player player1, Player player2) //take in startpos
     {
         //init rooms and roomstack
         //set startpos
+
          
     }
-
-
-
-
-
 
 
     void AvailableRooms() //this is not going to be void later
