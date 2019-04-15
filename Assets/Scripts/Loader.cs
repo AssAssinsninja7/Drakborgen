@@ -1,11 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Loader : MonoBehaviour
 {
-    public GameObject gameMGR; 
-   
+    public GameObject gameMGR;
 
     /*This class just instansiates the gamemanager when the game starts, if
      other managers are added then they should be initiated here aswell*/
@@ -17,5 +17,9 @@ public class Loader : MonoBehaviour
             //Instantiate gameManager prefab
             Instantiate(gameMGR);
         }
+        //if (SceneManager.GetActiveScene() == SceneManager.GetSceneAt(1))
+        //{
+          
+        //}
     }   
 }

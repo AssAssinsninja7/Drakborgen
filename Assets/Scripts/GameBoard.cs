@@ -49,7 +49,7 @@ public class GameBoard : MonoBehaviour
         //init rooms and roomstack
         //set startpos
 
-         
+        
     }
 
 

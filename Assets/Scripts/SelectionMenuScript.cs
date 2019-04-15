@@ -72,10 +72,9 @@ public class SelectionMenuScript : MonoBehaviour
 
     // Start is called before the first frame update
     void Start()
-    {     
-
-        player1 = new Player();
-        player2 = new Player();
+    {
+        player1 = gameObject.AddComponent<Player>();
+        player2 = gameObject.AddComponent<Player>();
 
         hasPlayerInformation = false;
         hasStartingPos = false;
@@ -390,6 +389,7 @@ public class SelectionMenuScript : MonoBehaviour
     void StartGame()
     {
         //send both players information to the game mgr, unload the scene, deaactivate the selection camera and activate the *ARcamera. 
-        gameManager.InitGame(/*player1, player2*/); //The players arn't instansiated as gameobject but this will be fixed once they get their prefabs/ become full objects       
+        
+        gameManager.InitGame(player1, player2); //The players arn't instansiated as gameobject but this will be fixed once they get their prefabs/ become full objects       
     }
 }
