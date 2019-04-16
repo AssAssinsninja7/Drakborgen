@@ -40,8 +40,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 3711436448728302862}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8adafa8f25d702245b5362745bd0178b, type: 3}
+  m_Script: {fileID: 11500000, guid: 50f0c62c441b53a4285fe4d8f5b1709f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  trackedPlanePrefab: {fileID: 0}
-  BoardPrefab: {fileID: 0}
+  trackedPlanePrefab: {fileID: 1089800772804745675, guid: c905681bf1aef5f439b27108821b860f,
+    type: 3}
+  BoardPrefab: {fileID: 5993729081247658533, guid: 7f23eb6c11e06124d8d3151b438f9664,
+    type: 3}

@@ -44,6 +44,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11e75d7f1b95cba4b82d8b69371a781e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  arController: {fileID: 3711436448728302862, guid: 09934e8d64811d94d9a607805417b453,
+    type: 3}
   playerModel: {fileID: 2856674797117555912, guid: b50dc519c266bb648b4465ef17f3bdaa,
     type: 3}
 --- !u!114 &4039764834307136292

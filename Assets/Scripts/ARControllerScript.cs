@@ -14,14 +14,17 @@ public class ARController : MonoBehaviour
 
     List<TrackedPlane> trackedPlanes = new List<TrackedPlane>();
     public GameObject trackedPlanePrefab;
-    public GameObject BoardPrefab;
+    public GameObject boardPrefab;
+
+    private GameManager gameManager;
 
 
+    private GameObject placeableObj;
 
     // Start is called before the first frame update
     void Start()
     {
-
+        
     }
 
     // Update is called once per frame
@@ -40,7 +43,7 @@ public class ARController : MonoBehaviour
     }
 
 
-    void FindPlanes()
+    void FindPlanes() //maybe have this as a bool so that the gamemgr can check to see if plane has been found
     {
         for (int i = 0; i < trackedPlanes.Count; i++)
         {
@@ -53,5 +56,29 @@ public class ARController : MonoBehaviour
             //    //Spawn gameboard lalalla
             //}    
         }
+    }
+
+    public void PlaceGameBoard()
+    {
+        for (int i = 0; i < trackedPlanes.Count; i++)
+        {
+            placeableObj = Instantiate(boardPrefab, Vector3.zero, Quaternion.identity, transform);
+            placeableObj.GetComponent<GameBoardVizualizer>().Initialize(trackedPlanes[i]);
+        }
+    }
+
+    /// <summary>
+    /// Check if we have identified planes
+    /// </summary>
+    /// <returns></returns>
+    public bool HasPlanes()
+    {
+        bool result = false;
+
+        if (trackedPlanes.Count > 0)
+        {
+            result = true;
+        }
+        return result;
     }
 }

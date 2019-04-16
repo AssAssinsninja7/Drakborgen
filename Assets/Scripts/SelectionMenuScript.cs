@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 
+
 public class SelectionMenuScript : MonoBehaviour
 {
     private string player1ID; //I want this as like "A:2" where the letter represents which testsession and the number is the uniqe participant
@@ -109,6 +110,18 @@ public class SelectionMenuScript : MonoBehaviour
         p1StartposDropdown.captionText.enabled = false;
         p2StartposDropdown.captionText.enabled = false;
 
+        //Enable keyboard to dropdown when they are entering their IDs'
+        if (p1IDField)
+        {
+            TouchScreenKeyboard.Open("", TouchScreenKeyboardType.Default, false, false, true);
+        }
+        if (p2IDField)
+        {
+            TouchScreenKeyboard.Open("", TouchScreenKeyboardType.Default, false, false, true);
+        }
+        p1IDField.keyboardType = TouchScreenKeyboardType.NumberPad; //Set the IDfields keyboard to only have numbers 0-9 (change this later?)
+        p2IDField.keyboardType = TouchScreenKeyboardType.NumberPad;
+
 
         if (GameManager.instance == null) //Make sure that the gameMgr has been instantiated
         {
@@ -126,7 +139,7 @@ public class SelectionMenuScript : MonoBehaviour
     /// This method checks what information has been set and then updates which method is called after pressing 
     /// the continue button by setting the added listner to the new method.
     /// </summary>
-    void CheckMenuInput()
+     void CheckMenuInput()
     {
         if (!hasPlayerInformation && !hasStartingPos)
         {
@@ -203,27 +216,30 @@ public class SelectionMenuScript : MonoBehaviour
     /// </summary>
     void SetPlayerID()
     {
-        if (p1IDField.text != string.Empty && p1IDField.text != "Enter your ID") //now it can add errything maybe change it so it looks at the string itself
-        {
-            player1ID = p1IDField.text;
-            p1IDField.image.color = Color.white;
-        }
-        else
-        {
-            p1IDField.image.color = Color.red;
-            p1IDField.text = "Enter your ID";
-        }
 
-        if (p2IDField.text != string.Empty && p2IDField.text != "Enter your ID")
-        {
-            player2ID = p2IDField.text;
-            p2IDField.image.color = Color.white;
-        }
-        else
-        {
-            p2IDField.image.color = Color.red;
-            p2IDField.text = "Enter your ID";
-        }
+            if (p1IDField.text != string.Empty && p1IDField.text != "Enter your ID") //now it can add errything maybe change it so it looks at the string itself
+            {
+                p1IDField.keyboardType = TouchScreenKeyboardType.Default;
+                player1ID = p1IDField.text;
+                p1IDField.image.color = Color.white;
+            }
+            else
+            {
+                p1IDField.keyboardType = TouchScreenKeyboardType.Default;
+                p1IDField.image.color = Color.red;
+                p1IDField.text = "Enter your ID";
+            }
+            
+            if (p2IDField.text != string.Empty && p2IDField.text != "Enter your ID")
+            {
+                player2ID = p2IDField.text;
+                p2IDField.image.color = Color.white;
+            }
+            else
+            {
+                p2IDField.image.color = Color.red;
+                p2IDField.text = "Enter your ID";
+            }      
     }
 
     /// <summary>
@@ -390,6 +406,6 @@ public class SelectionMenuScript : MonoBehaviour
     {
         //send both players information to the game mgr, unload the scene, deaactivate the selection camera and activate the *ARcamera. 
         
-        gameManager.InitGame(player1, player2); //The players arn't instansiated as gameobject but this will be fixed once they get their prefabs/ become full objects       
+        gameManager.SetPlayerInformation(player1, player2); //The players arn't instansiated as gameobject but this will be fixed once they get their prefabs/ become full objects       
     }
 }

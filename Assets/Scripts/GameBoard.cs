@@ -11,6 +11,7 @@ public class GameBoard : MonoBehaviour
     public Tilemap boardMap;
 
     private int tileSize = 256;
+
     private List<Vector2> startPositions;
 
     private List<TrackedPlane> trackedPlanes;
@@ -36,20 +37,20 @@ public class GameBoard : MonoBehaviour
     void Update()
     {
         //Check ARcore session status
-        if (Session.Status != SessionStatus.Tracking)
-        {
-            return;
-        }
-        //Fills the list trackedPlanes with the detected planes from this frame
-        Session.GetTrackables<TrackedPlane>(trackedPlanes, TrackableQueryFilter.New);
+        //if (Session.Status != SessionStatus.Tracking)
+        //{
+        //    return;
+        //}
+        ////Fills the list trackedPlanes with the detected planes from this frame
+        //Session.GetTrackables<TrackedPlane>(trackedPlanes, TrackableQueryFilter.New);
     }
 
     public void InitGameBoard(Player player1, Player player2) //take in startpos
     {
+        this.player1 = player1;
+        this.player2 = player2;
         //init rooms and roomstack
         //set startpos
-
-        
     }
 
 
@@ -75,5 +76,10 @@ public class GameBoard : MonoBehaviour
                 }
             }
         }
+    }
+
+    void CreateBoardGraph()
+    {
+        
     }
 }
