@@ -21,6 +21,10 @@ public class GameManager : MonoBehaviour
 
     private bool hasPlayerInformation;
 
+    private string currentSceneName;
+
+    public bool HasPlanes { get; set; }
+
     // Start is called before the first frame update
     void Awake()
     {
@@ -35,19 +39,26 @@ public class GameManager : MonoBehaviour
         else if (instance != this) //If instance already exists and it's not this:
         {
             Destroy(gameObject);
-        }    
+        }
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        //if (hasPlayerInformation)
-        //{         
-            if (SceneManager.GetActiveScene().name == "DrakborgenARScene");
+        currentSceneName = SceneManager.GetActiveScene().name;
+
+        if (currentSceneName == "SelectionScene")
+        {
+            if (hasPlayerInformation)
             {
-            InitGame();
+                SwitchScenes("DrakborgenARScene");
             }
-        //}   
+        }
+        if (currentSceneName == "DrakborgenARScene")
+        {
+            InitGame();
+        }
     }
 
     public void SetPlayerInformation(Player p1, Player p2)
@@ -64,11 +75,8 @@ public class GameManager : MonoBehaviour
         hasPlayerInformation = true;
 
         Debug.Log(SceneManager.sceneCount.ToString());
-
-
-        SwitchScenes("DrakborgenARScene");
+       
         //SceneManager.LoadScene(sceneName: "DrakborgenARScene", LoadSceneMode.Single); //1 = drakborgen scene //"DrakborgenARScene"
-
     }
 
     void InitGame()
@@ -83,7 +91,7 @@ public class GameManager : MonoBehaviour
             planeInfoTexT = GameObject.Find("planeInfoText").GetComponent<Text>();//Check to see if it finds the right text asset in the scene
             Debug.Log(planeInfoTexT.GetComponent<Text>().text);
         }
-    }
+    }//Fetch the assets like arcore etc from the new scene so that the gameMgr can use it
 
     void SwitchScenes(string sceneName)
     {
@@ -97,11 +105,9 @@ public class GameManager : MonoBehaviour
 
     void ARREnderer()
     {
-        
-
         //Check if a planes have been found
         Debug.Log(player1.gameObject);
-        if (arController.HasPlanes()) //If there are planes init game adn update gameplay
+        if (HasPlanes) //If there are planes init game adn update gameplay
         {
             planeInfoTexT.enabled = false;
 
@@ -110,8 +116,6 @@ public class GameManager : MonoBehaviour
         {
             planeInfoTexT.enabled = true;
             planeInfoTexT.text = "Searching for planes";
-
-
         }
     }
 }
