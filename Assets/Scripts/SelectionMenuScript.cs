@@ -22,6 +22,8 @@ public class SelectionMenuScript : MonoBehaviour
 
     private bool hasP2StartPos; //Temp just so that i can check which one has selected their pos apart from them both having selected
 
+    private bool informationSent; //Check if the information sent to the gameMGr has happend
+
     private Player player1;
     private Player player2;
 
@@ -175,7 +177,7 @@ public class SelectionMenuScript : MonoBehaviour
 
                 p1StartposDropdown.image.enabled = true;
                 p1StartposDropdown.captionText.enabled = true;
-
+               
                 continueButton.onClick.AddListener(GetP1StartPos);
             }
             else if (!player1Choosing && !hasP2StartPos)//P2 turn and P2 hasn't selected
@@ -405,7 +407,10 @@ public class SelectionMenuScript : MonoBehaviour
     void StartGame()
     {
         //send both players information to the game mgr, unload the scene, deaactivate the selection camera and activate the *ARcamera. 
-        
-        gameManager.SetPlayerInformation(player1, player2); //The players arn't instansiated as gameobject but this will be fixed once they get their prefabs/ become full objects       
+        if (!informationSent)
+        {
+            gameManager.SetPlayerInformation(player1, player2); //The players arn't instansiated as gameobject but this will be fixed once they get their prefabs/ become full objects 
+            informationSent = true;
+        }            
     }
 }

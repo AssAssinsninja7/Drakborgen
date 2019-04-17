@@ -28,25 +28,26 @@ public class GameManager : MonoBehaviour
         if (instance == null) //If nah
         {
             instance = this; //Set it to this class
+
+            //Sets this to not be destroyed when reloading scene
+            DontDestroyOnLoad(gameObject);
         }
         else if (instance != this) //If instance already exists and it's not this:
         {
             Destroy(gameObject);
-        }
-
-        //Sets this to not be destroyed when reloading scene
-        DontDestroyOnLoad(gameObject);
-
-        SceneManager.LoadScene(0); //When prgram starts load scene "0" which is selectionScene 
+        }    
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (hasPlayerInformation)
-        {
+        //if (hasPlayerInformation)
+        //{         
+            if (SceneManager.GetActiveScene().name == "DrakborgenARScene");
+            {
             InitGame();
-        }   
+            }
+        //}   
     }
 
     public void SetPlayerInformation(Player p1, Player p2)
@@ -59,10 +60,15 @@ public class GameManager : MonoBehaviour
 
         //player1.SetPlayerColor();
         //player2.SetPlayerColor(); 
-      
-        SceneManager.LoadScene(sceneBuildIndex: 1); //1 = drakborgen scene
 
         hasPlayerInformation = true;
+
+        Debug.Log(SceneManager.sceneCount.ToString());
+
+
+        SwitchScenes("DrakborgenARScene");
+        //SceneManager.LoadScene(sceneName: "DrakborgenARScene", LoadSceneMode.Single); //1 = drakborgen scene //"DrakborgenARScene"
+
     }
 
     void InitGame()
@@ -76,6 +82,15 @@ public class GameManager : MonoBehaviour
             gameBoard = GameObject.FindGameObjectWithTag("GameBoard").GetComponent<GameBoard>();
             planeInfoTexT = GameObject.Find("planeInfoText").GetComponent<Text>();//Check to see if it finds the right text asset in the scene
             Debug.Log(planeInfoTexT.GetComponent<Text>().text);
+        }
+    }
+
+    void SwitchScenes(string sceneName)
+    {
+        if (SceneManager.GetActiveScene().name != sceneName)
+        {
+            SceneManager.LoadScene(SceneManager.GetSceneByName(sceneName).name, LoadSceneMode.Single); //So as to actually find a scene with that name rather than just poutting the stringname there
+            Debug.Log(SceneManager.GetSceneByName(SceneManager.GetActiveScene().name));
         }
     }
 
