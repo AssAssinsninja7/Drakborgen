@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+using UnityEditor;
 
 public class GameManager : MonoBehaviour
 {
@@ -40,7 +41,7 @@ public class GameManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
-
+        hasPlayerInformation = false;
     }
 
     // Update is called once per frame
@@ -48,14 +49,14 @@ public class GameManager : MonoBehaviour
     {
         currentSceneName = SceneManager.GetActiveScene().name;
 
-        if (currentSceneName == "SelectionScene")
-        {
-            if (hasPlayerInformation)
-            {
-                SwitchScenes("DrakborgenARScene");
-            }
-        }
-        if (currentSceneName == "DrakborgenARScene")
+        //if (currentSceneName == "SelectionScene")
+        //{
+        //    if (hasPlayerInformation)
+        //    {
+        //        //SwitchScenes("DrakborgenARScene");
+        //    }
+        //}
+       if (currentSceneName == "DrakborgenARScene")
         {
             InitGame();
         }
@@ -72,11 +73,10 @@ public class GameManager : MonoBehaviour
         //player1.SetPlayerColor();
         //player2.SetPlayerColor(); 
 
-        hasPlayerInformation = true;
+        hasPlayerInformation = true; //for some reason this gets reset so just load the scene right after and check planes and init gameboard etc
 
-        Debug.Log(SceneManager.sceneCount.ToString());
-       
-        //SceneManager.LoadScene(sceneName: "DrakborgenARScene", LoadSceneMode.Single); //1 = drakborgen scene //"DrakborgenARScene"
+
+        SceneManager.LoadScene(sceneName: "DrakborgenARScene", LoadSceneMode.Single); //1 = drakborgen scene //"DrakborgenARScene"
     }
 
     void InitGame()
@@ -89,18 +89,23 @@ public class GameManager : MonoBehaviour
             arController = GetComponent<ARControllScript>();
             gameBoard = GameObject.FindGameObjectWithTag("GameBoard").GetComponent<GameBoard>();
             planeInfoTexT = GameObject.Find("planeInfoText").GetComponent<Text>();//Check to see if it finds the right text asset in the scene
+
             Debug.Log(planeInfoTexT.GetComponent<Text>().text);
         }
     }//Fetch the assets like arcore etc from the new scene so that the gameMgr can use it
 
-    void SwitchScenes(string sceneName)
-    {
-        if (SceneManager.GetActiveScene().name != sceneName)
-        {
-            SceneManager.LoadScene(SceneManager.GetSceneByName(sceneName).name, LoadSceneMode.Single); //So as to actually find a scene with that name rather than just poutting the stringname there
-            Debug.Log(SceneManager.GetSceneByName(SceneManager.GetActiveScene().name));
-        }
-    }
+    //void SwitchScenes(string sceneName)
+    //{
+    //    if (SceneManager.GetActiveScene().name != sceneName)
+    //    {
+    //        //EditorBuildSettingsScene[] allScenes = SceneManager.GetSceneByBuildIndex(1);
+
+    //        Debug.Log(SceneManager.GetSceneByBuildIndex(1).buildIndex);
+    //        SceneManager.LoadScene(sceneBuildIndex: 1, LoadSceneMode.Single); //So as to actually find a scene with that name rather than just poutting the stringname there
+
+    //        Debug.Log(SceneManager.GetSceneByName(SceneManager.GetActiveScene().name));
+    //    }
+    //}
 
 
     void ARREnderer()

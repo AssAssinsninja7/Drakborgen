@@ -14,10 +14,10 @@ public class Player : MonoBehaviour
 
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         //playerModel.GetComponent<GameObject>(); This one is stull null while the player is initialised
-       
+        DontDestroyOnLoad(this);
     }
 
     // Update is called once per frame

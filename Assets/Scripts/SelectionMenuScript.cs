@@ -407,10 +407,11 @@ public class SelectionMenuScript : MonoBehaviour
     void StartGame()
     {
         //send both players information to the game mgr, unload the scene, deaactivate the selection camera and activate the *ARcamera. 
-        if (!informationSent)
-        {
+        //if (!informationSent)
+        //{
+            
             gameManager.SetPlayerInformation(player1, player2); //The players arn't instansiated as gameobject but this will be fixed once they get their prefabs/ become full objects 
             informationSent = true;
-        }            
+        //}            
     }
 }
