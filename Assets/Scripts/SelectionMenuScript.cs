@@ -10,9 +10,9 @@ public class SelectionMenuScript : MonoBehaviour
     private string player1ID; //I want this as like "A:2" where the letter represents which testsession and the number is the uniqe participant
     private string player2ID; //These will be sent to the gameMgr who needs to spit out the tracked information later
 
-    private bool HasRotationRing; //if they have check their answer as the rot ring answer then this is true vice versa
+    private bool p2HasRotationRing; //if they have check their answer as the rot ring answer then this is true vice versa
 
-    private bool playingVikingCharacter; //if they have choosen the viking character then this will be true and vice versa
+    private bool p1HasViking; //if they have choosen the viking character then this will be true and vice versa
 
     private bool player1Choosing; //Keeps track of whose turn it is.
 
@@ -23,6 +23,11 @@ public class SelectionMenuScript : MonoBehaviour
     private bool hasP2StartPos; //Temp just so that i can check which one has selected their pos apart from them both having selected
 
     private bool informationSent; //Check if the information sent to the gameMGr has happend
+
+    private bool hasSet;
+
+    private Vector3 p1ChoosenStartPos = new Vector2();
+    private Vector3 p2ChoosenStartPos = new Vector2();
 
     private Player player1;
     private Player player2;
@@ -195,19 +200,21 @@ public class SelectionMenuScript : MonoBehaviour
 
         }
         else if (hasPlayerInformation && hasStartingPos)
-        {
-            continueButton.enabled = false; //disable the continue button
-            continueButton.image.enabled = false;
-            continueButton.GetComponentInChildren<Text>().text = string.Empty;
+        {           
+            if (!hasSet)
+            {
+                continueButton.enabled = false; //disable the continue button
+                continueButton.image.enabled = false;
+                continueButton.GetComponentInChildren<Text>().text = string.Empty;
 
-            p2StartposDropdown.image.enabled = false; //disable player2 startpos dropdown
-            p2StartposDropdown.captionText.enabled = false;
+                p2StartposDropdown.image.enabled = false; //disable player2 startpos dropdown
+                p2StartposDropdown.captionText.enabled = false;
 
-            infoText.text = "Setup ready, Start the game";
+                infoText.text = "Setup ready, Start the game";
 
-            SetPlayerInfo();
-
-            startButton.onClick.AddListener(StartGame); //connect the button to the method that starts the game
+                SetPlayerInfo();
+            }
+              
         }
     }
 
@@ -253,13 +260,13 @@ public class SelectionMenuScript : MonoBehaviour
     {
         if (p1CharacterDropdown.captionText.text == "Sven Viking")
         {
-            playingVikingCharacter = true;
+            p1HasViking = true;
 
             //Set image to vikin
         }
         else if (p1CharacterDropdown.captionText.text == "Fransiscus Monk")
         {
-            playingVikingCharacter = false;
+            p1HasViking = false;
             //Set image to monk
         }
 
@@ -269,7 +276,7 @@ public class SelectionMenuScript : MonoBehaviour
 
         p1CharacterDropdown.enabled = false;
 
-        if (playingVikingCharacter)
+        if (p1HasViking)
         {
             p2CharacterDropdown.value = 1;
         }
@@ -285,12 +292,12 @@ public class SelectionMenuScript : MonoBehaviour
     {
         if (p2RingDropdown.captionText.text == "Ring of knowledge")
         {
-            HasRotationRing = true;
+            p2HasRotationRing = true;
             //maybe even have a img for the rings but only if there's time
         }
         else if (p2RingDropdown.captionText.text == "Ring of faith")
         {
-            HasRotationRing = false;
+            p2HasRotationRing = false;
         }
 
         p1RingDropdown.image.enabled = true; //Show player1 ring result
@@ -298,7 +305,7 @@ public class SelectionMenuScript : MonoBehaviour
 
         p2RingDropdown.enabled = false; //Disable the interactibility with the dropdownbox for player2
 
-        if (HasRotationRing) //if p2 selected the rot ring the selected text will be the opposite for the otehr player vice versa, aand only the player selecting can see
+        if (p2HasRotationRing) //if p2 selected the rot ring the selected text will be the opposite for the otehr player vice versa, aand only the player selecting can see
         {
             p1RingDropdown.value = 1;
         }
@@ -314,25 +321,24 @@ public class SelectionMenuScript : MonoBehaviour
     void GetP1StartPos()
     {
         string blockedPosName = p1StartposDropdown.captionText.text; //Player1 chosen starting position (is then blocked as an option for player2)
-        Vector2 p1ChoosenStartPos = new Vector2(); //denna måste ligga utanför
 
         if (player1Choosing && !hasP2StartPos)
         {
             if (p1StartposDropdown.captionText.text == "Top Left")
             {
-                p1ChoosenStartPos = new Vector2(0, 0);
+                p1ChoosenStartPos = new Vector3(0, 0, 0);
             }
             else if (blockedPosName == "Top Right")
             {
-                p1ChoosenStartPos = new Vector2(9, 0);
+                p1ChoosenStartPos = new Vector3(9, 0, 0);
             }
             else if (blockedPosName == "Bottom Left")
             {
-                p1ChoosenStartPos = new Vector2(0, 6);
+                p1ChoosenStartPos = new Vector3(0, 0, 6);
             }
             else if (blockedPosName == "Bottom Right")
             {
-                p1ChoosenStartPos = new Vector2(9, 6);
+                p1ChoosenStartPos = new Vector3(9, 0, 6);
             }
 
             List<Dropdown.OptionData> p2startOptionList = p2StartposDropdown.options; //So that we can find which option to remove by text
@@ -355,26 +361,25 @@ public class SelectionMenuScript : MonoBehaviour
     /// </summary>
     void GetP2StartPos()
     {
-        string blockedPosName = p1StartposDropdown.captionText.text; //Player1 chosen starting position (is then blocked as an option for player2)
-        Vector2 p2ChoosenStartPos = new Vector2();
+        string blockedPosName = p1StartposDropdown.captionText.text; //Player1 chosen starting position (is then blocked as an option for player2)      
     
         if (!player1Choosing && !hasP2StartPos) //So long as they don't have the same start pos
         {
             if (p2StartposDropdown.captionText.text == "Top Left")
             {
-                p2ChoosenStartPos = new Vector2(0, 0);
+                p2ChoosenStartPos = new Vector3(0, 0, 0); 
             }
             else if (p2StartposDropdown.captionText.text == "Top Right")
             {
-                p2ChoosenStartPos = new Vector2(9, 0);
+                p2ChoosenStartPos = new Vector3(9, 0, 0); 
             }
             else if (p2StartposDropdown.captionText.text == "Bottom Left")
             {
-                p2ChoosenStartPos = new Vector2(0, 6);
+                p2ChoosenStartPos = new Vector3(0, 0, 6);
             }
             else if (p2StartposDropdown.captionText.text == "Bottom Right")
             {
-                p2ChoosenStartPos = new Vector2(9, 6);
+                p2ChoosenStartPos = new Vector3(9, 0, 6);
             }
 
             player2.Position = p2ChoosenStartPos;
@@ -392,26 +397,28 @@ public class SelectionMenuScript : MonoBehaviour
     /// </summary>
     void SetPlayerInfo()
     {
-        player1.PlayerID = player1ID;
-        player1.HasViking = playingVikingCharacter;
+        //player1.PlayerID = player1ID;
+        //player1.HasViking = p1HasViking;
 
-        player2.PlayerID = player2ID;
-        player2.HasRotationRing = HasRotationRing;
+        //player2.PlayerID = player2ID;
+        //player2.p2HasRotationRing = p2HasRotationRing;
 
-        player1.HasRotationRing = !player2.HasRotationRing;
-        player2.HasViking = !player1.HasViking;
+        //player1.p2HasRotationRing = !player2.p2HasRotationRing;
+        //player2.HasViking = !player1.HasViking;
 
         startButton.image.enabled = true;
+        startButton.onClick.AddListener(StartGame); //connect the button to the method that starts the game
+
+        hasSet = true;
     }
 
     void StartGame()
     {
         //send both players information to the game mgr, unload the scene, deaactivate the selection camera and activate the *ARcamera. 
-        //if (!informationSent)
-        //{
-            
-            gameManager.SetPlayerInformation(player1, player2); //The players arn't instansiated as gameobject but this will be fixed once they get their prefabs/ become full objects 
+        if (!informationSent)
+        {
+            gameManager.SetPlayerInformation(player1ID, player2ID, p1HasViking, p2HasRotationRing, p1ChoosenStartPos, p2ChoosenStartPos); //The players arn't instansiated as gameobject but this will be fixed once they get their prefabs/ become full objects 
             informationSent = true;
-        //}            
+        }
     }
 }

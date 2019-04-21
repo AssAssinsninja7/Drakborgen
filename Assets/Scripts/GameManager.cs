@@ -13,14 +13,14 @@ public class GameManager : MonoBehaviour
 
     public GameObject playerModel; //Should be two here later
 
-    private Player player1;
-    private Player player2;    
+    public GameObject player1;
+    public GameObject player2;    
 
     private GameBoard gameBoard;
 
     private Text planeInfoTexT;
 
-    private bool hasPlayerInformation;
+    private bool gameInitialized;
 
     private string currentSceneName;
 
@@ -41,13 +41,13 @@ public class GameManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
-        hasPlayerInformation = false;
+        gameInitialized = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-        currentSceneName = SceneManager.GetActiveScene().name;
+        //currentSceneName = SceneManager.GetActiveScene().name;
 
         //if (currentSceneName == "SelectionScene")
         //{
@@ -56,41 +56,43 @@ public class GameManager : MonoBehaviour
         //        //SwitchScenes("DrakborgenARScene");
         //    }
         //}
-       if (currentSceneName == "DrakborgenARScene")
-        {
-            InitGame();
-        }
+       //if (currentSceneName == "DrakborgenARScene")
+       //{
+       //     if (!gameInitialized) //IF game hasn't been initialized
+       //     {
+       //         InitGame(); //initialize it
+       //     }
+           
+       //}
     }
 
-    public void SetPlayerInformation(Player p1, Player p2)
+    public void SetPlayerInformation(string p1ID, string p2ID, bool p1HasViking, bool p2HasRotRing, Vector3 p1StartPos, Vector3 p2StartPos)
     {
-        player1 = p1; //Set the player
-        player2 = p2;
-
-        player1.playerModel = playerModel; //Set the uninitialisesd model to the right player (I subset this by setting the colors below)
-        player2.playerModel = playerModel;
-
-        //player1.SetPlayerColor();
-        //player2.SetPlayerColor(); 
-
-        hasPlayerInformation = true; //for some reason this gets reset so just load the scene right after and check planes and init gameboard etc
-
-
+        if (p1ID != null && p1ID != string.Empty && p1StartPos != null)
+        {         
+            player1.GetComponent<Player>().PlayerID = p1ID;
+            player1.GetComponent<Player>().HasViking = p1HasViking;
+            player1.GetComponent<Player>().HasRotationRing = !p2HasRotRing; //Opposite of player2's choice
+        }
+        if (p2ID != null && p2ID != string.Empty && p2StartPos != null)
+        {          
+            player2.GetComponent<Player>().PlayerID = p2ID;
+            player2.GetComponent<Player>().HasViking = !p1HasViking; //opposite of player1's choice
+            player2.GetComponent<Player>().HasRotationRing = p2HasRotRing;
+        }
         SceneManager.LoadScene(sceneName: "DrakborgenARScene", LoadSceneMode.Single); //1 = drakborgen scene //"DrakborgenARScene"
+
+        InitGame();
     }
 
     void InitGame()
     {
-
         if (player1 != null && player2 != null) //Make sure they aint null and load next scene
-        {         
-            Debug.Log(SceneManager.GetActiveScene().ToString());
-
-            arController = GetComponent<ARControllScript>();
+        {
+            arController = GameObject.Find("ARController").GetComponent<ARControllScript>();
             gameBoard = GameObject.FindGameObjectWithTag("GameBoard").GetComponent<GameBoard>();
             planeInfoTexT = GameObject.Find("planeInfoText").GetComponent<Text>();//Check to see if it finds the right text asset in the scene
-
-            Debug.Log(planeInfoTexT.GetComponent<Text>().text);
+            gameInitialized = true;
         }
     }//Fetch the assets like arcore etc from the new scene so that the gameMgr can use it
 
@@ -108,7 +110,7 @@ public class GameManager : MonoBehaviour
     //}
 
 
-    void ARREnderer()
+    void ARRenderer()
     {
         //Check if a planes have been found
         Debug.Log(player1.gameObject);

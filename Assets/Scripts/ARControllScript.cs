@@ -16,12 +16,12 @@ public class ARControllScript : MonoBehaviour
     public GameObject trackedPlanePrefab;
     public GameObject BoardPrefab;
 
-    private GameManager gameManager;
+    //private GameManager gameManager;
 
     // Start is called before the first frame update
     void Start()
     {
-
+       
     }
 
     // Update is called once per frame
@@ -48,7 +48,7 @@ public class ARControllScript : MonoBehaviour
             GameObject grid = Instantiate(trackedPlanePrefab, Vector3.zero, Quaternion.identity, transform);
             grid.GetComponent<GameBoardVizualizer>().Initialize(trackedPlanes[i]);
 
-            gameManager.HasPlanes = HasPlanes();
+            //gameManager.HasPlanes = HasPlanes();
             //if (Input.touchCount > 0) //If player has touched the screen init it (switch to when it has found and then have the players select)
             //{
             //    //Spawn gameboard lalalla
