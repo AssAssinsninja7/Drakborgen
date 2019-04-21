@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using GoogleARCore;
 using UnityEngine.Rendering;
+using UnityEngine.UI;
 
 #if UNITY_EDITOR
 // Set up touch input propagation while using Instant Preview in the editor.
@@ -10,11 +11,13 @@ using UnityEngine.Rendering;
 #endif
 
 public class ARControllScript : MonoBehaviour
-{
-
-    List<TrackedPlane> trackedPlanes = new List<TrackedPlane>();
+{   
+    public Text planeStatusInfo;
     public GameObject trackedPlanePrefab;
     public GameObject BoardPrefab;
+
+    private List<TrackedPlane> trackedPlanes = new List<TrackedPlane>();
+
 
     //private GameManager gameManager;
 
@@ -35,12 +38,25 @@ public class ARControllScript : MonoBehaviour
         //Fills the list trackedPlanes with the newly found planes from the current frame
         Session.GetTrackables<TrackedPlane>(trackedPlanes, TrackableQueryFilter.New);
 
-        //Init each found grid with the game board
-        FindPlanes();
+        if (HasPlanes())
+        {
+            planeStatusInfo.text = "Planes found";
+            planeStatusInfo.enabled = false;
+        }
+        else
+        {
+            planeStatusInfo.text = "Searcing 4 planes";
+            planeStatusInfo.enabled = true;
+
+            //Init each found grid with the game board
+            FindPlanes();
+        }
+
+
     }
 
 
-    void FindPlanes() //maybe have this as a bool so that the gamemgr can check to see if plane has been found
+    public void FindPlanes() //maybe have this as a bool so that the gamemgr can check to see if plane has been found
     {
         for (int i = 0; i < trackedPlanes.Count; i++)
         {

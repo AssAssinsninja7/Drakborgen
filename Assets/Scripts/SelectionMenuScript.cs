@@ -29,8 +29,8 @@ public class SelectionMenuScript : MonoBehaviour
     private Vector3 p1ChoosenStartPos = new Vector2();
     private Vector3 p2ChoosenStartPos = new Vector2();
 
-    private Player player1;
-    private Player player2;
+    //private Player player1;
+    //private Player player2;
 
     public GameManager gameManager;
 
@@ -81,8 +81,8 @@ public class SelectionMenuScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        player1 = gameObject.AddComponent<Player>();
-        player2 = gameObject.AddComponent<Player>();
+        //player1 = gameObject.AddComponent<Player>();
+        //player2 = gameObject.AddComponent<Player>();
 
         hasPlayerInformation = false;
         hasStartingPos = false;
@@ -350,7 +350,7 @@ public class SelectionMenuScript : MonoBehaviour
                 }
             }
 
-            player1.Position = p1ChoosenStartPos;
+            //player1.Position = p1ChoosenStartPos;
             player1Choosing = false; //player1 turn is now over
             continueButton.onClick.AddListener(GetP2StartPos);
         }      
@@ -382,11 +382,11 @@ public class SelectionMenuScript : MonoBehaviour
                 p2ChoosenStartPos = new Vector3(9, 0, 6);
             }
 
-            player2.Position = p2ChoosenStartPos;
+            //player2.Position = p2ChoosenStartPos;
             hasP2StartPos = true;
         }
 
-        if (player2.Position != player1.Position && hasP2StartPos) //So long as they haven't selected the same 
+        if (p1ChoosenStartPos != p2ChoosenStartPos && hasP2StartPos) //So long as they haven't selected the same 
         {
             hasStartingPos = true;
         }
@@ -415,10 +415,10 @@ public class SelectionMenuScript : MonoBehaviour
     void StartGame()
     {
         //send both players information to the game mgr, unload the scene, deaactivate the selection camera and activate the *ARcamera. 
-        if (!informationSent)
-        {
+        //if (!informationSent)
+        //{
             gameManager.SetPlayerInformation(player1ID, player2ID, p1HasViking, p2HasRotationRing, p1ChoosenStartPos, p2ChoosenStartPos); //The players arn't instansiated as gameobject but this will be fixed once they get their prefabs/ become full objects 
             informationSent = true;
-        }
+        //}
     }
 }

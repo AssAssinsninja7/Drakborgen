@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using UnityEditor;
+using GoogleARCore;
 
 public class GameManager : MonoBehaviour
 {
@@ -30,7 +31,7 @@ public class GameManager : MonoBehaviour
     void Awake()
     {
         //Check if instance already exists
-        if (instance == null) //If nah
+        if (instance == null) // ya
         {
             instance = this; //Set it to this class
 
@@ -47,7 +48,12 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //currentSceneName = SceneManager.GetActiveScene().name;
+        if (instance != this)
+        {
+            Destroy(gameBoard);
+        }
+
+        currentSceneName = SceneManager.GetActiveScene().name;
 
         //if (currentSceneName == "SelectionScene")
         //{
@@ -56,14 +62,22 @@ public class GameManager : MonoBehaviour
         //        //SwitchScenes("DrakborgenARScene");
         //    }
         //}
-       //if (currentSceneName == "DrakborgenARScene")
-       //{
-       //     if (!gameInitialized) //IF game hasn't been initialized
-       //     {
-       //         InitGame(); //initialize it
-       //     }
-           
-       //}
+        if (currentSceneName == "DrakborgenARScene")
+        {
+            if (!gameInitialized) //IF game hasn't been initialized
+            {
+                InitGame(); //initialize it
+            }
+            
+            //if (Session.Status == SessionStatus.Tracking)
+            //{
+            //    if (!arController.HasPlanes())
+            //    {
+                   
+            //        arController.FindPlanes();
+            //    }
+            //}
+        }
     }
 
     public void SetPlayerInformation(string p1ID, string p2ID, bool p1HasViking, bool p2HasRotRing, Vector3 p1StartPos, Vector3 p2StartPos)
@@ -80,19 +94,19 @@ public class GameManager : MonoBehaviour
             player2.GetComponent<Player>().HasViking = !p1HasViking; //opposite of player1's choice
             player2.GetComponent<Player>().HasRotationRing = p2HasRotRing;
         }
-        SceneManager.LoadScene(sceneName: "DrakborgenARScene", LoadSceneMode.Single); //1 = drakborgen scene //"DrakborgenARScene"
-
-        InitGame();
+        SceneManager.LoadScene(sceneBuildIndex: 1, LoadSceneMode.Single); //1 = drakborgen scene //"DrakborgenARScene" //sceneName: "DrakborgenARScene"      
     }
 
     void InitGame()
     {
         if (player1 != null && player2 != null) //Make sure they aint null and load next scene
         {
+            gameInitialized = true;
             arController = GameObject.Find("ARController").GetComponent<ARControllScript>();
             gameBoard = GameObject.FindGameObjectWithTag("GameBoard").GetComponent<GameBoard>();
-            planeInfoTexT = GameObject.Find("planeInfoText").GetComponent<Text>();//Check to see if it finds the right text asset in the scene
-            gameInitialized = true;
+            planeInfoTexT = GameObject.Find("PlaneStatusCanvas").GetComponentInChildren<Text>();//Check to see if it finds the right text asset in the scene
+
+            gameBoard.InitGameBoard(player1.GetComponent<Player>(), player2.GetComponent<Player>()); //Might want to send in the entire gameobj
         }
     }//Fetch the assets like arcore etc from the new scene so that the gameMgr can use it
 
@@ -110,7 +124,7 @@ public class GameManager : MonoBehaviour
     //}
 
 
-    void ARRenderer()
+    void ARRenderer() 
     {
         //Check if a planes have been found
         Debug.Log(player1.gameObject);

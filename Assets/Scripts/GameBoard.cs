@@ -36,13 +36,7 @@ public class GameBoard : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //Check ARcore session status
-        //if (Session.Status != SessionStatus.Tracking)
-        //{
-        //    return;
-        //}
-        ////Fills the list trackedPlanes with the detected planes from this frame
-        //Session.GetTrackables<TrackedPlane>(trackedPlanes, TrackableQueryFilter.New);
+        
     }
 
     public void InitGameBoard(Player player1, Player player2) //take in startpos
