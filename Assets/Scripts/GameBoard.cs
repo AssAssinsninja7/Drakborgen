@@ -14,7 +14,7 @@ public class GameBoard : MonoBehaviour
 
     private List<Vector2> startPositions;
 
-    private List<TrackedPlane> trackedPlanes;
+    private List<TrackedPlane> newPlanes;
 
     private Player player1, player2;
     //Queue of Rooms
@@ -22,7 +22,7 @@ public class GameBoard : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        trackedPlanes = new List<TrackedPlane>();
+        newPlanes = new List<TrackedPlane>();
 
         //Add start positions as listitems
         startPositions = new List<Vector2>();

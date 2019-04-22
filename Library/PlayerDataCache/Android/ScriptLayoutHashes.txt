@@ -163,7 +163,7 @@ fb6a1ea36b4f6ef5948d283d93760765 UnityEngine.GoogleAudioSpatializer.dll:UnityEng
 4793637886e076da1b88d856ea4b04e3 Assembly-CSharp.dll:.Player
 a4f0a4f62100f1a4fb5cbe0e00dde83f Unity.TextMeshPro.dll:TMPro.TextMeshProUGUI
 5fc094978ce3e3591a7500ed380d854a Unity.Analytics.DataPrivacy.dll:UnityEngine.Analytics.DataPrivacyButton
-eae8487c6bde4f2ea8301b988c3ffbbd Assembly-CSharp.dll:.ARControllScript
+1a043ca4a445d2db8a8316a912ec42bc Assembly-CSharp.dll:.ARControllScript
 d251bf88db6c95a6b1aa0b69298da9ef UnityEngine.SpatialTracking.dll:UnityEngine.SpatialTracking.TrackedPoseDriver
 d791aa6007fa3640be1164ea75bb087d Unity.TextMeshPro.dll:TMPro.TMP_StyleSheet
 71bb6a6b6c8f052f948db64c7dd3ca4f Assembly-CSharp.dll:.GameBoardVizualizer
@@ -171,4 +171,4 @@ c6666661329916e218bee7f5e79e60f5 Unity.TextMeshPro.dll:TMPro.TextMeshPro
 3165968ba45c74472d279ba04455fccb Unity.TextMeshPro.dll:TMPro.TMP_ColorGradient
 8649814970b42d345b89944b862453cc Unity.TextMeshPro.dll:TMPro.TMP_SubMesh
 0ff5b29f1700caa87c86421f40d03588 Assembly-CSharp.dll:.Loader
-6522378b6d94322275d62fda0bd23e30 Assembly-CSharp.dll:.GameManager
+8a4b74b89b6c08bff812f6f56c173963 Assembly-CSharp.dll:.GameManager

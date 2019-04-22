@@ -71,7 +71,7 @@ namespace GoogleARCore.TextureReader
         private float m_SwipeMomentum = 0.0f;
         private ScreenOrientation m_CachedOrientation = ScreenOrientation.Unknown;
         private Vector2 m_CachedScreenDimensions = Vector2.zero;
-        private bool m_IsQuitting = false;
+        private bool m_isQuittingting = false;
 
         /// <summary>
         /// Instant Preview Input does not support deltaPosition, so we keep track of the most recent
@@ -390,7 +390,7 @@ namespace GoogleARCore.TextureReader
         /// </summary>
         private void _QuitOnConnectionErrors()
         {
-            if (m_IsQuitting)
+            if (m_isQuittingting)
             {
                 return;
             }
@@ -399,13 +399,13 @@ namespace GoogleARCore.TextureReader
             if (Session.Status == SessionStatus.ErrorPermissionNotGranted)
             {
                 _ShowAndroidToastMessage("Camera permission is needed to run this application.");
-                m_IsQuitting = true;
+                m_isQuittingting = true;
                 Invoke("_DoQuit", 0.5f);
             }
             else if (Session.Status == SessionStatus.FatalError)
             {
                 _ShowAndroidToastMessage("ARCore encountered a problem connecting.  Please start the app again.");
-                m_IsQuitting = true;
+                m_isQuittingting = true;
                 Invoke("_DoQuit", 0.5f);
             }
         }

@@ -27,6 +27,11 @@ public class GameManager : MonoBehaviour
 
     public bool HasPlanes { get; set; }
 
+    //DrakborgenController
+
+    
+
+
     // Start is called before the first frame update
     void Awake()
     {
@@ -68,15 +73,7 @@ public class GameManager : MonoBehaviour
             {
                 InitGame(); //initialize it
             }
-            
-            //if (Session.Status == SessionStatus.Tracking)
-            //{
-            //    if (!arController.HasPlanes())
-            //    {
-                   
-            //        arController.FindPlanes();
-            //    }
-            //}
+                     
         }
     }
 

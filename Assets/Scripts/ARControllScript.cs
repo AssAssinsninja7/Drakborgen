@@ -11,15 +11,21 @@ using UnityEngine.UI;
 #endif
 
 public class ARControllScript : MonoBehaviour
-{   
-    public Text planeStatusInfo;
+{
+
+    public Camera arCamera; 
+    public GameObject planeStatusInfo;
     public GameObject trackedPlanePrefab;
     public GameObject BoardPrefab;
 
-    private List<TrackedPlane> trackedPlanes = new List<TrackedPlane>();
+    private List<TrackedPlane> newPlanes = new List<TrackedPlane>();
+    private List<TrackedPlane> allPlanes = new List<TrackedPlane>();
 
 
-    //private GameManager gameManager;
+    //ARcontroller UI & Session controll (Exit when fukked)
+    private bool isQuitting = false;
+    private bool showSearchUI = true;
+
 
     // Start is called before the first frame update
     void Start()
@@ -30,60 +36,118 @@ public class ARControllScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //Check session status
-        if (Session.Status != SessionStatus.Tracking) //if we aint tracking
+        //Check ARcore sesh from connection error
+        QuitOnConnectionErrors();
+
+        // Check that motion tracking is tracking.
+        if (Session.Status != SessionStatus.Tracking)
+        {
+            const int lostTrackingSleepTimeout = 15;
+            Screen.sleepTimeout = lostTrackingSleepTimeout;
+            if (!isQuitting && Session.Status.IsValid())
+            {
+                planeStatusInfo.SetActive(true);
+            }
+            return;
+        }
+        Screen.sleepTimeout = SleepTimeout.NeverSleep;
+
+        //Fills the list newPlanes with the newly found planes from the current frame
+        Session.GetTrackables<TrackedPlane>(newPlanes, TrackableQueryFilter.New);
+        //Find new planes and place out the trackedPlaneprefab where they have been found
+        FindPlanes();
+
+        //Fills the list allPlanes with the newly found planes from the current frame
+        Session.GetTrackables<TrackedPlane>(allPlanes);
+        HasPlanes();
+        //Disale the UI based on if we found planes
+        planeStatusInfo.SetActive(showSearchUI);
+
+        // If the player has not touched the screen, we are done with this update.
+        Touch touch;
+        if (Input.touchCount < 1 || (touch = Input.GetTouch(0)).phase != TouchPhase.Began)
         {
             return;
         }
-        //Fills the list trackedPlanes with the newly found planes from the current frame
-        Session.GetTrackables<TrackedPlane>(trackedPlanes, TrackableQueryFilter.New);
 
-        if (HasPlanes())
+        // Raycast against the location the player touched to search for planes.
+        TrackableHit hit;
+        TrackableHitFlags raycastFilter = TrackableHitFlags.PlaneWithinPolygon | TrackableHitFlags.FeaturePointWithSurfaceNormal;
+
+        if (Frame.Raycast(touch.position.x, touch.position.y, raycastFilter, out hit))
         {
-            planeStatusInfo.text = "Planes found";
-            planeStatusInfo.enabled = false;
-        }
-        else
-        {
-            planeStatusInfo.text = "Searcing 4 planes";
-            planeStatusInfo.enabled = true;
+            var boardObject = Instantiate(BoardPrefab, hit.Pose.position, hit.Pose.rotation);
 
-            //Init each found grid with the game board
-            FindPlanes();
-        }
+            // Create an anchor to allow ARCore to track the hitpoint as understanding of the physical
+            // world evolves.
+            var anchor = hit.Trackable.CreateAnchor(hit.Pose);
 
-
-    }
-
-
-    public void FindPlanes() //maybe have this as a bool so that the gamemgr can check to see if plane has been found
-    {
-        for (int i = 0; i < trackedPlanes.Count; i++)
-        {
-            //GameObject grid = Instantiate(BoardPrefab, Vector3.zero, Quaternion.FromToRotation(BoardPrefab.transform.position, trackedPlanes[i].CenterPose.position), transform);
-            GameObject grid = Instantiate(trackedPlanePrefab, Vector3.zero, Quaternion.identity, transform);
-            grid.GetComponent<GameBoardVizualizer>().Initialize(trackedPlanes[i]);
-
-            //gameManager.HasPlanes = HasPlanes();
-            //if (Input.touchCount > 0) //If player has touched the screen init it (switch to when it has found and then have the players select)
-            //{
-            //    //Spawn gameboard lalalla
-            //}    
+            // Make board model a child of the anchor.
+            boardObject.transform.parent = anchor.transform;
         }
     }
 
     /// <summary>
-    /// Check if we have identified planes
+    /// Check if any new planes has been from the current frame and then places them if any were found. 
+    /// (Session.GetTrackables = is finding all new planes from this frame)
+    /// </summary>
+    private void FindPlanes() 
+    {
+        for (int i = 0; i < newPlanes.Count; i++)
+        {           
+            GameObject worldGrid = Instantiate(trackedPlanePrefab, Vector3.zero, Quaternion.identity, transform);
+            worldGrid.GetComponent<GameBoardVizualizer>().Initialize(newPlanes[i]);
+        }
+    }
+
+    /// <summary>
+    /// Check if we have identified planes and disables the searcing ui if we have
     /// </summary>
     /// <returns></returns>
-    public bool HasPlanes()
+    private void HasPlanes()
     {
-        bool result = false;
-
-        if (trackedPlanes.Count > 0)
+        showSearchUI = true;
+        for (int i = 0; i < allPlanes.Count; i++)
         {
-            result = true;
+            if (allPlanes[i].TrackingState == TrackingState.Tracking)
+            {
+                showSearchUI = false;
+                break;
+            }
         }
-        return result;
+    }
+
+
+    /// <summary>
+    /// Quit the application if there was a connection error for the ARCore session.
+    /// </summary>
+    private void QuitOnConnectionErrors()
+    {
+        if (isQuitting)
+        {
+            return;
+        }
+
+        // Quit if ARCore was unable to connect and give Unity some time for the toast to appear.
+        if (Session.Status == SessionStatus.ErrorPermissionNotGranted)
+        {
+            //_ShowAndroidToastMessage("Camera permission is needed to run this application.");
+            isQuitting = true;
+            Invoke("DoQuit", 0.5f);
+        }
+        else if (Session.Status.IsError())
+        {
+            //_ShowAndroidToastMessage("ARCore encountered a problem connecting.  Please start the app again.");
+            isQuitting = true;
+            Invoke("DoQuit", 0.5f);
+        }
+    }
+
+    /// <summary>
+    /// Actually quit the application.
+    /// </summary>
+    private void DoQuit()
+    {
+        Application.Quit();
     }
 }
