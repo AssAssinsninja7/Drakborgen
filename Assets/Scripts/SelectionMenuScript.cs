@@ -29,8 +29,7 @@ public class SelectionMenuScript : MonoBehaviour
     private Vector3 p1ChoosenStartPos = new Vector2();
     private Vector3 p2ChoosenStartPos = new Vector2();
 
-    //private Player player1;
-    //private Player player2;
+   
 
     public GameManager gameManager;
 
@@ -75,14 +74,19 @@ public class SelectionMenuScript : MonoBehaviour
     [SerializeField]
     private Dropdown p2StartposDropdown; //The chosen startpos for player2
 
+    [SerializeField]
+    private Camera menuCamera;
+
+    [SerializeField]
+    private Canvas menuCanvas;
+
     #endregion 
 
 
     // Start is called before the first frame update
     void Start()
     {
-        //player1 = gameObject.AddComponent<Player>();
-        //player2 = gameObject.AddComponent<Player>();
+        SetCanvasToScreenSize();
 
         hasPlayerInformation = false;
         hasStartingPos = false;
@@ -116,18 +120,10 @@ public class SelectionMenuScript : MonoBehaviour
 
         p1StartposDropdown.captionText.enabled = false;
         p2StartposDropdown.captionText.enabled = false;
-
-        //Enable keyboard to dropdown when they are entering their IDs'
-        if (p1IDField)
-        {
-            TouchScreenKeyboard.Open("", TouchScreenKeyboardType.Default, false, false, true);
-        }
-        if (p2IDField)
-        {
-            TouchScreenKeyboard.Open("", TouchScreenKeyboardType.Default, false, false, true);
-        }
-        p1IDField.keyboardType = TouchScreenKeyboardType.NumberPad; //Set the IDfields keyboard to only have numbers 0-9 (change this later?)
-        p2IDField.keyboardType = TouchScreenKeyboardType.NumberPad;
+        
+        //Set keyboardType to the normal keyboard. 
+        p1IDField.keyboardType = TouchScreenKeyboardType.Default; 
+        p2IDField.keyboardType = TouchScreenKeyboardType.Default;
 
 
         if (GameManager.instance == null) //Make sure that the gameMgr has been instantiated
@@ -140,6 +136,56 @@ public class SelectionMenuScript : MonoBehaviour
     void Update()
     {
         CheckMenuInput();
+    }
+
+    void SetCanvasToScreenSize()
+    {
+       
+        float screenHeight = Camera.main.orthographicSize * 2f;
+        float screenWidth = screenHeight / Screen.height * Screen.width;
+        float width = screenWidth / menuCamera.rect.width; // spriteRenderer.sprite.bounds.size.x
+        float height = screenHeight / menuCamera.rect.height; //spriteRenderer.sprite.bounds.size.y
+
+        menuCamera.transform.localScale = new Vector3(width, height, 1f);
+    }
+
+    //Set the screen size of the game to that of the "platform" running it
+    void SetScreenSize()
+    {
+        // set the desired aspect ratio (Hardcoded to 16:9)
+        float targetScreenRatio = 16.0f / 9.0f;
+
+        // determine the game window's current aspect ratio
+        float windowaspect = (float)Screen.width / (float)Screen.height;
+
+        // current viewport height should be scaled by this amount
+        float scaleheight = windowaspect / targetScreenRatio;
+
+        // if scaled height is less than current height, add letterbox
+        if (scaleheight < 1.0f)
+        {
+            Rect rect = menuCamera.rect;
+
+            rect.width = 1.0f;
+            rect.height = scaleheight;
+            rect.x = 0;
+            rect.y = (1.0f - scaleheight) / 2.0f;
+
+            menuCamera.rect = rect;
+        }
+        else // add pillarbox
+        {
+            float scalewidth = 1.0f / scaleheight;
+
+            Rect rect = menuCamera.rect;
+
+            rect.width = scalewidth;
+            rect.height = 1.0f;
+            rect.x = (1.0f - scalewidth) / 2.0f;
+            rect.y = 0;
+
+            menuCamera.rect = rect;
+        }
     }
 
     /// <summary>
@@ -194,10 +240,10 @@ public class SelectionMenuScript : MonoBehaviour
                 p2StartposDropdown.captionText.enabled = true;
 
                 p1StartposDropdown.image.enabled = false; //Deactivate player1 selection option     
+                p1StartposDropdown.captionText.enabled = false;
 
                 continueButton.onClick.AddListener(GetP2StartPos);
             }
-
         }
         else if (hasPlayerInformation && hasStartingPos)
         {           
@@ -228,13 +274,11 @@ public class SelectionMenuScript : MonoBehaviour
 
             if (p1IDField.text != string.Empty && p1IDField.text != "Enter your ID") //now it can add errything maybe change it so it looks at the string itself
             {
-                p1IDField.keyboardType = TouchScreenKeyboardType.Default;
                 player1ID = p1IDField.text;
                 p1IDField.image.color = Color.white;
             }
             else
             {
-                p1IDField.keyboardType = TouchScreenKeyboardType.Default;
                 p1IDField.image.color = Color.red;
                 p1IDField.text = "Enter your ID";
             }

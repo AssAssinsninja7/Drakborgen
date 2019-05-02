@@ -1,6 +1,6 @@
 Android
 PlayerPath?
-C:/Users/Jasmine/Documents/Drakborgen_Build/Drakborgen3.apk
+C:/Users/Jasmine/Documents/Drakborgen_Build/Drakborgen4.apk
 SceneListBegin?
 Assets/Scenes/SelectionScene.unity
 Assets/Scenes/DrakborgenARScene.unity
@@ -116,7 +116,7 @@ ad9173d3a69d99153f38ed4b62226129 UnityEngine.Networking.dll:UnityEngine.Networki
 9b895dcabbc1faf095c000c32d471fd0 UnityEngine.Networking.dll:UnityEngine.Networking.NetworkTransformChild
 5887ef1bc706b22b773d253fd443ceef UnityEngine.Networking.dll:UnityEngine.Networking.NetworkTransformVisualizer
 d251bf88db6c95a6b1aa0b69298da9ef UnityEngine.SpatialTracking.dll:UnityEngine.SpatialTracking.TrackedPoseDriver
-8c767105ee21242b70382b70d152ab1e Assembly-CSharp.dll:.SelectionMenuScript
+1e2275cdf5a24272e7ea2d85a5312412 Assembly-CSharp.dll:.SelectionMenuScript
 71bb6a6b6c8f052f948db64c7dd3ca4f Assembly-CSharp.dll:GoogleARCore.EnvironmentalLight
 b099dc9ef17f23a05874e97bf176abae Assembly-CSharp.dll:.GameBoard
 303ad70ce203ad874efe2965d0fbcff9 Unity.Analytics.Tracker.dll:UnityEngine.Analytics.AnalyticsEventTracker

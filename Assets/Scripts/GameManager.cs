@@ -48,6 +48,9 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
         }
         gameInitialized = false;
+
+        Screen.SetResolution(Screen.width, Screen.height, FullScreenMode.ExclusiveFullScreen); //doesn't work
+        Screen.orientation = ScreenOrientation.Landscape; 
     }
 
     // Update is called once per frame
@@ -121,19 +124,19 @@ public class GameManager : MonoBehaviour
     //}
 
 
-    void ARRenderer() 
-    {
-        //Check if a planes have been found
-        Debug.Log(player1.gameObject);
-        if (HasPlanes) //If there are planes init game adn update gameplay
-        {
-            planeInfoTexT.enabled = false;
+    //void ARRenderer() 
+    //{
+    //    //Check if a planes have been found
+    //    Debug.Log(player1.gameObject);
+    //    if (HasPlanes) //If there are planes init game adn update gameplay
+    //    {
+    //        planeInfoTexT.enabled = false;
 
-        }
-        else //Find new planes
-        {
-            planeInfoTexT.enabled = true;
-            planeInfoTexT.text = "Searching for planes";
-        }
-    }
+    //    }
+    //    else //Find new planes
+    //    {
+    //        planeInfoTexT.enabled = true;
+    //        planeInfoTexT.text = "Searching for planes";
+    //    }
+    //}
 }
