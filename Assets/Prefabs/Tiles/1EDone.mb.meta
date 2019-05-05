@@ -1,30 +1,18 @@
 fileFormatVersion: 2
-guid: e2798fa3dd0b3a04aabc5b882fa1be71
+guid: a902d259bf24da34c94860868ff0ee63
 ModelImporter:
   serializedVersion: 23
   fileIDToRecycleName:
     100000: //RootNode
-    100002: pCube73
-    100004: pCube74
-    100006: pCube75
-    100008: transform57
-    100010: transform58
     400000: //RootNode
-    400002: pCube73
-    400004: pCube74
-    400006: pCube75
-    400008: transform57
-    400010: transform58
     2100000: lambert1
     2100002: Walls
-    2100004: Portcullis
-    2100006: Arrow
-    2300000: pCube75
-    3300000: pCube75
-    4300000: pCube75
+    2100004: Arrow
+    2300000: //RootNode
+    3300000: //RootNode
+    4300000: pCube72
     7400000: Take 001
     9500000: //RootNode
-    2186277476908879412: ImportLogs
   externalObjects: {}
   materials:
     importMaterials: 1
