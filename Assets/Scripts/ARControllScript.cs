@@ -21,6 +21,9 @@ public class ARControllScript : MonoBehaviour
     private List<TrackedPlane> newPlanes = new List<TrackedPlane>();
     private List<TrackedPlane> allPlanes = new List<TrackedPlane>();
 
+    private GameObject boardObject;
+
+    private TrackableHit currentHit;
 
     //ARcontroller UI & Session controll (Exit when fukked)
     private bool isQuitting = false;
@@ -72,22 +75,37 @@ public class ARControllScript : MonoBehaviour
 
         // Raycast against the location the player touched to search for planes.
         TrackableHit hit;
-        TrackableHitFlags raycastFilter = TrackableHitFlags.PlaneWithinPolygon | TrackableHitFlags.FeaturePointWithSurfaceNormal;
+        TrackableHitFlags raycastFilter = TrackableHitFlags.PlaneWithinPolygon | TrackableHitFlags.FeaturePointWithSurfaceNormal;     
 
         if (Frame.Raycast(touch.position.x, touch.position.y, raycastFilter, out hit))
-        {           
-            //Instanciate the board facing up based on where the user hit
-            var boardObject = Instantiate(BoardPrefab, new Vector3(hit.Pose.position.x, hit.Pose.position.y, hit.Distance), Quaternion.Euler(90,0,0)); //hit.Pose.position
+        {
+            currentHit = hit;
+            if (boardObject == null) //Create only one board
+            {
+                //Instanciate the board facing up based on where the user hit
+                boardObject = Instantiate(BoardPrefab, new Vector3(hit.Pose.position.x, hit.Pose.position.y, hit.Distance), Quaternion.Euler(90, 0, 0)); //hit.Pose.position
 
-            // Create an anchor to allow ARCore to track the hitpoint as understanding of the physical
-            // world evolves.
-            var anchor = hit.Trackable.CreateAnchor(hit.Pose);
+                // Create an anchor to allow ARCore to track the hitpoint as understanding of the physical
+                // world evolves.
+                var anchor = hit.Trackable.CreateAnchor(hit.Pose);
 
-            // Make board model a child of the anchor.
-            boardObject.transform.parent = anchor.transform;
+                // Make board model a child of the anchor.
+                boardObject.transform.parent = anchor.transform;
+            }
+            else //Check where the user pressed () send info to gamemgr 
+            {
 
-            
+            }          
         }
+    }
+
+    /// <summary>
+    /// Return the last presshit by the player (to gameMgr)
+    /// </summary>
+    /// <returns></returns>
+    public TrackableHit GetCurrentHit()
+    {
+        return currentHit;
     }
 
     void SetScreenSize()

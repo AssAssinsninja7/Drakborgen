@@ -28,7 +28,7 @@ public class GameManager : MonoBehaviour
     public bool HasPlanes { get; set; }
 
     //DrakborgenController
-
+    private bool p1Turn; //player1's turn (starting players turn)
     
 
 
@@ -63,20 +63,16 @@ public class GameManager : MonoBehaviour
 
         currentSceneName = SceneManager.GetActiveScene().name;
 
-        //if (currentSceneName == "SelectionScene")
-        //{
-        //    if (hasPlayerInformation)
-        //    {
-        //        //SwitchScenes("DrakborgenARScene");
-        //    }
-        //}
         if (currentSceneName == "DrakborgenARScene")
         {
             if (!gameInitialized) //IF game hasn't been initialized
             {
                 InitGame(); //initialize it
             }
-                     
+            else //Start gameLogic take hit pos from ARcontroller and move players here
+            {
+
+            }         
         }
     }
 
@@ -87,12 +83,14 @@ public class GameManager : MonoBehaviour
             player1.GetComponent<Player>().PlayerID = p1ID;
             player1.GetComponent<Player>().HasViking = p1HasViking;
             player1.GetComponent<Player>().HasRotationRing = !p2HasRotRing; //Opposite of player2's choice
+            player1.GetComponent<Player>().Position = p1StartPos;
         }
         if (p2ID != null && p2ID != string.Empty && p2StartPos != null)
         {          
             player2.GetComponent<Player>().PlayerID = p2ID;
             player2.GetComponent<Player>().HasViking = !p1HasViking; //opposite of player1's choice
             player2.GetComponent<Player>().HasRotationRing = p2HasRotRing;
+            player2.GetComponent<Player>().Position = p2StartPos;
         }
         SceneManager.LoadScene(sceneBuildIndex: 1, LoadSceneMode.Single); //1 = drakborgen scene //"DrakborgenARScene" //sceneName: "DrakborgenARScene"      
     }
@@ -110,33 +108,5 @@ public class GameManager : MonoBehaviour
         }
     }//Fetch the assets like arcore etc from the new scene so that the gameMgr can use it
 
-    //void SwitchScenes(string sceneName)
-    //{
-    //    if (SceneManager.GetActiveScene().name != sceneName)
-    //    {
-    //        //EditorBuildSettingsScene[] allScenes = SceneManager.GetSceneByBuildIndex(1);
-
-    //        Debug.Log(SceneManager.GetSceneByBuildIndex(1).buildIndex);
-    //        SceneManager.LoadScene(sceneBuildIndex: 1, LoadSceneMode.Single); //So as to actually find a scene with that name rather than just poutting the stringname there
-
-    //        Debug.Log(SceneManager.GetSceneByName(SceneManager.GetActiveScene().name));
-    //    }
-    //}
-
-
-    //void ARRenderer() 
-    //{
-    //    //Check if a planes have been found
-    //    Debug.Log(player1.gameObject);
-    //    if (HasPlanes) //If there are planes init game adn update gameplay
-    //    {
-    //        planeInfoTexT.enabled = false;
-
-    //    }
-    //    else //Find new planes
-    //    {
-    //        planeInfoTexT.enabled = true;
-    //        planeInfoTexT.text = "Searching for planes";
-    //    }
-    //}
+     
 }

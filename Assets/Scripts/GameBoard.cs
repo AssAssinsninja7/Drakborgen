@@ -5,16 +5,12 @@ using GoogleARCore;
 using UnityEngine.Tilemaps;
 
 public class GameBoard : MonoBehaviour
-{
-   
-
+{  
     public Tilemap boardMap;
 
     private int tileSize = 256;
 
     private List<Vector2> startPositions;
-
-    private List<TrackedPlane> newPlanes;
 
     private Player player1, player2;
     //Queue of Rooms
@@ -22,8 +18,6 @@ public class GameBoard : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        newPlanes = new List<TrackedPlane>();
-
         //Add start positions as listitems
         startPositions = new List<Vector2>();
 
