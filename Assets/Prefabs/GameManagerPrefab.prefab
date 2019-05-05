@@ -1,0 +1,65 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &6927770962766439326
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4575504850110694845}
+  - component: {fileID: 656537765327984240}
+  - component: {fileID: 4039764834307136292}
+  m_Layer: 0
+  m_Name: GameManagerPrefab
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4575504850110694845
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6927770962766439326}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 510.23438, y: 290.3203, z: 31.625}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &656537765327984240
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6927770962766439326}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11e75d7f1b95cba4b82d8b69371a781e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  arController: {fileID: 3711436448728302860, guid: 09934e8d64811d94d9a607805417b453,
+    type: 3}
+  playerModel: {fileID: 2856674797117555912, guid: b50dc519c266bb648b4465ef17f3bdaa,
+    type: 3}
+  player1: {fileID: 5631188434663571844, guid: f0b0c308a7b829b4d8677d90e9996514, type: 3}
+  player2: {fileID: 5631188434663571844, guid: f0b0c308a7b829b4d8677d90e9996514, type: 3}
+--- !u!114 &4039764834307136292
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6927770962766439326}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fdf2b8a499c297a43b118dcec367d260, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  boardMap: {fileID: 0}

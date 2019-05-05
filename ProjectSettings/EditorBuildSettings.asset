@@ -6,7 +6,7 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/Selection_Scene.unity
+    path: Assets/Scenes/SelectionScene.unity
     guid: c1a8063ed2a3a90479bd581bb15a520f
   - enabled: 1
     path: Assets/Scenes/DrakborgenARScene.unity

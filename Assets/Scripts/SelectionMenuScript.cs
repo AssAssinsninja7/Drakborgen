@@ -4,23 +4,34 @@ using UnityEngine;
 using UnityEngine.UI;
 
 
+
 public class SelectionMenuScript : MonoBehaviour
 {
     private string player1ID; //I want this as like "A:2" where the letter represents which testsession and the number is the uniqe participant
     private string player2ID; //These will be sent to the gameMgr who needs to spit out the tracked information later
 
-    private bool hasRotationRing; //if they have check their answer as the rot ring answer then this is true vice versa
+    private bool p2HasRotationRing; //if they have check their answer as the rot ring answer then this is true vice versa
 
-    private bool playingVikingCharacter; //if they have choosen the viking character then this will be true and vice versa
+    private bool p1HasViking; //if they have choosen the viking character then this will be true and vice versa
 
     private bool player1Choosing; //Keeps track of whose turn it is.
 
     private bool hasPlayerInformation;
 
-    private Player player1;
-    private Player player2;
+    private bool hasStartingPos;
 
-    private GameManager gameManager;
+    private bool hasP2StartPos; //Temp just so that i can check which one has selected their pos apart from them both having selected
+
+    private bool informationSent; //Check if the information sent to the gameMGr has happend
+
+    private bool hasSet;
+
+    private Vector3 p1ChoosenStartPos = new Vector2();
+    private Vector3 p2ChoosenStartPos = new Vector2();
+
+   
+
+    public GameManager gameManager;
 
     //All the objects loaded in through SerialieField are here below.
     #region LoadedIn
@@ -56,16 +67,29 @@ public class SelectionMenuScript : MonoBehaviour
 
     [SerializeField]
     private Button startButton;
+
+    [SerializeField]
+    private Dropdown p1StartposDropdown; //The chosen startpos for player1 
+
+    [SerializeField]
+    private Dropdown p2StartposDropdown; //The chosen startpos for player2
+
+    [SerializeField]
+    private Camera menuCamera;
+
+    [SerializeField]
+    private Canvas menuCanvas;
+
     #endregion 
 
 
     // Start is called before the first frame update
     void Start()
     {
-        player1 = new Player();
-        player2 = new Player();
+        SetCanvasToScreenSize();
 
         hasPlayerInformation = false;
+        hasStartingPos = false;
 
         player1Choosing = true;
 
@@ -77,13 +101,30 @@ public class SelectionMenuScript : MonoBehaviour
         p1CharacterDropdown.image.enabled = false;
         p2CharacterDropdown.image.enabled = false;
 
+        p1CharacterDropdown.captionText.enabled = false;
+        p2CharacterDropdown.captionText.enabled = false;
+
         p1RingDropdown.image.enabled = false;
         p2RingDropdown.image.enabled = false;
+
+        p1RingDropdown.captionText.enabled = false;
+        p2RingDropdown.captionText.enabled = false;
 
         p1CharImg.enabled = false;
         p2CharImg.enabled = false;
 
         startButton.image.enabled = false;
+
+        p1StartposDropdown.image.enabled = false;
+        p2StartposDropdown.image.enabled = false;
+
+        p1StartposDropdown.captionText.enabled = false;
+        p2StartposDropdown.captionText.enabled = false;
+        
+        //Set keyboardType to the normal keyboard. 
+        p1IDField.keyboardType = TouchScreenKeyboardType.Default; 
+        p2IDField.keyboardType = TouchScreenKeyboardType.Default;
+
 
         if (GameManager.instance == null) //Make sure that the gameMgr has been instantiated
         {
@@ -97,13 +138,63 @@ public class SelectionMenuScript : MonoBehaviour
         CheckMenuInput();
     }
 
+    void SetCanvasToScreenSize()
+    {
+       
+        float screenHeight = Camera.main.orthographicSize * 2f;
+        float screenWidth = screenHeight / Screen.height * Screen.width;
+        float width = screenWidth / menuCamera.rect.width; // spriteRenderer.sprite.bounds.size.x
+        float height = screenHeight / menuCamera.rect.height; //spriteRenderer.sprite.bounds.size.y
+
+        menuCamera.transform.localScale = new Vector3(width, height, 1f);
+    }
+
+    //Set the screen size of the game to that of the "platform" running it
+    void SetScreenSize()
+    {
+        // set the desired aspect ratio (Hardcoded to 16:9)
+        float targetScreenRatio = 16.0f / 9.0f;
+
+        // determine the game window's current aspect ratio
+        float windowaspect = (float)Screen.width / (float)Screen.height;
+
+        // current viewport height should be scaled by this amount
+        float scaleheight = windowaspect / targetScreenRatio;
+
+        // if scaled height is less than current height, add letterbox
+        if (scaleheight < 1.0f)
+        {
+            Rect rect = menuCamera.rect;
+
+            rect.width = 1.0f;
+            rect.height = scaleheight;
+            rect.x = 0;
+            rect.y = (1.0f - scaleheight) / 2.0f;
+
+            menuCamera.rect = rect;
+        }
+        else // add pillarbox
+        {
+            float scalewidth = 1.0f / scaleheight;
+
+            Rect rect = menuCamera.rect;
+
+            rect.width = scalewidth;
+            rect.height = 1.0f;
+            rect.x = (1.0f - scalewidth) / 2.0f;
+            rect.y = 0;
+
+            menuCamera.rect = rect;
+        }
+    }
+
     /// <summary>
     /// This method checks what information has been set and then updates which method is called after pressing 
     /// the continue button by setting the added listner to the new method.
     /// </summary>
-    void CheckMenuInput()
+     void CheckMenuInput()
     {
-        if (!hasPlayerInformation)
+        if (!hasPlayerInformation && !hasStartingPos)
         {
             if (player1ID == null || player2ID == null || player1ID == string.Empty || player2ID == string.Empty) //If any of the players havent enterd their IDs then the continue will still call that method
             {
@@ -113,73 +204,95 @@ public class SelectionMenuScript : MonoBehaviour
             {
                 if (player1Choosing)
                 {
-                    continueButton.onClick.AddListener(GetPlayerCharacter);
-                }
-                else
-                {
-                    continueButton.onClick.AddListener(GetPlayerRings);
-                }
-            }
-
-            if (player1ID != null && player2ID != null && player1ID != string.Empty && player2ID != string.Empty) //Player script object is suppose to be checked noot these temp variables
-            {
-                if (player1Choosing == true)
-                {
                     infoText.text = player1ID + " Choose a character";
                     p1CharacterDropdown.image.enabled = true;
+                    p1CharacterDropdown.captionText.enabled = true;
+
+                    continueButton.onClick.AddListener(GetPlayerCharacter);
                 }
                 else
                 {
                     infoText.text = player2ID + " Choose a magical ring";
                     p2RingDropdown.image.enabled = true;
+                    p2RingDropdown.captionText.enabled = true;
+
+                    continueButton.onClick.AddListener(GetPlayerRings);
                 }
             }
         }
-        else
+        else if (hasPlayerInformation && !hasStartingPos)
         {
-            continueButton.enabled = false;
-            continueButton.image.enabled = false;
-            continueButton.GetComponentInChildren<Text>().text = string.Empty;
-           
-           
+            if (player1Choosing && !hasP2StartPos) //P1 turn and P2 hasn't chosen
+            {
+                infoText.text = player1ID + " choose your starting position.";
 
-            infoText.text = "Setup ready, Start the game";
+                p1StartposDropdown.image.enabled = true;
+                p1StartposDropdown.captionText.enabled = true;
+               
+                continueButton.onClick.AddListener(GetP1StartPos);
+            }
+            else if (!player1Choosing && !hasP2StartPos)//P2 turn and P2 hasn't selected
+            {
+                infoText.text = player2ID + " choose your starting postion.";
+                player1Choosing = false;
 
-            SetPlayerInfo();
+                p2StartposDropdown.image.enabled = true;
+                p2StartposDropdown.captionText.enabled = true;
 
-            startButton.onClick.AddListener(StartGame); //connect the button to the method that starts the game
+                p1StartposDropdown.image.enabled = false; //Deactivate player1 selection option     
+                p1StartposDropdown.captionText.enabled = false;
 
+                continueButton.onClick.AddListener(GetP2StartPos);
+            }
+        }
+        else if (hasPlayerInformation && hasStartingPos)
+        {           
+            if (!hasSet)
+            {
+                continueButton.enabled = false; //disable the continue button
+                continueButton.image.enabled = false;
+                continueButton.GetComponentInChildren<Text>().text = string.Empty;
+
+                p2StartposDropdown.image.enabled = false; //disable player2 startpos dropdown
+                p2StartposDropdown.captionText.enabled = false;
+
+                infoText.text = "Setup ready, Start the game";
+
+                SetPlayerInfo();
+            }
+              
         }
     }
 
     /// <summary>
-    /// Checks if the fields are empty and if they arn't then it will set the playerIDs to 
+    /// Checks if the fields are empty and if they arn't then it will set the PlayerIDs to 
     /// whats in the fields otherwise it will highligt that it's missing and request the users
     /// to re enter the information.
     /// </summary>
     void SetPlayerID()
     {
-        if (p1IDField.text != string.Empty && p1IDField.text != "Enter your ID") //now it can add errything maybe change it so it looks at the string itself
-        {
-            player1ID = p1IDField.text;
-            p1IDField.image.color = Color.white;
-        }
-        else
-        {
-            p1IDField.image.color = Color.red;
-            p1IDField.text = "Enter your ID";
-        }
 
-        if (p2IDField.text != string.Empty && p2IDField.text != "Enter your ID")
-        {
-            player2ID = p2IDField.text;
-            p2IDField.image.color = Color.white;
-        }
-        else
-        {
-            p2IDField.image.color = Color.red;
-            p2IDField.text = "Enter your ID";
-        }
+            if (p1IDField.text != string.Empty && p1IDField.text != "Enter your ID") //now it can add errything maybe change it so it looks at the string itself
+            {
+                player1ID = p1IDField.text;
+                p1IDField.image.color = Color.white;
+            }
+            else
+            {
+                p1IDField.image.color = Color.red;
+                p1IDField.text = "Enter your ID";
+            }
+            
+            if (p2IDField.text != string.Empty && p2IDField.text != "Enter your ID")
+            {
+                player2ID = p2IDField.text;
+                p2IDField.image.color = Color.white;
+            }
+            else
+            {
+                p2IDField.image.color = Color.red;
+                p2IDField.text = "Enter your ID";
+            }      
     }
 
     /// <summary>
@@ -191,22 +304,23 @@ public class SelectionMenuScript : MonoBehaviour
     {
         if (p1CharacterDropdown.captionText.text == "Sven Viking")
         {
-            playingVikingCharacter = true;
-     
+            p1HasViking = true;
+
             //Set image to vikin
         }
         else if (p1CharacterDropdown.captionText.text == "Fransiscus Monk")
         {
-            playingVikingCharacter = false;
+            p1HasViking = false;
             //Set image to monk
         }
 
         p2CharacterDropdown.image.enabled = true;
+        p2CharacterDropdown.captionText.enabled = true;
         p2CharacterDropdown.enabled = false;
 
         p1CharacterDropdown.enabled = false;
 
-        if (playingVikingCharacter)
+        if (p1HasViking)
         {
             p2CharacterDropdown.value = 1;
         }
@@ -222,25 +336,104 @@ public class SelectionMenuScript : MonoBehaviour
     {
         if (p2RingDropdown.captionText.text == "Ring of knowledge")
         {
-            hasRotationRing = true;
+            p2HasRotationRing = true;
             //maybe even have a img for the rings but only if there's time
         }
-        else if(p2RingDropdown.captionText.text == "Ring of faith") 
+        else if (p2RingDropdown.captionText.text == "Ring of faith")
         {
-            hasRotationRing = false;
+            p2HasRotationRing = false;
         }
 
-        p1RingDropdown.image.enabled = true;
-        p1RingDropdown.enabled = false;
+        p1RingDropdown.image.enabled = true; //Show player1 ring result
+        p1RingDropdown.enabled = false; //Disable the interactibility with the dropdownbox for player1
 
-        p2RingDropdown.enabled = false;
+        p2RingDropdown.enabled = false; //Disable the interactibility with the dropdownbox for player2
 
-        if (hasRotationRing) //if p2 selected the rot ring the selected text will be the opposite for the otehr player vice versa, aand only the player selecting can see
+        if (p2HasRotationRing) //if p2 selected the rot ring the selected text will be the opposite for the otehr player vice versa, aand only the player selecting can see
         {
             p1RingDropdown.value = 1;
         }
 
+        p1RingDropdown.captionText.enabled = true;
+        player1Choosing = true;
         hasPlayerInformation = true;
+    }
+
+    /// <summary>
+    /// Get player1 chosen startpos and disable that as an option for player2
+    /// </summary>
+    void GetP1StartPos()
+    {
+        string blockedPosName = p1StartposDropdown.captionText.text; //Player1 chosen starting position (is then blocked as an option for player2)
+
+        if (player1Choosing && !hasP2StartPos)
+        {
+            if (p1StartposDropdown.captionText.text == "Top Left")
+            {
+                p1ChoosenStartPos = new Vector3(0, 0, 0);
+            }
+            else if (blockedPosName == "Top Right")
+            {
+                p1ChoosenStartPos = new Vector3(9, 0, 0);
+            }
+            else if (blockedPosName == "Bottom Left")
+            {
+                p1ChoosenStartPos = new Vector3(0, 0, 6);
+            }
+            else if (blockedPosName == "Bottom Right")
+            {
+                p1ChoosenStartPos = new Vector3(9, 0, 6);
+            }
+
+            List<Dropdown.OptionData> p2startOptionList = p2StartposDropdown.options; //So that we can find which option to remove by text
+            for (int i = 0; i < p2startOptionList.Count; i++)
+            {
+                if (p2startOptionList[i].text.Equals(blockedPosName)) //remove player1 chosen start pos as an option for player2
+                {
+                    p2StartposDropdown.options.RemoveAt(i);
+                }
+            }
+
+            //player1.Position = p1ChoosenStartPos;
+            player1Choosing = false; //player1 turn is now over
+            continueButton.onClick.AddListener(GetP2StartPos);
+        }      
+    }
+
+    /// <summary>
+    /// Get player2 choosen startpos and then continue on to starting the game
+    /// </summary>
+    void GetP2StartPos()
+    {
+        string blockedPosName = p1StartposDropdown.captionText.text; //Player1 chosen starting position (is then blocked as an option for player2)      
+    
+        if (!player1Choosing && !hasP2StartPos) //So long as they don't have the same start pos
+        {
+            if (p2StartposDropdown.captionText.text == "Top Left")
+            {
+                p2ChoosenStartPos = new Vector3(0, 0, 0); 
+            }
+            else if (p2StartposDropdown.captionText.text == "Top Right")
+            {
+                p2ChoosenStartPos = new Vector3(9, 0, 0); 
+            }
+            else if (p2StartposDropdown.captionText.text == "Bottom Left")
+            {
+                p2ChoosenStartPos = new Vector3(0, 0, 6);
+            }
+            else if (p2StartposDropdown.captionText.text == "Bottom Right")
+            {
+                p2ChoosenStartPos = new Vector3(9, 0, 6);
+            }
+
+            //player2.Position = p2ChoosenStartPos;
+            hasP2StartPos = true;
+        }
+
+        if (p1ChoosenStartPos != p2ChoosenStartPos && hasP2StartPos) //So long as they haven't selected the same 
+        {
+            hasStartingPos = true;
+        }
     }
 
     /// <summary>
@@ -248,21 +441,28 @@ public class SelectionMenuScript : MonoBehaviour
     /// </summary>
     void SetPlayerInfo()
     {
-        player1.playerID = player1ID;
-        player1.hasViking = playingVikingCharacter;
+        //player1.PlayerID = player1ID;
+        //player1.HasViking = p1HasViking;
 
-        player2.playerID = player2ID;
-        player2.hasRotationRing = hasRotationRing;
+        //player2.PlayerID = player2ID;
+        //player2.p2HasRotationRing = p2HasRotationRing;
 
-        player1.hasRotationRing = !player2.hasRotationRing;
-        player2.hasViking = !player1.hasViking;
+        //player1.p2HasRotationRing = !player2.p2HasRotationRing;
+        //player2.HasViking = !player1.HasViking;
 
         startButton.image.enabled = true;
+        startButton.onClick.AddListener(StartGame); //connect the button to the method that starts the game
+
+        hasSet = true;
     }
 
     void StartGame()
     {
         //send both players information to the game mgr, unload the scene, deaactivate the selection camera and activate the *ARcamera. 
-        gameManager.InitGame(player1, player2);       
+        //if (!informationSent)
+        //{
+            gameManager.SetPlayerInformation(player1ID, player2ID, p1HasViking, p2HasRotationRing, p1ChoosenStartPos, p2ChoosenStartPos); //The players arn't instansiated as gameobject but this will be fixed once they get their prefabs/ become full objects 
+            informationSent = true;
+        //}
     }
 }
