@@ -71,7 +71,14 @@ public class GameManager : MonoBehaviour
             }
             else //Start gameLogic take hit pos from ARcontroller and move players here
             {
+                if (p1Turn)
+                {
+                    //Check which room they are stanging in and present their options
+                }
+                else
+                {
 
+                }
             }         
         }
     }

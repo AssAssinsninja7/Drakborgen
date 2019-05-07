@@ -10,7 +10,8 @@ public class RoomScript : MonoBehaviour
     public enum RoomType { EventRoom, CorridorRoom, RotationRoom }
     // public so we can set in editor 
     public RoomType myRoomType;
-    int myRoomRotation = 0;
+
+    private int myRoomRotation = 0;
     //                                   e1,     e2,   e3,     e4      public so we can set in editor 
     public bool[] myExitDirections = { false, false, false, false };
 
@@ -27,6 +28,7 @@ public class RoomScript : MonoBehaviour
         }
         myRoomRotation = aRoomRotation;
     }
+
     public bool[] GetExitDirections()
     {
         if (myRoomRotation > 0)
@@ -58,9 +60,9 @@ public class RoomScript : MonoBehaviour
                 return returnValue;
             }
         }
-
         return myExitDirections;
     }
+
     public RoomType GetRoomType()
     {
         return myRoomType;
