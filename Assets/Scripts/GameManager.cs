@@ -74,6 +74,7 @@ public class GameManager : MonoBehaviour
                 if (p1Turn)
                 {
                     //Check which room they are stanging in and present their options
+
                 }
                 else
                 {
@@ -109,11 +110,28 @@ public class GameManager : MonoBehaviour
             gameInitialized = true;
             arController = GameObject.Find("ARController").GetComponent<ARControllScript>();
             gameBoard = GameObject.FindGameObjectWithTag("GameBoard").GetComponent<GameBoard>();
-            planeInfoTexT = GameObject.Find("PlaneStatusCanvas").GetComponentInChildren<Text>();//Check to see if it finds the right text asset in the scene
+            //planeInfoTexT = GameObject.Find("PlaneStatusCanvas").GetComponentInChildren<Text>();//Check to see if it finds the right text asset in the scene
 
             gameBoard.InitGameBoard(player1.GetComponent<Player>(), player2.GetComponent<Player>()); //Might want to send in the entire gameobj
         }
     }//Fetch the assets like arcore etc from the new scene so that the gameMgr can use it
 
-     
+     void CheckPlayerInput()
+    {
+        Ray hitRay = Camera.main.ScreenPointToRay(Input.GetTouch(0).position);
+        RaycastHit hit;
+
+        if (Physics.Raycast(hitRay, out hit))
+        {
+            Debug.Log(hit.transform.name);
+
+            if (hit.transform.name == "GameBoard")
+            {
+                //check cell closest to the hitposition
+                //gameBoard.A
+            }
+
+        }
+
+    }
 }

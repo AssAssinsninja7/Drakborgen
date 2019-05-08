@@ -77,7 +77,7 @@ public class ARControllScript : MonoBehaviour
         TrackableHit hit;
         TrackableHitFlags raycastFilter = TrackableHitFlags.PlaneWithinPolygon | TrackableHitFlags.FeaturePointWithSurfaceNormal;     
 
-        if (Frame.Raycast(touch.position.x, touch.position.y, raycastFilter, out hit))
+        if (Frame.Raycast(touch.position.x, touch.position.y, raycastFilter, out hit) || Input.GetMouseButtonDown(0))
         {
             currentHit = hit;
             if (boardObject == null) //Create only one board
