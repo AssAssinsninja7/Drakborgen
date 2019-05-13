@@ -131,7 +131,7 @@ PrefabInstance:
     - target: {fileID: 8430204446716291138, guid: 8cf7c33d74f1f6d4f88f0114268137a1,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8430204446716291138, guid: 8cf7c33d74f1f6d4f88f0114268137a1,
         type: 3}
@@ -178,8 +178,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 765973788, guid: 8cf7c33d74f1f6d4f88f0114268137a1, type: 3}
+      propertyPath: tileMap
+      value: 
+      objectReference: {fileID: 1271289922}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8cf7c33d74f1f6d4f88f0114268137a1, type: 3}
+--- !u!1839735485 &1271289922 stripped
+Tilemap:
+  m_CorrespondingSourceObject: {fileID: 5993729081556215615, guid: 8cf7c33d74f1f6d4f88f0114268137a1,
+    type: 3}
+  m_PrefabInstance: {fileID: 311499381}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1706273557
 GameObject:
   m_ObjectHideFlags: 0
