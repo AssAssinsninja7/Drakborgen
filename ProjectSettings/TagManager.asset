@@ -6,6 +6,7 @@ TagManager:
   tags:
   - GameBoard
   - PlaneStatusInfoText
+  - EmptyTile
   layers:
   - Default
   - TransparentFX

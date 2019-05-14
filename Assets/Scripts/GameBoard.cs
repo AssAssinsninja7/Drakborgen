@@ -5,8 +5,8 @@ using GoogleARCore;
 using UnityEngine.Tilemaps;
 
 public class GameBoard : MonoBehaviour
-{  
-    public GameObject[,] boardMap = new GameObject[10,7];
+{
+    public GameObject[,] boardMap = new GameObject[10, 7];
 
     private int tileSize = 256;
 
@@ -91,9 +91,13 @@ public class GameBoard : MonoBehaviour
 
     //TestVariables
     private bool isInit;
+    private Queue<Vector3> tileMapPositions = new Queue<Vector3>();
 
     [SerializeField]
     public Tilemap tileMap;
+
+    [SerializeField]
+    private GameObject emptyTilePrefab;
 
     // Start is called before the first frame update
     void Start()
@@ -110,6 +114,8 @@ public class GameBoard : MonoBehaviour
 
         //TestVariable set
         isInit = false;
+
+
     }
 
     // Update is called once per frame
@@ -121,7 +127,20 @@ public class GameBoard : MonoBehaviour
             isInit = true;
         }
 
+        if (Input.GetMouseButtonDown(0))
+        {
+            RaycastHit hit;
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
+            if (Physics.Raycast(ray, out hit, Mathf.Infinity))
+            {
+                if (hit.collider.tag == "EmptyTile")
+                {
+                    Debug.Log("Tile was hit");
+                }
+            }
+
+        }
     }
 
     public void InitGameBoard(Player player1, Player player2) //take in startpos
@@ -151,6 +170,7 @@ public class GameBoard : MonoBehaviour
     private void InitTestBoard()
     {
         //InitializeRoomTiles();
+        InitBoardTiles();
         CreateBoardGraph();
         LoadRoomStack();
         ShuffleStack();
@@ -181,45 +201,58 @@ public class GameBoard : MonoBehaviour
     {
         List<Vector3> avaliableRooms = new List<Vector3>();
 
-        for (int i = 0; i < 7; i++) // 7 = maxlength in y-axel on board
+        for (int i = 0; i < boardMap.GetLength(1); i++) // 7 = maxlength in y-axel on board
         {
-            for (int j = 0; j < 10; j++) // 10 = maxlength in x-axel on board
+            for (int j = 0; j < boardMap.GetLength(0); j++) // 10 = maxlength in x-axel on board
             {
-        
+                if (boardMap[j,i].transform.position == hitPos)
+                {
+                    Debug.Log("A tile was hit");
+                }
 
-                if (boardMap[j,i].gameObject == null) //if there's no tile
+                if (boardMap[j, i].gameObject.tag == "Untagged") //if there's no tile
                 {
                     //and the tile is next to the player
                     if (player1.Position.x == j && player1.Position.y == i)
                     {
                         //highlight the tile
                     }
-                   
+
                 }
-                else
-                {
-                  
-                }
+                //else
+                //{
+
+                //}
             }
         }
     }
 
     /// <summary>
-    /// Set the boardMap tiles positions to that of the gameboard
+    /// Set the boardMap tiles positions to that of the gameboards tileMap 
     /// </summary>
     void CreateBoardGraph()
     {
-        for (int y = tileMap.cellBounds.yMin; y < tileMap.cellBounds.yMax; y++)
+        /*The offset is needed because the cellToWorld gets the center pos
+         of the tile in the tilemap */
+        Grid grid = GetComponentInChildren<Grid>();
+        float offSet = grid.cellSize.x / 2;
+
+        for (int y = tileMap.cellBounds.yMin; y < tileMap.cellBounds.yMax; y++) //yMax
         {
-            for (int x = tileMap.cellBounds.xMin; x < tileMap.cellBounds.xMax; x++)
+            for (int x = tileMap.cellBounds.xMin; x < tileMap.cellBounds.xMax; x++) //xMax
             {
-                //boardMap[x, y].transform.position = new Vector3(transform.GetComponentInChildren<Tilemap>().transform.position.x * tileSize, 0, 
-                //    transform.GetComponentInChildren<Tilemap>().transform.position.z * tileSize); //Maybe switch this to the y-pos
-                //Vector3 localPos =
-                //boardMap[x, y].transform.position = tileMap.Cel
-                Debug.Log(boardMap[x,y].transform.position.ToString());
+                Vector3Int localPos = (new Vector3Int(x, y, 0));
+
+                if (tileMap.HasTile(localPos))
+                {
+                    Vector3 tileCenterPos = tileMap.CellToWorld(localPos);
+                    tileCenterPos.x += offSet;
+                    tileCenterPos.y += offSet;
+                    tileMapPositions.Enqueue(tileCenterPos);
+                }
             }
         }
+        SetBoardTilePositions();
     }
 
     /// <summary>
@@ -292,7 +325,7 @@ public class GameBoard : MonoBehaviour
         //TurnRoom
         roomStack.Enqueue(Instantiate(e1TurnRoom));
         //e1TurnRoom.SetActive(false);
-}
+    }
 
     /// <summary>
     /// Add in every roomType to the roomStack  
@@ -383,6 +416,27 @@ public class GameBoard : MonoBehaviour
         roomStack.Enqueue(Instantiate(e124Corridor));
         //1st 3e exits on e1, e3, e4
         roomStack.Enqueue(Instantiate(e134Corridor));
+    }
+
+    void InitBoardTiles()
+    {
+        for (int y = 0; y < boardMap.GetLength(1); y++) // 7 = maxlength in y-axel on board
+        {
+            for (int x = 0; x < boardMap.GetLength(0); x++) // 10 = maxlength in x-axel on board
+            {
+                boardMap[x, y] = Instantiate(emptyTilePrefab);
+            }
+        }
+    }
+    void SetBoardTilePositions()
+    {
+        for (int y = 0; y < boardMap.GetLength(1); y++)
+        {
+            for (int x = 0; x < boardMap.GetLength(0); x++)
+            {
+                boardMap[x, y].transform.SetPositionAndRotation(tileMapPositions.Dequeue(), (new Quaternion(0, 0, 0, 0)));
+            }
+        }
     }
 
     /// <summary>
