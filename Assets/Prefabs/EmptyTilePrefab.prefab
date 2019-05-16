@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 241794367364943680}
   - component: {fileID: 5647371138205849594}
-  - component: {fileID: 9003121123498233890}
   - component: {fileID: 4821052767763260085}
   m_Layer: 0
   m_Name: EmptyTilePrefab
@@ -50,7 +49,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 10302, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -70,14 +69,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!33 &9003121123498233890
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 241794367364943682}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!65 &4821052767763260085
 BoxCollider:
   m_ObjectHideFlags: 0

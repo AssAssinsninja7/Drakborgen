@@ -92,6 +92,9 @@ public class GameBoard : MonoBehaviour
     //TestVariables
     private bool isInit;
     private Queue<Vector3> tileMapPositions = new Queue<Vector3>();
+    private Vector3 tileCellScale;
+
+    Grid grid;
 
     [SerializeField]
     public Tilemap tileMap;
@@ -115,7 +118,7 @@ public class GameBoard : MonoBehaviour
         //TestVariable set
         isInit = false;
 
-
+        grid = GetComponentInChildren<Grid>();
     }
 
     // Update is called once per frame
@@ -136,7 +139,7 @@ public class GameBoard : MonoBehaviour
             {
                 if (hit.collider.tag == "EmptyTile")
                 {
-                    Debug.Log("Tile was hit");
+                    RevealRoom(hit.transform.position);                   
                 }
             }
 
@@ -189,7 +192,7 @@ public class GameBoard : MonoBehaviour
 
         result += transform.position;
 
-        AvailableRooms(result);
+        //AvailableRooms(result);
     }
 
 
@@ -197,32 +200,15 @@ public class GameBoard : MonoBehaviour
     /// Check if the pressed area contains an available room
     /// </summary>
     /// <param name="hitPos"></param>
-    public void AvailableRooms(Vector3 hitPos) //this is not going to be void later
+    public void AvailableRooms(Vector3 playerPos) //this is not going to be void later
     {
         List<Vector3> avaliableRooms = new List<Vector3>();
 
-        for (int i = 0; i < boardMap.GetLength(1); i++) // 7 = maxlength in y-axel on board
+        for (int y = 0; y < boardMap.GetLength(1); y++) // 7 = maxlength in y-axel on board
         {
-            for (int j = 0; j < boardMap.GetLength(0); j++) // 10 = maxlength in x-axel on board
+            for (int x = 0; x < boardMap.GetLength(0); x++) // 10 = maxlength in x-axel on board
             {
-                if (boardMap[j,i].transform.position == hitPos)
-                {
-                    Debug.Log("A tile was hit");
-                }
-
-                if (boardMap[j, i].gameObject.tag == "Untagged") //if there's no tile
-                {
-                    //and the tile is next to the player
-                    if (player1.Position.x == j && player1.Position.y == i)
-                    {
-                        //highlight the tile
-                    }
-
-                }
-                //else
-                //{
-
-                //}
+               
             }
         }
     }
@@ -234,7 +220,7 @@ public class GameBoard : MonoBehaviour
     {
         /*The offset is needed because the cellToWorld gets the center pos
          of the tile in the tilemap */
-        Grid grid = GetComponentInChildren<Grid>();
+    
         float offSet = grid.cellSize.x / 2;
 
         for (int y = tileMap.cellBounds.yMin; y < tileMap.cellBounds.yMax; y++) //yMax
@@ -252,6 +238,8 @@ public class GameBoard : MonoBehaviour
                 }
             }
         }
+        tileCellScale = tileMap.cellBounds.size; //So that we can reduce the roomTiles size (scale it after the cell size)
+       
         SetBoardTilePositions();
     }
 
@@ -428,13 +416,18 @@ public class GameBoard : MonoBehaviour
             }
         }
     }
+
+    /// <summary>
+    /// Sets the final position for all the empty rooms so that they are in 
+    /// relation the the gameboards tilegrid
+    /// </summary>
     void SetBoardTilePositions()
     {
         for (int y = 0; y < boardMap.GetLength(1); y++)
         {
             for (int x = 0; x < boardMap.GetLength(0); x++)
             {
-                boardMap[x, y].transform.SetPositionAndRotation(tileMapPositions.Dequeue(), (new Quaternion(0, 0, 0, 0)));
+                boardMap[x, y].transform.SetPositionAndRotation(tileMapPositions.Dequeue(), transform.rotation); //the quaternion should be based on the boards rotation
             }
         }
     }
@@ -454,10 +447,36 @@ public class GameBoard : MonoBehaviour
     }
 
     //Have a method return the roomType maybe tag or something to the gameboard
-    public void RevealRoom()//take in the pos maybe?
+    public void RevealRoom(Vector3 hitPos)//take in the pos maybe?
     {
         //roomStack.Dequeue(); //get the next room and place it 
         //move player to the next room 
         //return event to gameMgr
+
+        for (int y = 0; y < boardMap.GetLength(1); y++)
+        {
+            for (int x = 0; x < boardMap.GetLength(0); x++)
+            {
+                if (boardMap[x, y].transform.position == hitPos)
+                {
+                    Debug.Log("A tile was hit" + boardMap[x, y].transform.position);
+
+                    if (boardMap[x, y].gameObject.tag == "EmptyTile") //if there's no tile
+                    {
+                        GameObject nextRoom = roomStack.Dequeue();
+                        nextRoom.transform.SetPositionAndRotation(boardMap[x, y].transform.position, boardMap[x, y].transform.rotation);
+                        boardMap[x, y] = nextRoom;
+                        
+                        Debug.Log(boardMap[x,y].transform.localScale);
+                        Vector3 scale = boardMap[x, y].transform.localScale;
+                        scale.Set(0.34f, 1.0f, 0.34f);
+                        boardMap[x, y].transform.localScale = boardMap[x,y].transform.InverseTransformDirection(scale);
+
+                        boardMap[x, y].SetActive(true);
+                        Debug.Log(boardMap[x, y].transform.tag);
+                    }
+                }
+            }
+        }
     }
 }

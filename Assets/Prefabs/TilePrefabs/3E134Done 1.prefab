@@ -15,11 +15,11 @@ GameObject:
   - component: {fileID: 5054825081517929267}
   m_Layer: 0
   m_Name: 3E134Done 1
-  m_TagString: Untagged
+  m_TagString: Room
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &3128415421927291720
 Transform:
   m_ObjectHideFlags: 0
@@ -29,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 4322529399314241452}
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0, y: -0.0048346194, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.34, y: 1, z: 0.34}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0

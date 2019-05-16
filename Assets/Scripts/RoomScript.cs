@@ -17,7 +17,7 @@ public class RoomScript : MonoBehaviour
 
     void Start()
     {
-
+        
     }
 
     void Init(int aRoomRotation)
