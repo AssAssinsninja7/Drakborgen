@@ -15,9 +15,12 @@ public class RoomScript : MonoBehaviour
     //                                   e1,     e2,   e3,     e4      public so we can set in editor 
     public bool[] myExitDirections = { false, false, false, false };
 
+    private Animator animator;
+
     void Start()
     {
-        
+        animator = GetComponent<Animator>(); 
+        animator.enabled = false; //Disable animation controller since it fucks up the tiles scale
     }
 
     void Init(int aRoomRotation)
@@ -71,5 +74,10 @@ public class RoomScript : MonoBehaviour
     public int getRotation()
     {
         return myRoomRotation;
+    }
+
+    public void DoAnimation()
+    {
+        animator.enabled = true; //Come back and activate the animation when they are placed
     }
 }

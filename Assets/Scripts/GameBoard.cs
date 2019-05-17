@@ -321,89 +321,89 @@ public class GameBoard : MonoBehaviour
     void LoadRoomStack()
     {
         //4st 4e no restriciton
-        roomStack.Enqueue(Instantiate(e1234nPnD));
-        roomStack.Enqueue(Instantiate(e1234nPnD));
-        roomStack.Enqueue(Instantiate(e1234nPnD));
-        roomStack.Enqueue(Instantiate(e1234nPnD));
+        roomStack.Enqueue(e1234nPnD);
+        roomStack.Enqueue(e1234nPnD);
+        roomStack.Enqueue(e1234nPnD);
+        roomStack.Enqueue(e1234nPnD);
         //2st 4e with door on e3
-        roomStack.Enqueue(Instantiate(e134nPwD3));
-        roomStack.Enqueue(Instantiate(e134nPwD3));
+        roomStack.Enqueue(e134nPwD3);
+        roomStack.Enqueue(e134nPwD3);
         //1st 4e with portcullis
-        roomStack.Enqueue(Instantiate(e1234wPnD));
+        roomStack.Enqueue(e1234wPnD);
         //1st 4e with doors on e1, e2 & e3
-        roomStack.Enqueue(Instantiate(e1234nPwD234));
+        roomStack.Enqueue(e1234nPwD234);
 
         //4st 3e with exits on e1, e2 & e3
-        roomStack.Enqueue(Instantiate(e134nPnD));
-        roomStack.Enqueue(Instantiate(e134nPnD));
-        roomStack.Enqueue(Instantiate(e134nPnD));
-        roomStack.Enqueue(Instantiate(e134nPnD));
+        roomStack.Enqueue(e134nPnD);
+        roomStack.Enqueue(e134nPnD);
+        roomStack.Enqueue(e134nPnD);
+        roomStack.Enqueue(e134nPnD);
         //1st 3e with door on e3
-        roomStack.Enqueue(Instantiate(e134nPwD3));
+        roomStack.Enqueue(e134nPwD3);
 
         //4st 3e with exits on e1, e2 & e3
         //Doesn't exist yet
         //1st 3e with door on e3
-        roomStack.Enqueue(Instantiate(e123nPwD3));
+        roomStack.Enqueue(e123nPwD3);
 
         //4st 3e exits on e1, e2 & e4
-        roomStack.Enqueue(Instantiate(e124nPnD));
-        roomStack.Enqueue(Instantiate(e124nPnD));
-        roomStack.Enqueue(Instantiate(e124nPnD));
-        roomStack.Enqueue(Instantiate(e124nPnD));
+        roomStack.Enqueue(e124nPnD);
+        roomStack.Enqueue(e124nPnD);
+        roomStack.Enqueue(e124nPnD);
+        roomStack.Enqueue(e124nPnD);
         //1st 2e with portcullis 
-        roomStack.Enqueue(Instantiate(e124wPnD));
+        roomStack.Enqueue(e124wPnD);
 
         //2st 2e exits on e1 & e2 (left turn)
-        roomStack.Enqueue(Instantiate(e12nPnD));
-        roomStack.Enqueue(Instantiate(e12nPnD));
+        roomStack.Enqueue(e12nPnD);
+        roomStack.Enqueue(e12nPnD);
         //1st 2e with portcullis
-        roomStack.Enqueue(Instantiate(e12wPnD));
+        roomStack.Enqueue(e12wPnD);
 
         //2st 2e exits on e1 and e4 (right turn)
-        roomStack.Enqueue(Instantiate(e14nPnD));
-        roomStack.Enqueue(Instantiate(e14nPnD));
+        roomStack.Enqueue(e14nPnD);
+        roomStack.Enqueue(e14nPnD);
         //1st 2e with portcullis
-        roomStack.Enqueue(Instantiate(e14wPnD));
+        roomStack.Enqueue(e14wPnD);
 
         //6st 2e exits on e1 and e3 (straight forward)
-        roomStack.Enqueue(Instantiate(e13nPnD));
-        roomStack.Enqueue(Instantiate(e13nPnD));
-        roomStack.Enqueue(Instantiate(e13nPnD));
-        roomStack.Enqueue(Instantiate(e13nPnD));
-        roomStack.Enqueue(Instantiate(e13nPnD));
-        roomStack.Enqueue(Instantiate(e13nPnD));
+        roomStack.Enqueue(e13nPnD);
+        roomStack.Enqueue(e13nPnD);
+        roomStack.Enqueue(e13nPnD);
+        roomStack.Enqueue(e13nPnD);
+        roomStack.Enqueue(e13nPnD);
+        roomStack.Enqueue(e13nPnD);
         //1st 2e with portcullis 
-        roomStack.Enqueue(Instantiate(e13wPnD));
+        roomStack.Enqueue(e13wPnD);
         //1st 2e with portcullis and door on e3
-        roomStack.Enqueue(Instantiate(e13wPwD3));
+        roomStack.Enqueue(e13wPwD3);
 
         //2st 1e (Deadend)
-        roomStack.Enqueue(Instantiate(e1nPnD));
-        roomStack.Enqueue(Instantiate(e1nPnD));
+        roomStack.Enqueue(e1nPnD);
+        roomStack.Enqueue(e1nPnD);
         //1st 1e with portcullis
-        roomStack.Enqueue(Instantiate(e1wPnD));
+        roomStack.Enqueue(e1wPnD);
 
         //3st turnRooms
-        roomStack.Enqueue(Instantiate(e1TurnRoom));
-        roomStack.Enqueue(Instantiate(e1TurnRoom));
-        roomStack.Enqueue(Instantiate(e1TurnRoom));
+        roomStack.Enqueue(e1TurnRoom);
+        roomStack.Enqueue(e1TurnRoom);
+        roomStack.Enqueue(e1TurnRoom);
 
         //1st 4e Corridor
-        roomStack.Enqueue(Instantiate(e1234Corridor));
+        roomStack.Enqueue(e1234Corridor);
         //1st 2e exits on e1 & e2, Corridor (left turn)
-        roomStack.Enqueue(Instantiate(e12Corridor));
+        roomStack.Enqueue(e12Corridor);
         //1st 2e exits on e1, & e4, Corridor (right turn)
-        roomStack.Enqueue(Instantiate(e14Corridor));
+        roomStack.Enqueue(e14Corridor);
         //1st 2e exits on e1 & e3, Corridor (straight forward
-        roomStack.Enqueue(Instantiate(e13Corridor));
+        roomStack.Enqueue(e13Corridor);
 
         //1st 3e exits on e1, e2, & e3. Corridor
-        roomStack.Enqueue(Instantiate(e123Corridor));
+        roomStack.Enqueue(e123Corridor);
         //1st 3e exits on e1, e2 & e4. Corridor
-        roomStack.Enqueue(Instantiate(e124Corridor));
+        roomStack.Enqueue(e124Corridor);
         //1st 3e exits on e1, e3, e4
-        roomStack.Enqueue(Instantiate(e134Corridor));
+        roomStack.Enqueue(e134Corridor);
     }
 
     void InitBoardTiles()
@@ -463,17 +463,12 @@ public class GameBoard : MonoBehaviour
 
                     if (boardMap[x, y].gameObject.tag == "EmptyTile") //if there's no tile
                     {
-                        GameObject nextRoom = roomStack.Dequeue();
-                        nextRoom.transform.SetPositionAndRotation(boardMap[x, y].transform.position, boardMap[x, y].transform.rotation);
-                        boardMap[x, y] = nextRoom;
-                        
-                        Debug.Log(boardMap[x,y].transform.localScale);
-                        Vector3 scale = boardMap[x, y].transform.localScale;
-                        scale.Set(0.34f, 1.0f, 0.34f);
-                        boardMap[x, y].transform.localScale = boardMap[x,y].transform.InverseTransformDirection(scale);
+                        Vector3 boardTilePos = boardMap[x, y].transform.position;
+                        Quaternion boardTileRotation = new Quaternion(90, 0, 0, 0); //dont have this hardcoded later
 
-                        boardMap[x, y].SetActive(true);
-                        Debug.Log(boardMap[x, y].transform.tag);
+                        boardMap[x, y] = Instantiate(roomStack.Dequeue());
+                        boardMap[x, y].transform.SetPositionAndRotation(boardTilePos, boardTileRotation);
+                        boardMap[x, y].SetActive(true);                     
                     }
                 }
             }
