@@ -84,6 +84,15 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Sets the playerinformation sent in from the selectionmenu
+    /// </summary>
+    /// <param name="p1ID">player1s enterd ID</param>
+    /// <param name="p2ID">player2s enterd ID</param>
+    /// <param name="p1HasViking">Does player1 have vikin character?</param>
+    /// <param name="p2HasRotRing">Does player2 have the rotationring?</param>
+    /// <param name="p1StartPos">player1s starting position</param>
+    /// <param name="p2StartPos">player2s strarting position</param>
     public void SetPlayerInformation(string p1ID, string p2ID, bool p1HasViking, bool p2HasRotRing, Vector3 p1StartPos, Vector3 p2StartPos)
     {
         if (p1ID != null && p1ID != string.Empty && p1StartPos != null)
@@ -103,6 +112,10 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene(sceneBuildIndex: 1, LoadSceneMode.Single); //1 = drakborgen scene //"DrakborgenARScene" //sceneName: "DrakborgenARScene"      
     }
 
+    /// <summary>
+    /// Initialize the game by setting the refrenses and calling the 
+    /// gameBoards initialize
+    /// </summary>
     void InitGame()
     {
         if (player1 != null && player2 != null) //Make sure they aint null and load next scene
@@ -110,12 +123,15 @@ public class GameManager : MonoBehaviour
             gameInitialized = true;
             arController = GameObject.Find("ARController").GetComponent<ARControllScript>();
             gameBoard = GameObject.FindGameObjectWithTag("GameBoard").GetComponent<GameBoard>();
-            //planeInfoTexT = GameObject.Find("PlaneStatusCanvas").GetComponentInChildren<Text>();//Check to see if it finds the right text asset in the scene
 
             gameBoard.InitGameBoard(player1.GetComponent<Player>(), player2.GetComponent<Player>()); //Might want to send in the entire gameobj
         }
     }//Fetch the assets like arcore etc from the new scene so that the gameMgr can use it
 
+    /// <summary>
+    /// Check the players input on screen and then if they hit the board call the method that checks where on the 
+    /// board it was hit in ARController
+    /// </summary>
      void CheckPlayerInput()
     {
         Ray hitRay = Camera.main.ScreenPointToRay(Input.GetTouch(0).position);

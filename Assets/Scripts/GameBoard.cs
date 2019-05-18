@@ -124,38 +124,37 @@ public class GameBoard : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (isInit == false)
-        {
-            InitTestBoard();
-            isInit = true;
-        }
+        //if (isInit == false)
+        //{
+        //    InitTestBoard();
+        //    isInit = true;
+        //}
 
-        if (Input.GetMouseButtonDown(0))
-        {
-            RaycastHit hit;
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        //if (Input.GetMouseButtonDown(0) || Input.touchCount > 0) //maybe 
+        //{
+        //    RaycastHit hit;
+        //    Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-            if (Physics.Raycast(ray, out hit, Mathf.Infinity))
-            {
-                if (hit.collider.tag == "EmptyTile")
-                {
-                    RevealRoom(hit.transform.position);                   
-                }
-            }
-
-        }
+        //    if (Physics.Raycast(ray, out hit, Mathf.Infinity))
+        //    {
+        //        if (hit.collider.tag == "EmptyTile")
+        //        {
+        //            RevealRoom(hit.transform.position);
+        //        }
+        //    }
+        //}
     }
 
     public void InitGameBoard(Player player1, Player player2) //take in startpos
     {
-        this.player1 = player1;
+        this.player1 = player1; //this only holds a ref to the player sent in, maybe instanciate a new one and return the ref to gamemgr
         this.player2 = player2;
 
         InitializeRoomTiles();
         LoadRoomStack();
         ShuffleStack();
 
-        //CreateBoardGraph();
+        CreateBoardGraph();
         player1.transform.position = transform.GetComponentInChildren<Tilemap>().LocalToCellInterpolated(player1.Position);
         //boardMap[(int)player1.Position.x, (int)player1.Position.y].transform.position;
         player2.transform.position = transform.GetComponentInChildren<Tilemap>().LocalToCellInterpolated(player2.Position);
@@ -163,14 +162,9 @@ public class GameBoard : MonoBehaviour
 
         //Instantiate(player1, boardMap[(int)player1.Position.x, (int)player1.Position.y].transform);
         //Instantiate(player2, boardMap[(int)player2.Position.x, (int)player2.Position.y].transform);
-
-        //Debug.Log(player1.gameObject.transform.ToString());
-        //Debug.Log(player2.gameObject.transform.ToString());
-        //init rooms and roomstack
-        //set startpos
     }
 
-    private void InitTestBoard()
+    private void InitTestBoard() //For the testScene
     {
         //InitializeRoomTiles();
         InitBoardTiles();
@@ -178,7 +172,6 @@ public class GameBoard : MonoBehaviour
         LoadRoomStack();
         ShuffleStack();
     }
-
 
     public void GetNearestPointOnBoard(Vector3 hitPosition) //Select a tile
     {
@@ -194,7 +187,6 @@ public class GameBoard : MonoBehaviour
 
         //AvailableRooms(result);
     }
-
 
     /// <summary>
     /// Check if the pressed area contains an available room
@@ -404,6 +396,11 @@ public class GameBoard : MonoBehaviour
         roomStack.Enqueue(e124Corridor);
         //1st 3e exits on e1, e3, e4
         roomStack.Enqueue(e134Corridor);
+
+        foreach (GameObject room in roomStack)
+        {
+            room.transform.position = new Vector3(-3500f, 0.0f, 0.0f);
+        }
     }
 
     void InitBoardTiles()
@@ -464,6 +461,8 @@ public class GameBoard : MonoBehaviour
                     if (boardMap[x, y].gameObject.tag == "EmptyTile") //if there's no tile
                     {
                         Vector3 boardTilePos = boardMap[x, y].transform.position;
+                        boardTilePos.y = 1.0f; //Due to their rotations being different this is needed for 
+                        boardTilePos.z += 0.5f; //adjusting their positions correctly
                         Quaternion boardTileRotation = new Quaternion(90, 0, 0, 0); //dont have this hardcoded later
 
                         boardMap[x, y] = Instantiate(roomStack.Dequeue());

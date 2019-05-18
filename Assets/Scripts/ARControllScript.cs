@@ -75,7 +75,7 @@ public class ARControllScript : MonoBehaviour
 
         // Raycast against the location the player touched to search for planes.
         TrackableHit hit;
-        TrackableHitFlags raycastFilter = TrackableHitFlags.PlaneWithinPolygon | TrackableHitFlags.FeaturePointWithSurfaceNormal;     
+        TrackableHitFlags raycastFilter = TrackableHitFlags.PlaneWithinPolygon | TrackableHitFlags.FeaturePointWithSurfaceNormal;
 
         if (Frame.Raycast(touch.position.x, touch.position.y, raycastFilter, out hit) || Input.GetMouseButtonDown(0))
         {
@@ -94,9 +94,15 @@ public class ARControllScript : MonoBehaviour
             }
             else //Check where the user pressed () send info to gamemgr 
             {
-
-            }          
+                //maybe have checking the board here and returning the result?
+            }
         }
+
+    }
+
+    public void SetBoardPlacement(Touch touch)
+    {
+       //Move the init of the board here later 
     }
 
     /// <summary>
