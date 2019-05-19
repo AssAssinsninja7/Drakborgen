@@ -56,32 +56,34 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (instance != this)
-        {
-            Destroy(gameBoard);
-        }
+        //if (instance != this)
+        //{
+        //    Destroy(gameBoard);
+        //}
 
         currentSceneName = SceneManager.GetActiveScene().name;
 
+
+
         if (currentSceneName == "DrakborgenARScene")
         {
-            if (!gameInitialized) //IF game hasn't been initialized
-            {
-                InitGame(); //initialize it
-            }
-            else //Start gameLogic take hit pos from ARcontroller and move players here
-            {
+            //if (!gameInitialized) //IF game hasn't been initialized
+            //{
+            //    InitGame(); //initialize it
+            //}
+            //else //Start gameLogic take hit pos from ARcontroller and move players here
+            //{               
                 if (p1Turn)
                 {
-                    //Check which room they are stanging in and present their options
-
+                //Check which room they are stanging in and present their options
+                //CheckPlayerInput(true);
                 }
                 else
                 {
 
-                }
+                }               
             }         
-        }
+        //}
     }
 
     /// <summary>
@@ -116,15 +118,16 @@ public class GameManager : MonoBehaviour
     /// Initialize the game by setting the refrenses and calling the 
     /// gameBoards initialize
     /// </summary>
-    void InitGame()
+    public void InitGame(GameBoard arGameBoard)
     {
         if (player1 != null && player2 != null) //Make sure they aint null and load next scene
         {
             gameInitialized = true;
             arController = GameObject.Find("ARController").GetComponent<ARControllScript>();
-            gameBoard = GameObject.FindGameObjectWithTag("GameBoard").GetComponent<GameBoard>();
-
+            gameBoard = arGameBoard;
             gameBoard.InitGameBoard(player1.GetComponent<Player>(), player2.GetComponent<Player>()); //Might want to send in the entire gameobj
+            
+            Debug.Log(gameBoard);
         }
     }//Fetch the assets like arcore etc from the new scene so that the gameMgr can use it
 
@@ -132,22 +135,21 @@ public class GameManager : MonoBehaviour
     /// Check the players input on screen and then if they hit the board call the method that checks where on the 
     /// board it was hit in ARController
     /// </summary>
-     void CheckPlayerInput()
+     void CheckPlayerInput(bool isPlayer1)
     {
-        Ray hitRay = Camera.main.ScreenPointToRay(Input.GetTouch(0).position);
         RaycastHit hit;
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-        if (Physics.Raycast(hitRay, out hit))
+        if (Input.GetMouseButtonDown(0) || Input.touchCount > 0) //maybe 
         {
-            Debug.Log(hit.transform.name);
-
-            if (hit.transform.name == "GameBoard")
+            if (Physics.Raycast(ray, out hit, Mathf.Infinity))
             {
-                //check cell closest to the hitposition
-                //gameBoard.A
+                if (hit.collider.tag == "EmptyTile")
+                {
+                    //RevealRoom(hit.transform.position);
+                    gameBoard.RevealRoom(hit);
+                }
             }
-
         }
-
     }
 }

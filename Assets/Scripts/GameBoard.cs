@@ -130,19 +130,19 @@ public class GameBoard : MonoBehaviour
         //    isInit = true;
         //}
 
-        //if (Input.GetMouseButtonDown(0) || Input.touchCount > 0) //maybe 
-        //{
-        //    RaycastHit hit;
-        //    Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        if (Input.GetMouseButtonDown(0) || Input.touchCount > 0) //maybe 
+        {
+            RaycastHit hit;
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-        //    if (Physics.Raycast(ray, out hit, Mathf.Infinity))
-        //    {
-        //        if (hit.collider.tag == "EmptyTile")
-        //        {
-        //            RevealRoom(hit.transform.position);
-        //        }
-        //    }
-        //}
+            if (Physics.Raycast(ray, out hit, Mathf.Infinity))
+            {
+                if (hit.collider.tag == "EmptyTile")
+                {
+                    RevealRoom(hit);
+                }
+            }
+        }
     }
 
     public void InitGameBoard(Player player1, Player player2) //take in startpos
@@ -424,7 +424,10 @@ public class GameBoard : MonoBehaviour
         {
             for (int x = 0; x < boardMap.GetLength(0); x++)
             {
-                boardMap[x, y].transform.SetPositionAndRotation(tileMapPositions.Dequeue(), transform.rotation); //the quaternion should be based on the boards rotation
+                Vector3 tilePos = tileMapPositions.Dequeue();
+                tilePos.y -= 0.5f; //Adjust so that the tilePos isnt going from the center of the tileMap.cell
+                tilePos.z += 0.5f;
+                boardMap[x, y].transform.SetPositionAndRotation(tilePos, new Quaternion(0,0,0,0)); //the quaternion should be based on the boards rotation
             }
         }
     }
@@ -444,7 +447,7 @@ public class GameBoard : MonoBehaviour
     }
 
     //Have a method return the roomType maybe tag or something to the gameboard
-    public void RevealRoom(Vector3 hitPos)//take in the pos maybe?
+    public void RevealRoom(RaycastHit hit)//take in the pos maybe?
     {
         //roomStack.Dequeue(); //get the next room and place it 
         //move player to the next room 
@@ -454,15 +457,13 @@ public class GameBoard : MonoBehaviour
         {
             for (int x = 0; x < boardMap.GetLength(0); x++)
             {
-                if (boardMap[x, y].transform.position == hitPos)
+                if (boardMap[x, y].transform.position == hit.transform.position)
                 {
                     Debug.Log("A tile was hit" + boardMap[x, y].transform.position);
 
                     if (boardMap[x, y].gameObject.tag == "EmptyTile") //if there's no tile
                     {
-                        Vector3 boardTilePos = boardMap[x, y].transform.position;
-                        boardTilePos.y = 1.0f; //Due to their rotations being different this is needed for 
-                        boardTilePos.z += 0.5f; //adjusting their positions correctly
+                        Vector3 boardTilePos = boardMap[x, y].transform.position;                     
                         Quaternion boardTileRotation = new Quaternion(90, 0, 0, 0); //dont have this hardcoded later
 
                         boardMap[x, y] = Instantiate(roomStack.Dequeue());

@@ -12,7 +12,6 @@ using UnityEngine.UI;
 
 public class ARControllScript : MonoBehaviour
 {
-
     public Camera arCamera; 
     public GameObject planeStatusInfo;
     public GameObject trackedPlanePrefab;
@@ -29,10 +28,15 @@ public class ARControllScript : MonoBehaviour
     private bool isQuitting = false;
     private bool showSearchUI = true;
 
+    private GameManager gameMgr; 
 
     // Start is called before the first frame update
     void Start()
     {
+        if (GameManager.instance == null)
+        {
+            Instantiate(gameMgr);
+        }
         SetScreenSize();
     }
 
@@ -76,8 +80,12 @@ public class ARControllScript : MonoBehaviour
         // Raycast against the location the player touched to search for planes.
         TrackableHit hit;
         TrackableHitFlags raycastFilter = TrackableHitFlags.PlaneWithinPolygon | TrackableHitFlags.FeaturePointWithSurfaceNormal;
+        // Raycast agains a "non physical" arObject in the scene (for debuggin)
+        RaycastHit mouseHit;
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        Physics.Raycast(ray, out mouseHit, Mathf.Infinity);
 
-        if (Frame.Raycast(touch.position.x, touch.position.y, raycastFilter, out hit) || Input.GetMouseButtonDown(0))
+        if (Frame.Raycast(touch.position.x, touch.position.y, raycastFilter, out hit) || Frame.Raycast(mouseHit.point.x, mouseHit.point.y, raycastFilter, out hit))
         {
             currentHit = hit;
             if (boardObject == null) //Create only one board
@@ -91,18 +99,10 @@ public class ARControllScript : MonoBehaviour
 
                 // Make board model a child of the anchor.
                 boardObject.transform.parent = anchor.transform;
-            }
-            else //Check where the user pressed () send info to gamemgr 
-            {
-                //maybe have checking the board here and returning the result?
-            }
+                gameMgr.InitGame(boardObject.GetComponent<GameBoard>());
+            }        
         }
 
-    }
-
-    public void SetBoardPlacement(Touch touch)
-    {
-       //Move the init of the board here later 
     }
 
     /// <summary>
@@ -215,4 +215,5 @@ public class ARControllScript : MonoBehaviour
     {
         Application.Quit();
     }
+
 }
