@@ -10,7 +10,7 @@ public class GameBoard : MonoBehaviour
 
     private int tileSize = 256;
 
-    private List<Vector2> startPositions;
+    private List<Vector3> startPositions;
 
     private Player player1, player2;
 
@@ -106,12 +106,12 @@ public class GameBoard : MonoBehaviour
     void Start()
     {
         //Add start positions as listitems
-        startPositions = new List<Vector2>();
+        startPositions = new List<Vector3>();
 
-        startPositions.Add(new Vector2(0, 0));
-        startPositions.Add(new Vector2(9, 0));
-        startPositions.Add(new Vector2(0, 6));
-        startPositions.Add(new Vector2(9, 6));
+        //startPositions.Add(new Vector2(0, 0));
+        //startPositions.Add(new Vector2(9, 0));
+        //startPositions.Add(new Vector2(0, 6));
+        //startPositions.Add(new Vector2(9, 6));
 
         roomStack = new Queue<GameObject>();
 
@@ -150,10 +150,11 @@ public class GameBoard : MonoBehaviour
         this.player1 = player1; //this only holds a ref to the player sent in, maybe instanciate a new one and return the ref to gamemgr
         this.player2 = player2;
 
-        InitializeRoomTiles();
+        //InitializeRoomTiles();
         LoadRoomStack();
         ShuffleStack();
 
+        InitBoardTiles();
         CreateBoardGraph();
         player1.transform.position = transform.GetComponentInChildren<Tilemap>().LocalToCellInterpolated(player1.Position);
         //boardMap[(int)player1.Position.x, (int)player1.Position.y].transform.position;
@@ -211,22 +212,22 @@ public class GameBoard : MonoBehaviour
     void CreateBoardGraph()
     {
         /*The offset is needed because the cellToWorld gets the center pos
-         of the tile in the tilemap */
-    
+         of the tile in the tilemap */   
         float offSet = grid.cellSize.x / 2;
 
         for (int y = tileMap.cellBounds.yMin; y < tileMap.cellBounds.yMax; y++) //yMax
         {
             for (int x = tileMap.cellBounds.xMin; x < tileMap.cellBounds.xMax; x++) //xMax
             {
-                Vector3Int localPos = (new Vector3Int(x, y, 0));
+                Vector3Int localPos = (new Vector3Int(x, y, tileMap.cellBounds.position.z));
+                //Debug.Log("tile Z Pos " + tileMap.cellBounds.position.z);
 
                 if (tileMap.HasTile(localPos))
                 {
                     Vector3 tileCenterPos = tileMap.CellToWorld(localPos);
                     tileCenterPos.x += offSet;
-                    tileCenterPos.y += offSet;
-                    tileMapPositions.Enqueue(tileCenterPos);
+                    tileCenterPos.y += offSet;                   
+                    tileMapPositions.Enqueue(tileCenterPos);                
                 }
             }
         }
@@ -428,6 +429,23 @@ public class GameBoard : MonoBehaviour
                 tilePos.y -= 0.5f; //Adjust so that the tilePos isnt going from the center of the tileMap.cell
                 tilePos.z += 0.5f;
                 boardMap[x, y].transform.SetPositionAndRotation(tilePos, new Quaternion(0,0,0,0)); //the quaternion should be based on the boards rotation
+
+                if (x == 0 && y == 0)
+                {
+                    startPositions.Add(tilePos);
+                }
+                else if (x == 0 && y == 6)
+                {
+                    startPositions.Add(tilePos);
+                }
+                else if (x == 9 && y == 0)
+                {
+                    startPositions.Add(tilePos);
+                }
+                else if (x == 9 && y == 6)
+                {
+                    startPositions.Add(tilePos);
+                }
             }
         }
     }
@@ -460,16 +478,19 @@ public class GameBoard : MonoBehaviour
                 if (boardMap[x, y].transform.position == hit.transform.position)
                 {
                     Debug.Log("A tile was hit" + boardMap[x, y].transform.position);
-
-                    if (boardMap[x, y].gameObject.tag == "EmptyTile") //if there's no tile
+                    if (boardMap[x, y].transform.position != startPositions[0] && boardMap[x, y].transform.position != startPositions[1]
+                        && boardMap[x, y].transform.position != startPositions[2] && boardMap[x, y].transform.position != startPositions[3])  //remove startpos as placable tiles
                     {
-                        Vector3 boardTilePos = boardMap[x, y].transform.position;                     
-                        Quaternion boardTileRotation = new Quaternion(90, 0, 0, 0); //dont have this hardcoded later
+                        if (boardMap[x, y].gameObject.tag == "EmptyTile") //if there's no tile
+                        {
+                            Vector3 boardTilePos = boardMap[x, y].transform.position;
+                            Quaternion boardTileRotation = new Quaternion(90, 0, 0, 0); //dont have this hardcoded later
 
-                        boardMap[x, y] = Instantiate(roomStack.Dequeue());
-                        boardMap[x, y].transform.SetPositionAndRotation(boardTilePos, boardTileRotation);
-                        boardMap[x, y].SetActive(true);                     
-                    }
+                            boardMap[x, y] = Instantiate(roomStack.Dequeue());
+                            boardMap[x, y].transform.SetPositionAndRotation(boardTilePos, boardTileRotation);
+                            boardMap[x, y].SetActive(true);
+                        }
+                    }                                                             
                 }
             }
         }

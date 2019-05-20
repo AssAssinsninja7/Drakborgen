@@ -99,10 +99,9 @@ public class ARControllScript : MonoBehaviour
 
                 // Make board model a child of the anchor.
                 boardObject.transform.parent = anchor.transform;
-                gameMgr.InitGame(boardObject.GetComponent<GameBoard>());
+                gameMgr.InitGame();
             }        
         }
-
     }
 
     /// <summary>

@@ -121,22 +121,22 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 765973787, guid: 8cf7c33d74f1f6d4f88f0114268137a1, type: 3}
       propertyPath: m_Name
-      value: GameBoard 1
+      value: GameBoard2
       objectReference: {fileID: 0}
     - target: {fileID: 8430204446716291138, guid: 8cf7c33d74f1f6d4f88f0114268137a1,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8430204446716291138, guid: 8cf7c33d74f1f6d4f88f0114268137a1,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8430204446716291138, guid: 8cf7c33d74f1f6d4f88f0114268137a1,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8430204446716291138, guid: 8cf7c33d74f1f6d4f88f0114268137a1,
         type: 3}
@@ -185,7 +185,7 @@ PrefabInstance:
     - target: {fileID: 765973788, guid: 8cf7c33d74f1f6d4f88f0114268137a1, type: 3}
       propertyPath: emptyTilePrefab
       value: 
-      objectReference: {fileID: 241794367364943682, guid: 48e424591dfe6e541803333815c2f40c,
+      objectReference: {fileID: 5759594690316794213, guid: 890a9c67737e8164f9fe47acc75a7dc1,
         type: 3}
     - target: {fileID: 765973788, guid: 8cf7c33d74f1f6d4f88f0114268137a1, type: 3}
       propertyPath: e1nPnD

@@ -81,9 +81,17 @@ public class GameManager : MonoBehaviour
                 else
                 {
 
-                }               
-            }         
-        //}
+                }
+            //}         
+        }
+        if (currentSceneName == "GameBoardTestScene")
+        {
+            if (!gameInitialized)
+            {
+                TestSceneInit();
+            }
+
+        }
     }
 
     /// <summary>
@@ -111,20 +119,31 @@ public class GameManager : MonoBehaviour
             player2.GetComponent<Player>().HasRotationRing = p2HasRotRing;
             player2.GetComponent<Player>().Position = p2StartPos;
         }
-        SceneManager.LoadScene(sceneBuildIndex: 1, LoadSceneMode.Single); //1 = drakborgen scene //"DrakborgenARScene" //sceneName: "DrakborgenARScene"      
+        SceneManager.LoadScene(sceneBuildIndex: 2, LoadSceneMode.Single); //1 = drakborgen scene //"DrakborgenARScene" //sceneName: "DrakborgenARScene"      //sceneBuildIndex: 1
+    }
+
+
+    private void TestSceneInit()
+    {
+        gameInitialized = true;
+        GameObject board = GameObject.Find("GameBoard2");
+        gameBoard = board.GetComponent<GameBoard>();                 //arGameBoard;
+        gameBoard.InitGameBoard(player1.GetComponent<Player>(), player2.GetComponent<Player>()); //Might want to send in the entire gameobj
+        
+        Debug.Log(gameBoard);
     }
 
     /// <summary>
     /// Initialize the game by setting the refrenses and calling the 
     /// gameBoards initialize
     /// </summary>
-    public void InitGame(GameBoard arGameBoard)
+    public void InitGame()
     {
         if (player1 != null && player2 != null) //Make sure they aint null and load next scene
         {
             gameInitialized = true;
             arController = GameObject.Find("ARController").GetComponent<ARControllScript>();
-            gameBoard = arGameBoard;
+            gameBoard = GameObject.Find("GameBoard2").GetComponent<GameBoard>();                    //arGameBoard;
             gameBoard.InitGameBoard(player1.GetComponent<Player>(), player2.GetComponent<Player>()); //Might want to send in the entire gameobj
             
             Debug.Log(gameBoard);

@@ -138,7 +138,7 @@ MonoBehaviour:
   e1TurnRoom: {fileID: 592788459012526655, guid: 7bb1b01a3c1194741af266cc7559fcca,
     type: 3}
   tileMap: {fileID: 5993729081556215615}
-  emptyTilePrefab: {fileID: 241794367364943682, guid: 48e424591dfe6e541803333815c2f40c,
+  emptyTilePrefab: {fileID: 5759594690316794213, guid: 890a9c67737e8164f9fe47acc75a7dc1,
     type: 3}
 --- !u!114 &765973789
 MonoBehaviour:
