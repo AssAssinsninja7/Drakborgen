@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using GoogleARCore;
 using UnityEngine.Tilemaps;
+using UnityEngine.UI;
 
 public class GameBoard : MonoBehaviour
 {
@@ -130,19 +131,19 @@ public class GameBoard : MonoBehaviour
         //    isInit = true;
         //}
 
-        if (Input.GetMouseButtonDown(0) || Input.touchCount > 0) //maybe 
-        {
-            RaycastHit hit;
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        //if (Input.GetMouseButtonDown(0) || Input.touchCount > 0) //maybe 
+        //{
+        //    RaycastHit hit;
+        //    Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-            if (Physics.Raycast(ray, out hit, Mathf.Infinity))
-            {
-                if (hit.collider.tag == "EmptyTile")
-                {
-                    RevealRoom(hit);
-                }
-            }
-        }
+        //    if (Physics.Raycast(ray, out hit, Mathf.Infinity))
+        //    {
+        //        if (hit.collider.tag == "EmptyTile")
+        //        {
+        //            RevealRoom(hit);
+        //        }
+        //    }
+        //}
     }
 
     public void InitGameBoard(Player player1, Player player2) //take in startpos
@@ -491,6 +492,36 @@ public class GameBoard : MonoBehaviour
                             boardMap[x, y].SetActive(true);
                         }
                     }                                                             
+                }
+            }
+        }
+    }
+
+    public void RevealroomAR(TrackableHit hit, GameObject statusCanvas)
+    {
+        Debug.Log("Gameboard Reveal room was called");
+        for (int y = 0; y < boardMap.GetLength(1); y++)
+        {
+            for (int x = 0; x < boardMap.GetLength(0); x++)
+            {
+                statusCanvas.GetComponent<Text>().text = hit.Pose.position.ToString();
+                if (boardMap[x, y].transform.position == hit.Pose.position)
+                {
+                    statusCanvas.GetComponent<Text>().text += " board hit";
+                    Debug.Log("A tile was hit" + boardMap[x, y].transform.position);
+                    if (boardMap[x, y].transform.position != startPositions[0] && boardMap[x, y].transform.position != startPositions[1]
+                        && boardMap[x, y].transform.position != startPositions[2] && boardMap[x, y].transform.position != startPositions[3])  //remove startpos as placable tiles
+                    {
+                        if (boardMap[x, y].gameObject.tag == "EmptyTile") //if there's no tile
+                        {
+                            Vector3 boardTilePos = boardMap[x, y].transform.position;
+                            Quaternion boardTileRotation = new Quaternion(90, 0, 0, 0); //dont have this hardcoded later
+
+                            boardMap[x, y] = Instantiate(roomStack.Dequeue());
+                            boardMap[x, y].transform.SetPositionAndRotation(boardTilePos, boardTileRotation);
+                            boardMap[x, y].SetActive(true);
+                        }
+                    }
                 }
             }
         }

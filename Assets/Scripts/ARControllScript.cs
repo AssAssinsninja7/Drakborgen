@@ -16,6 +16,7 @@ public class ARControllScript : MonoBehaviour
     public GameObject planeStatusInfo;
     public GameObject trackedPlanePrefab;
     public GameObject BoardPrefab;
+    public GameObject debugCanvas;
 
     private List<TrackedPlane> newPlanes = new List<TrackedPlane>();
     private List<TrackedPlane> allPlanes = new List<TrackedPlane>();
@@ -27,16 +28,16 @@ public class ARControllScript : MonoBehaviour
     //ARcontroller UI & Session controll (Exit when fukked)
     private bool isQuitting = false;
     private bool showSearchUI = true;
-
-    private GameManager gameMgr; 
+ 
 
     // Start is called before the first frame update
     void Start()
     {
-        if (GameManager.instance == null)
-        {
-            Instantiate(gameMgr);
-        }
+        //if (GameManager.instance == null)
+        //{
+        //    Instantiate(GameManager);
+        //}
+       
         SetScreenSize();
     }
 
@@ -76,7 +77,7 @@ public class ARControllScript : MonoBehaviour
         {
             return;
         }
-
+        
         // Raycast against the location the player touched to search for planes.
         TrackableHit hit;
         TrackableHitFlags raycastFilter = TrackableHitFlags.PlaneWithinPolygon | TrackableHitFlags.FeaturePointWithSurfaceNormal;
@@ -99,8 +100,21 @@ public class ARControllScript : MonoBehaviour
 
                 // Make board model a child of the anchor.
                 boardObject.transform.parent = anchor.transform;
-                gameMgr.InitGame();
+                Debug.Log(boardObject.transform.position + " board position");
+                GameManager.instance.InitGame();
             }        
+        } 
+    }
+
+    public void CheckUserHit()
+    {
+        // Raycast against the location the player touched to search for planes.
+        TrackableHit hit;
+        TrackableHitFlags raycastFilter = TrackableHitFlags.PlaneWithinPolygon | TrackableHitFlags.FeaturePointWithSurfaceNormal;
+
+        if (Frame.Raycast(boardObject.transform.position.x, boardObject.transform.position.y, raycastFilter, out hit))
+        {
+            boardObject.GetComponent<GameBoard>().RevealroomAR(hit, debugCanvas);
         }
     }
 

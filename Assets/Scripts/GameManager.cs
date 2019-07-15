@@ -10,7 +10,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance = null; //this gamemgr
 
-    public ARControllScript arController; //So that we can check if we have viable planes
+    public GameObject arController; //So that we can check if we have viable planes
 
     public GameObject playerModel; //Should be two here later
 
@@ -36,7 +36,7 @@ public class GameManager : MonoBehaviour
     void Awake()
     {
         //Check if instance already exists
-        if (instance == null) // ya
+        if (instance == null) //if yes instansiate it 
         {
             instance = this; //Set it to this class
 
@@ -48,40 +48,43 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
         }
         gameInitialized = false;
+        p1Turn = true;
 
         Screen.SetResolution(Screen.width, Screen.height, FullScreenMode.ExclusiveFullScreen); //doesn't work
-        Screen.orientation = ScreenOrientation.Landscape; 
+        Screen.orientation = ScreenOrientation.LandscapeLeft; 
     }
 
     // Update is called once per frame
     void Update()
     {
-        //if (instance != this)
-        //{
-        //    Destroy(gameBoard);
-        //}
-
         currentSceneName = SceneManager.GetActiveScene().name;
-
-
 
         if (currentSceneName == "DrakborgenARScene")
         {
+            if (arController != GameObject.Find("ARController"))
+            {
+                arController = GameObject.Find("ARController");
+            }
+
             //if (!gameInitialized) //IF game hasn't been initialized
             //{
             //    InitGame(); //initialize it
             //}
             //else //Start gameLogic take hit pos from ARcontroller and move players here
             //{               
+            if (gameInitialized)
+            {
                 if (p1Turn)
                 {
-                //Check which room they are stanging in and present their options
-                //CheckPlayerInput(true);
+                    //ToDO: Check which room they are stanging in and present their options
+                    CheckPlayerInput(true); //just calling the basic function for trying to place tile in scene
                 }
                 else
                 {
 
                 }
+            }
+                
             //}         
         }
         if (currentSceneName == "GameBoardTestScene")
@@ -119,7 +122,7 @@ public class GameManager : MonoBehaviour
             player2.GetComponent<Player>().HasRotationRing = p2HasRotRing;
             player2.GetComponent<Player>().Position = p2StartPos;
         }
-        SceneManager.LoadScene(sceneBuildIndex: 2, LoadSceneMode.Single); //1 = drakborgen scene //"DrakborgenARScene" //sceneName: "DrakborgenARScene"      //sceneBuildIndex: 1
+        SceneManager.LoadScene(sceneBuildIndex: 1, LoadSceneMode.Single); //1 = drakborgen scene //"DrakborgenARScene", 2 = drakborgen testscene
     }
 
 
@@ -141,13 +144,14 @@ public class GameManager : MonoBehaviour
     {
         if (player1 != null && player2 != null) //Make sure they aint null and load next scene
         {
-            gameInitialized = true;
-            arController = GameObject.Find("ARController").GetComponent<ARControllScript>();
+            gameInitialized = true;           
             gameBoard = GameObject.Find("GameBoard2").GetComponent<GameBoard>();                    //arGameBoard;
             gameBoard.InitGameBoard(player1.GetComponent<Player>(), player2.GetComponent<Player>()); //Might want to send in the entire gameobj
-            
-            Debug.Log(gameBoard);
+            p1Turn = true;
+
+            Debug.Log(GameManager.instance.name + " has been successfully moved");
         }
+        gameInitialized = true;
     }//Fetch the assets like arcore etc from the new scene so that the gameMgr can use it
 
     /// <summary>
@@ -156,19 +160,23 @@ public class GameManager : MonoBehaviour
     /// </summary>
      void CheckPlayerInput(bool isPlayer1)
     {
-        RaycastHit hit;
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        //arController.
+        arController.GetComponent<ARControllScript>().CheckUserHit();
+        //RaycastHit hit;
+        //Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-        if (Input.GetMouseButtonDown(0) || Input.touchCount > 0) //maybe 
-        {
-            if (Physics.Raycast(ray, out hit, Mathf.Infinity))
-            {
-                if (hit.collider.tag == "EmptyTile")
-                {
-                    //RevealRoom(hit.transform.position);
-                    gameBoard.RevealRoom(hit);
-                }
-            }
-        }
+        //if (Input.GetMouseButtonDown(0) || Input.touchCount > 0) //maybe 
+        //{
+        //    if (Physics.Raycast(ray, out hit, Mathf.Infinity))
+        //    {
+        //        if (hit.collider.tag == "EmptyTile")
+        //        {
+        //            //RevealRoom(hit.transform.position);
+        //            gameBoard.RevealRoom(hit);
+        //        }
+        //    }
+        //}
+
+
     }
 }

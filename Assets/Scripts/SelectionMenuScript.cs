@@ -31,8 +31,6 @@ public class SelectionMenuScript : MonoBehaviour
 
    
 
-    public GameManager gameManager;
-
     //All the objects loaded in through SerialieField are here below.
     #region LoadedIn
     [SerializeField]
@@ -124,12 +122,7 @@ public class SelectionMenuScript : MonoBehaviour
         //Set keyboardType to the normal keyboard. 
         p1IDField.keyboardType = TouchScreenKeyboardType.Default; 
         p2IDField.keyboardType = TouchScreenKeyboardType.Default;
-
-
-        if (GameManager.instance == null) //Make sure that the gameMgr has been instantiated
-        {
-            Instantiate(gameManager);
-        }
+     
     }
 
     // Update is called once per frame
@@ -461,7 +454,7 @@ public class SelectionMenuScript : MonoBehaviour
         //send both players information to the game mgr, unload the scene, deaactivate the selection camera and activate the *ARcamera. 
         //if (!informationSent)
         //{
-            gameManager.SetPlayerInformation(player1ID, player2ID, p1HasViking, p2HasRotationRing, p1ChoosenStartPos, p2ChoosenStartPos); //The players arn't instansiated as gameobject but this will be fixed once they get their prefabs/ become full objects 
+            GameManager.instance.SetPlayerInformation(player1ID, player2ID, p1HasViking, p2HasRotationRing, p1ChoosenStartPos, p2ChoosenStartPos); //The players arn't instansiated as gameobject but this will be fixed once they get their prefabs/ become full objects 
             informationSent = true;
         //}
     }

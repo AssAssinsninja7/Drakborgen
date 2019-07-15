@@ -4,6 +4,7 @@ C:/Users/Jasmine/Documents/Drakborgen_Build/Drakborgen4.apk
 SceneListBegin?
 Assets/Scenes/SelectionScene.unity
 Assets/Scenes/DrakborgenARScene.unity
+Assets/Scenes/GameBoardTestScene.unity
 SceneListEnd?
 984dcc0ba3707b7691fbdca8ff508d28 Unity.TextMeshPro.dll:TMPro.TMP_SelectionCaret
 01aa15e337e3a9c62f15153dfac6d589 Unity.TextMeshPro.dll:TMPro.TMP_Dropdown
@@ -117,7 +118,7 @@ ad9173d3a69d99153f38ed4b62226129 UnityEngine.Networking.dll:UnityEngine.Networki
 9b895dcabbc1faf095c000c32d471fd0 UnityEngine.Networking.dll:UnityEngine.Networking.NetworkTransformChild
 5887ef1bc706b22b773d253fd443ceef UnityEngine.Networking.dll:UnityEngine.Networking.NetworkTransformVisualizer
 d251bf88db6c95a6b1aa0b69298da9ef UnityEngine.SpatialTracking.dll:UnityEngine.SpatialTracking.TrackedPoseDriver
-1e2275cdf5a24272e7ea2d85a5312412 Assembly-CSharp.dll:.SelectionMenuScript
+a4c8eda1e3ebc0f93aebb0a18f91aaf2 Assembly-CSharp.dll:.SelectionMenuScript
 71bb6a6b6c8f052f948db64c7dd3ca4f Assembly-CSharp.dll:GoogleARCore.EnvironmentalLight
 76729fa1852efac754fbca32e57ecc8a Assembly-CSharp.dll:.GameBoard
 303ad70ce203ad874efe2965d0fbcff9 Unity.Analytics.Tracker.dll:UnityEngine.Analytics.AnalyticsEventTracker
@@ -167,7 +168,7 @@ fb6a1ea36b4f6ef5948d283d93760765 UnityEngine.GoogleAudioSpatializer.dll:UnityEng
 4793637886e076da1b88d856ea4b04e3 Assembly-CSharp.dll:.Player
 a4f0a4f62100f1a4fb5cbe0e00dde83f Unity.TextMeshPro.dll:TMPro.TextMeshProUGUI
 5fc094978ce3e3591a7500ed380d854a Unity.Analytics.DataPrivacy.dll:UnityEngine.Analytics.DataPrivacyButton
-1a043ca4a445d2db8a8316a912ec42bc Assembly-CSharp.dll:.ARControllScript
+5e3e37a26f142bc5a514aef7726746c6 Assembly-CSharp.dll:.ARControllScript
 d251bf88db6c95a6b1aa0b69298da9ef UnityEngine.SpatialTracking.dll:UnityEngine.SpatialTracking.TrackedPoseDriver
 d791aa6007fa3640be1164ea75bb087d Unity.TextMeshPro.dll:TMPro.TMP_StyleSheet
 71bb6a6b6c8f052f948db64c7dd3ca4f Assembly-CSharp.dll:.GameBoardVizualizer
@@ -175,4 +176,4 @@ c6666661329916e218bee7f5e79e60f5 Unity.TextMeshPro.dll:TMPro.TextMeshPro
 3165968ba45c74472d279ba04455fccb Unity.TextMeshPro.dll:TMPro.TMP_ColorGradient
 8649814970b42d345b89944b862453cc Unity.TextMeshPro.dll:TMPro.TMP_SubMesh
 0ff5b29f1700caa87c86421f40d03588 Assembly-CSharp.dll:.Loader
-8a4b74b89b6c08bff812f6f56c173963 Assembly-CSharp.dll:.GameManager
+762038c54bcc8a077e16910cd755a7be Assembly-CSharp.dll:.GameManager
