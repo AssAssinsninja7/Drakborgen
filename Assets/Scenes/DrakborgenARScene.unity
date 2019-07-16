@@ -588,7 +588,7 @@ PrefabInstance:
         type: 3}
       propertyPath: BoardPrefab
       value: 
-      objectReference: {fileID: 765973787, guid: 8cf7c33d74f1f6d4f88f0114268137a1,
+      objectReference: {fileID: 1269078939808801854, guid: 37eb96afcba07af4582a54baa710847e,
         type: 3}
     - target: {fileID: 3711436448728302860, guid: 09934e8d64811d94d9a607805417b453,
         type: 3}

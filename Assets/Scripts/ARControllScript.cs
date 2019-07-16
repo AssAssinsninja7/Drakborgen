@@ -32,12 +32,7 @@ public class ARControllScript : MonoBehaviour
 
     // Start is called before the first frame update
     void Start()
-    {
-        //if (GameManager.instance == null)
-        //{
-        //    Instantiate(GameManager);
-        //}
-       
+    {       
         SetScreenSize();
     }
 
@@ -92,8 +87,8 @@ public class ARControllScript : MonoBehaviour
             if (boardObject == null) //Create only one board
             {
                 //Instanciate the board facing up based on where the user hit
-                boardObject = Instantiate(BoardPrefab, new Vector3(hit.Pose.position.x, hit.Pose.position.y, hit.Distance), Quaternion.Euler(90, 0, 0)); //hit.Pose.position
-
+                boardObject = Instantiate(BoardPrefab.GetComponent<GameObject>(), new Vector3(hit.Pose.position.x, hit.Pose.position.y, hit.Distance), Quaternion.Euler(90, 0, 0)); //hit.Pose.position
+            
                 // Create an anchor to allow ARCore to track the hitpoint as understanding of the physical
                 // world evolves.
                 var anchor = hit.Trackable.CreateAnchor(hit.Pose);
@@ -109,13 +104,13 @@ public class ARControllScript : MonoBehaviour
     public void CheckUserHit()
     {
         // Raycast against the location the player touched to search for planes.
-        TrackableHit hit;
-        TrackableHitFlags raycastFilter = TrackableHitFlags.PlaneWithinPolygon | TrackableHitFlags.FeaturePointWithSurfaceNormal;
+        //TrackableHit hit;
+        //TrackableHitFlags raycastFilter = TrackableHitFlags.PlaneWithinPolygon | TrackableHitFlags.FeaturePointWithSurfaceNormal;
 
-        if (Frame.Raycast(boardObject.transform.position.x, boardObject.transform.position.y, raycastFilter, out hit))
-        {
-            boardObject.GetComponent<GameBoard>().RevealroomAR(hit, debugCanvas);
-        }
+        //if (Frame.Raycast(boardObject.transform.position.x, boardObject.transform.position.y, raycastFilter, out hit))
+        //{
+        //    boardObject.GetComponent<GameBoard>().RevealroomAR(hit, debugCanvas);
+        //}
     }
 
     /// <summary>
