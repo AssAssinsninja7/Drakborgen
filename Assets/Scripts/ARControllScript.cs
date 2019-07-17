@@ -87,7 +87,7 @@ public class ARControllScript : MonoBehaviour
             if (boardObject == null) //Create only one board
             {
                 //Instanciate the board facing up based on where the user hit
-                boardObject = Instantiate(BoardPrefab.GetComponent<GameObject>(), new Vector3(hit.Pose.position.x, hit.Pose.position.y, hit.Distance), Quaternion.Euler(90, 0, 0)); //hit.Pose.position
+                boardObject = Instantiate(BoardPrefab, new Vector3(hit.Pose.position.x, hit.Pose.position.y, hit.Distance), Quaternion.Euler(0, 0, 0)); //hit.Pose.position
             
                 // Create an anchor to allow ARCore to track the hitpoint as understanding of the physical
                 // world evolves.
@@ -140,7 +140,7 @@ public class ARControllScript : MonoBehaviour
 
             rect.width = 1.0f;
             rect.height = scaleheight;
-            rect.x = 0;
+            rect.x = 0.0f;
             rect.y = (1.0f - scaleheight) / 2.0f;
 
             arCamera.rect = rect;
