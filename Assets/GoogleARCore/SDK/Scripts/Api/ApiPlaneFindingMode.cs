@@ -27,6 +27,6 @@ namespace GoogleARCoreInternal
     public enum ApiPlaneFindingMode
     {
         Disabled = 0,
-        Horizontal = 1,
+        boardTileWidth = 1,
     }
 }

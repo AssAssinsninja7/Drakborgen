@@ -63,7 +63,7 @@ namespace GoogleARCoreInternal
             var planeFindingMode = ApiPlaneFindingMode.Disabled;
             if (arCoreSessionConfig.EnablePlaneFinding)
             {
-                planeFindingMode = ApiPlaneFindingMode.Horizontal;
+                planeFindingMode = ApiPlaneFindingMode.boardTileWidth;
             }
 
             ExternApi.ArConfig_setPlaneFindingMode(m_NativeSession.SessionHandle, configHandle, planeFindingMode);

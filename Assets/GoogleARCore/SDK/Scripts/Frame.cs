@@ -84,8 +84,8 @@ namespace GoogleARCore
         /// Note that the Unity's screen coordinate (0, 0)
         /// starts from bottom left.
         /// </summary>
-        /// <param name="x">Horizontal touch position in Unity's screen coordiante.</param>
-        /// <param name="y">Vertical touch position in Unity's screen coordiante.</param>
+        /// <param name="x">boardTileWidth touch position in Unity's screen coordiante.</param>
+        /// <param name="y">boardTileHeight touch position in Unity's screen coordiante.</param>
         /// <param name="filter">A filter bitmask where each {@link TrackableHitFlag} which is set represents a category
         /// of raycast hits the method call should consider valid.</param>
         /// <param name="hitResult">A {@link TrackableHit} that will be set if the raycast is successful.</param>
@@ -118,8 +118,8 @@ namespace GoogleARCore
         /// Note that the Unity's screen coordinate (0, 0)
         /// starts from bottom left.
         /// </summary>
-        /// <param name="x">Horizontal touch position in Unity's screen coordiante.</param>
-        /// <param name="y">Vertical touch position in Unity's screen coordiante.</param>
+        /// <param name="x">boardTileWidth touch position in Unity's screen coordiante.</param>
+        /// <param name="y">boardTileHeight touch position in Unity's screen coordiante.</param>
         /// <param name="filter">A filter bitmask where each {@link TrackableHitFlag} which is set represents a category
         /// of raycast hits the method call should consider valid.</param>
         /// <param name="hitResults">A list of {@link TrackableHit} that will be set if the raycast is successful.</param>

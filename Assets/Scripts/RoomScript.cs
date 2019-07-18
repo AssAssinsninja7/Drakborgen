@@ -11,6 +11,8 @@ public class RoomScript : MonoBehaviour
     // public so we can set in editor 
     public RoomType myRoomType;
 
+    
+
     private int myRoomRotation = 0;
     //                                   e1,     e2,   e3,     e4      public so we can set in editor 
     public bool[] myExitDirections = { false, false, false, false };
@@ -25,7 +27,7 @@ public class RoomScript : MonoBehaviour
 
     void Init(int aRoomRotation)
     {
-        if (aRoomRotation>360)
+        if (aRoomRotation > 360)
         {
             aRoomRotation -= 360;
         }

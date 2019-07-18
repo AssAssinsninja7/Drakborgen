@@ -8,6 +8,8 @@ TagManager:
   - PlaneStatusInfoText
   - EmptyTile
   - Room
+  - StartTile
+  - TreasureTile
   layers:
   - Default
   - TransparentFX

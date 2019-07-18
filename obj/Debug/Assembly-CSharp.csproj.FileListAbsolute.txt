@@ -561,7 +561,6 @@ C:\Users\Jasmine\Desktop\DrakborgenProject\Drakborgen\Temp\bin\Debug\UnityEngine
 C:\Users\Jasmine\Desktop\DrakborgenProject\Drakborgen\Temp\bin\Debug\UnityEngine.SpatialTracking.xml
 C:\Users\Jasmine\Desktop\DrakborgenProject\Drakborgen\Temp\bin\Debug\UnityEngine.ClusterInputModule.xml
 C:\Users\Jasmine\Desktop\DrakborgenProject\Drakborgen\Temp\bin\Debug\UnityEngine.ClusterRendererModule.xml
-C:\Users\Jasmine\Desktop\DrakborgenProject\Drakborgen\obj\Debug\Assembly-CSharp.csprojAssemblyReference.cache
 C:\Users\Jasmine\Desktop\DrakborgenProject\Drakborgen\obj\Debug\Assembly-CSharp.csproj.CoreCompileInputs.cache
 C:\Users\Jasmine\Desktop\DrakborgenProject\Drakborgen\obj\Debug\Assembly-CSharp.csproj.CopyComplete
 C:\Users\Jasmine\Desktop\DrakborgenProject\Drakborgen\obj\Debug\Assembly-CSharp.dll

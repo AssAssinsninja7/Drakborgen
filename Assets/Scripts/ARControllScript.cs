@@ -88,14 +88,25 @@ public class ARControllScript : MonoBehaviour
             {
                 //Instanciate the board facing up based on where the user hit
                 boardObject = Instantiate(BoardPrefab, new Vector3(hit.Pose.position.x, hit.Pose.position.y, hit.Distance), Quaternion.Euler(0, 0, 0)); //hit.Pose.position
-            
+
+                //for (int y = 0; y < boardObject.GetComponent<BoardScript>().emptyTiles.GetLength(1); y++)
+                //{
+                //    for (int x = 0; x < boardObject.GetComponent<BoardScript>().emptyTiles.GetLength(0); x++)
+                //    {
+                //        Instantiate(boardObject.GetComponent<BoardScript>().emptyTiles[x, y]);
+
+                //    }
+                //}
+
+                //boardObject.GetComponent<BoardScript>().CreateBoardGrid();
+
                 // Create an anchor to allow ARCore to track the hitpoint as understanding of the physical
                 // world evolves.
                 var anchor = hit.Trackable.CreateAnchor(hit.Pose);
 
                 // Make board model a child of the anchor.
                 boardObject.transform.parent = anchor.transform;
-                Debug.Log(boardObject.transform.position + " board position");
+               
                 GameManager.instance.InitGame();
             }        
         } 

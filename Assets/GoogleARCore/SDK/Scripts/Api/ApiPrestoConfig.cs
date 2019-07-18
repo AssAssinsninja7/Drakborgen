@@ -38,7 +38,7 @@ namespace GoogleARCoreInternal
             UpdateMode = config.MatchCameraFramerate ?
                 ApiUpdateMode.Blocking : ApiUpdateMode.LatestCameraImage;
             PlaneFindingMode = config.EnablePlaneFinding ?
-                ApiPlaneFindingMode.Horizontal : ApiPlaneFindingMode.Disabled;
+                ApiPlaneFindingMode.boardTileWidth : ApiPlaneFindingMode.Disabled;
             LightEstimationMode = config.EnableLightEstimation ?
                 ApiLightEstimationMode.AmbientIntensity : ApiLightEstimationMode.Disabled;
         }
