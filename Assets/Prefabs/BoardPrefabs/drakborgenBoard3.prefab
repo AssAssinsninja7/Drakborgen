@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 242921270}
   - component: {fileID: 242921269}
   m_Layer: 0
-  m_Name: drakborgenBoard2 1
+  m_Name: drakborgenBoard3
   m_TagString: GameBoard
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -90,8 +90,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4ce6c0bf5747d347bd3975dfff553fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  emptyTile: {fileID: 5759594690316794213, guid: 890a9c67737e8164f9fe47acc75a7dc1,
-    type: 3}
+  emptyTile: {fileID: 178, guid: 890a9c67737e8164f9fe47acc75a7dc1, type: 3}
   allRooms:
   - {fileID: 6870242192490585389, guid: 25ef57fd2cc7c954a9c38515a1386536, type: 3}
   - {fileID: 6870242192490585389, guid: 25ef57fd2cc7c954a9c38515a1386536, type: 3}
