@@ -120,7 +120,7 @@ public class ARControllScript : MonoBehaviour
 
         //if (Frame.Raycast(boardObject.transform.position.x, boardObject.transform.position.y, raycastFilter, out hit))
         //{
-        //    boardObject.GetComponent<GameBoard>().RevealroomAR(hit, debugCanvas);
+        //    boardObject.GetComponent<boardScript>().RevealroomAR(hit, debugCanvas);
         //}
     }
 
@@ -180,7 +180,7 @@ public class ARControllScript : MonoBehaviour
         for (int i = 0; i < newPlanes.Count; i++)
         {           
             GameObject worldGrid = Instantiate(trackedPlanePrefab, Vector3.zero, Quaternion.identity, transform);
-            worldGrid.GetComponent<GameBoardVizualizer>().Initialize(newPlanes[i]);
+            worldGrid.GetComponent<boardScriptVizualizer>().Initialize(newPlanes[i]);
         }
     }
 

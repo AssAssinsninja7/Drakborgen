@@ -26,8 +26,8 @@ public class SelectionMenuScript : MonoBehaviour
 
     private bool hasSet;
 
-    private Vector3 p1ChoosenStartPos = new Vector2();
-    private Vector3 p2ChoosenStartPos = new Vector2();
+    private Vector2 p1ChoosenStartPos = new Vector2();
+    private Vector2 p2ChoosenStartPos = new Vector2();
 
    
 
@@ -363,19 +363,19 @@ public class SelectionMenuScript : MonoBehaviour
         {
             if (p1StartposDropdown.captionText.text == "Top Left")
             {
-                p1ChoosenStartPos = new Vector3(0, 0, 0);
+                p1ChoosenStartPos = new Vector3(0, 0);
             }
             else if (blockedPosName == "Top Right")
             {
-                p1ChoosenStartPos = new Vector3(9, 0, 0);
+                p1ChoosenStartPos = new Vector3(9, 0);
             }
             else if (blockedPosName == "Bottom Left")
             {
-                p1ChoosenStartPos = new Vector3(0, 0, 6);
+                p1ChoosenStartPos = new Vector3(0, 6);
             }
             else if (blockedPosName == "Bottom Right")
             {
-                p1ChoosenStartPos = new Vector3(9, 0, 6);
+                p1ChoosenStartPos = new Vector3(9, 6);
             }
 
             List<Dropdown.OptionData> p2startOptionList = p2StartposDropdown.options; //So that we can find which option to remove by text
@@ -404,19 +404,19 @@ public class SelectionMenuScript : MonoBehaviour
         {
             if (p2StartposDropdown.captionText.text == "Top Left")
             {
-                p2ChoosenStartPos = new Vector3(0, 0, 0); 
+                p2ChoosenStartPos = new Vector3(0, 0); 
             }
             else if (p2StartposDropdown.captionText.text == "Top Right")
             {
-                p2ChoosenStartPos = new Vector3(9, 0, 0); 
+                p2ChoosenStartPos = new Vector3(9, 0); 
             }
             else if (p2StartposDropdown.captionText.text == "Bottom Left")
             {
-                p2ChoosenStartPos = new Vector3(0, 0, 6);
+                p2ChoosenStartPos = new Vector3(0, 6);
             }
             else if (p2StartposDropdown.captionText.text == "Bottom Right")
             {
-                p2ChoosenStartPos = new Vector3(9, 0, 6);
+                p2ChoosenStartPos = new Vector3(9, 6);
             }
 
             //player2.Position = p2ChoosenStartPos;

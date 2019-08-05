@@ -34,9 +34,9 @@ public class Player : MonoBehaviour
     /// <summary>
     /// Temp set capsule color to red if its the viking and to yellow if it's not
     /// </summary>
-    public void SetPlayerColor()
+    public void SetPlayerColor(bool hasViking)
     {      
-        if (HasViking)
+        if (hasViking)
         {
             playerModel.GetComponent<Renderer>().material.color = Color.red;
         }

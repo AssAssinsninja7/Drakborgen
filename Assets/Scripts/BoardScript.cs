@@ -14,6 +14,10 @@ public class BoardScript : MonoBehaviour
 
     private Vector3 boardCollider;
 
+    public GameObject vikingAvatar;
+
+    public GameObject monkAvatar;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -25,6 +29,9 @@ public class BoardScript : MonoBehaviour
         InitializeEmptyTilesObjects();
         CreateBoardGrid();
         ShuffleStack();
+
+        TestPlayerPlacement();
+        //place player avatar on startpos -> send in startpos from gameMRg
     }
 
     // Update is called once per frame
@@ -40,10 +47,14 @@ public class BoardScript : MonoBehaviour
 
             if (Physics.Raycast(ray, out hit, Mathf.Infinity))
             {
-                if (hit.collider.tag == "EmptyTile")
+                if (hit.collider.tag == "EmptyTile") //if its empty and next to player
                 {
                     PlaceRoom(hit);
                     Debug.Log(hit.transform.position + " a tile was hit");
+                }
+                else if (hit.collider.tag == "StartPos")
+                {
+                    
                 }
             }
         }
@@ -64,6 +75,9 @@ public class BoardScript : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Initialize the emptyTiles that will act as hitboxes
+    /// </summary>
     void InitializeEmptyTilesObjects()
     {
         for (int y = 0; y < emptyTiles.GetLength(1); y++)
@@ -127,6 +141,51 @@ public class BoardScript : MonoBehaviour
                     depth, boardLeftCornerPos.z - (boardTileHeight * y + emptyTileWithOffset));
             }
         }
+    }
+
+    /// <summary>
+    /// Takes in a copy of the playerprefabs and initializes the avatars based on their chosen 
+    /// Startpos and then sets the color of the avatar to that of the chosen character type
+    /// </summary>
+    /// <param name="player1"></param>
+    /// <param name="player2"></param>
+    /// <param name="p1hasViking"></param>
+    public void PlacePlayerAvatarOnStart(GameObject player1, GameObject player2, bool p1hasViking)
+    {              
+        Vector2 player1StartPos = player1.GetComponent<Player>().Position;
+        Vector2 player2StartPos = player2.GetComponent<Player>().Position;
+
+        if (player1.GetComponent<Player>().HasViking) //check which gameObj avatar to save the player profile in (Instansiate in)
+        {
+            vikingAvatar = Instantiate(player1);
+            monkAvatar = Instantiate(player2);
+
+            vikingAvatar.transform.position = emptyTiles[(int)player1StartPos.x, (int)player1StartPos.y].transform.position;
+            monkAvatar.transform.position = emptyTiles[(int)player2StartPos.x, (int)player2StartPos.y].transform.position;
+
+            vikingAvatar.GetComponent<Player>().SetPlayerColor(p1hasViking);
+            monkAvatar.GetComponent<Player>().SetPlayerColor(!p1hasViking);
+
+            //need to offset with the height of the model
+        }
+        else
+        {
+            vikingAvatar = Instantiate(player2);
+            monkAvatar = Instantiate(player1);
+
+            vikingAvatar.transform.position = emptyTiles[(int)player2StartPos.x, (int)player2StartPos.y].transform.position;
+            monkAvatar.transform.position = emptyTiles[(int)player1StartPos.x, (int)player1StartPos.y].transform.position;
+
+            vikingAvatar.GetComponent<Player>().SetPlayerColor(!p1hasViking);
+            monkAvatar.GetComponent<Player>().SetPlayerColor(p1hasViking);
+        }
+
+        
+    }
+
+    private void TestPlayerPlacement()
+    {
+        GameManager.instance.InitGame();
     }
 
     void PlaceRoom(RaycastHit hit)

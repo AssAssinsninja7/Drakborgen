@@ -849,3 +849,4 @@ C:\Users\heliu\Desktop\Drakborgen\Drakborgen\obj\Debug\Assembly-CSharp.csproj.Co
 C:\Users\heliu\Desktop\Drakborgen\Drakborgen\obj\Debug\Assembly-CSharp.csproj.CopyComplete
 C:\Users\heliu\Desktop\Drakborgen\Drakborgen\obj\Debug\Assembly-CSharp.dll
 C:\Users\heliu\Desktop\Drakborgen\Drakborgen\obj\Debug\Assembly-CSharp.pdb
+C:\Users\Jasmine\Desktop\DrakborgenProject\Drakborgen\obj\Debug\Assembly-CSharp.csprojAssemblyReference.cache

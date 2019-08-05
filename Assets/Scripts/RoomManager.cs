@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class RoomManager : MonoBehaviour
 {
-    private Queue<GameObject> roomStack; //roomStack is the container from which the gameboard gets the next placeable tile
+    private Queue<GameObject> roomStack; //roomStack is the container from which the boardScript gets the next placeable tile
 
 
     #region RoomObjects
@@ -199,7 +199,7 @@ public class RoomManager : MonoBehaviour
         }
     }
 
-    //Have a method return the roomType maybe tag or something to the gameboard
+    //Have a method return the roomType maybe tag or something to the boardScript
     public GameObject RevealRoom()
     {
         return roomStack.Dequeue();

@@ -17,7 +17,7 @@ public class GameManager : MonoBehaviour
     public GameObject player1;
     public GameObject player2;    
 
-    private GameBoard gameBoard;
+    private BoardScript boardScript;
 
     private Text planeInfoTexT;
 
@@ -87,14 +87,14 @@ public class GameManager : MonoBehaviour
                 
             //}         
         }
-        if (currentSceneName == "GameBoardTestScene")
-        {
-            if (!gameInitialized)
-            {
-                TestSceneInit();
-            }
+        //if (currentSceneName == "boardScriptTestScene")
+        //{
+        //    if (!gameInitialized)
+        //    {
+        //        //TestSceneInit();
+        //    }
 
-        }
+        //}
     }
 
     /// <summary>
@@ -106,53 +106,62 @@ public class GameManager : MonoBehaviour
     /// <param name="p2HasRotRing">Does player2 have the rotationring?</param>
     /// <param name="p1StartPos">player1s starting position</param>
     /// <param name="p2StartPos">player2s strarting position</param>
-    public void SetPlayerInformation(string p1ID, string p2ID, bool p1HasViking, bool p2HasRotRing, Vector3 p1StartPos, Vector3 p2StartPos)
-    {
+    public void SetPlayerInformation(string p1ID, string p2ID, bool p1HasViking, bool p2HasRotRing, Vector2 p1StartPos, Vector2 p2StartPos)
+    {      
         if (p1ID != null && p1ID != string.Empty && p1StartPos != null)
-        {         
+        {
+            Undo.RecordObject(player1, "player1 info has been set"); //allows me to override the prefabs values so that they get saved
             player1.GetComponent<Player>().PlayerID = p1ID;
+            Undo.RecordObject(player1, "player1 character has been set");
             player1.GetComponent<Player>().HasViking = p1HasViking;
+            Undo.RecordObject(player1, "player1 ring has been set");
             player1.GetComponent<Player>().HasRotationRing = !p2HasRotRing; //Opposite of player2's choice
-            player1.GetComponent<Player>().Position = p1StartPos;
+            Undo.RecordObject(player1, "player1 Start position has been set");
+            player1.GetComponent<Player>().Position = p1StartPos;           
         }
         if (p2ID != null && p2ID != string.Empty && p2StartPos != null)
-        {          
+        {
+            Undo.RecordObject(player2, "player2 id has been set");       
             player2.GetComponent<Player>().PlayerID = p2ID;
+            Undo.RecordObject(player2, "player2 character has been set");
             player2.GetComponent<Player>().HasViking = !p1HasViking; //opposite of player1's choice
+            Undo.RecordObject(player2, "player2 ring has been set");
             player2.GetComponent<Player>().HasRotationRing = p2HasRotRing;
-            player2.GetComponent<Player>().Position = p2StartPos;
+            Undo.RecordObject(player2, "player2 Start position has been set");
+            player2.GetComponent<Player>().Position = p2StartPos;          
         }
-        SceneManager.LoadScene(sceneBuildIndex: 1, LoadSceneMode.Single); //1 = drakborgen scene //"DrakborgenARScene", 2 = drakborgen testscene
+        SceneManager.LoadScene(sceneBuildIndex: 2, LoadSceneMode.Single); //1 = drakborgen scene //"DrakborgenARScene", 2 = drakborgen testscene
     }
 
 
-    private void TestSceneInit()
-    {
-        gameInitialized = true;
-        GameObject board = GameObject.Find("GameBoard2");
-        gameBoard = board.GetComponent<GameBoard>();                 //arGameBoard;
-        gameBoard.InitGameBoard(player1.GetComponent<Player>(), player2.GetComponent<Player>()); //Might want to send in the entire gameobj
+    //private void TestSceneInit()
+    //{
+    //    gameInitialized = true;
+    //    GameObject board = GameObject.Find("boardScript2");
+    //    boardScript = board.GetComponent<boardScript>();                 //arboardScript;
+    //    boardScript.InitboardScript(player1.GetComponent<Player>(), player2.GetComponent<Player>()); //Might want to send in the entire gameobj
         
-        Debug.Log(gameBoard);
-    }
+    //    Debug.Log(boardScript);
+    //}
 
     /// <summary>
-    /// Initialize the game by setting the refrenses and calling the 
-    /// gameBoards initialize
+    /// Initialize the game by setting the refrenses to the boards script in scnene
+    /// and then calls its method to place the player characters by creating copies 
+    /// that has the right "color based on what character the players chose"
     /// </summary>
     public void InitGame()
     {
         if (player1 != null && player2 != null) //Make sure they aint null and load next scene
         {
-            gameInitialized = true;           
-            gameBoard = GameObject.Find("GameBoard2").GetComponent<GameBoard>();                    //arGameBoard;
-            gameBoard.InitGameBoard(player1.GetComponent<Player>(), player2.GetComponent<Player>()); //Might want to send in the entire gameobj
+            boardScript = GameObject.Find("drakborgenBoard3").GetComponent<BoardScript>();                  
+            boardScript.PlacePlayerAvatarOnStart(player1, player2, player1.GetComponent<Player>().HasViking); //might want to init the players here so that the prefabs values are contained with the avatar
             p1Turn = true;
 
             Debug.Log(GameManager.instance.name + " has been successfully moved");
+            gameInitialized = true;
         }
-        gameInitialized = true;
-    }//Fetch the assets like arcore etc from the new scene so that the gameMgr can use it
+       
+    }
 
     /// <summary>
     /// Check the players input on screen and then if they hit the board call the method that checks where on the 
@@ -172,7 +181,7 @@ public class GameManager : MonoBehaviour
         //        if (hit.collider.tag == "EmptyTile")
         //        {
         //            //RevealRoom(hit.transform.position);
-        //            gameBoard.RevealRoom(hit);
+        //            boardScript.RevealRoom(hit);
         //        }
         //    }
         //}

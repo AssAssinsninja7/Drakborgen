@@ -16,7 +16,7 @@ public class GameBoard : MonoBehaviour
     private Player player1, player2;
 
     //RoomTiles
-    private Queue<GameObject> roomStack; //roomStack is the container from which the gameboard gets the next placeable tile
+    private Queue<GameObject> roomStack; //roomStack is the container from which the boardScript gets the next placeable tile
 
     #region RoomObjects
     //e213wP2nD: "e = entrance" & "the number right after indicates the main entrance (the way you enter)
@@ -146,7 +146,7 @@ public class GameBoard : MonoBehaviour
         //}
     }
 
-    public void InitGameBoard(Player player1, Player player2) //take in startpos
+    public void InitboardScript(Player player1, Player player2) //take in startpos
     {
         this.player1 = player1; //this only holds a ref to the player sent in, maybe instanciate a new one and return the ref to gamemgr
         this.player2 = player2;
@@ -208,7 +208,7 @@ public class GameBoard : MonoBehaviour
     }
 
     /// <summary>
-    /// Set the boardMap tiles positions to that of the gameboards tileMap 
+    /// Set the boardMap tiles positions to that of the boardScripts tileMap 
     /// </summary>
     void CreateBoardGraph()
     {
@@ -418,7 +418,7 @@ public class GameBoard : MonoBehaviour
 
     /// <summary>
     /// Sets the final position for all the empty rooms so that they are in 
-    /// relation the the gameboards tilegrid
+    /// relation the the boardScripts tilegrid
     /// </summary>
     void SetBoardTilePositions()
     {
@@ -465,7 +465,7 @@ public class GameBoard : MonoBehaviour
         }
     }
 
-    //Have a method return the roomType maybe tag or something to the gameboard
+    //Have a method return the roomType maybe tag or something to the boardScript
     public void RevealRoom(RaycastHit hit)//take in the pos maybe?
     {
         //roomStack.Dequeue(); //get the next room and place it 
@@ -499,7 +499,7 @@ public class GameBoard : MonoBehaviour
 
     public void RevealroomAR(TrackableHit hit, GameObject statusCanvas)
     {
-        Debug.Log("Gameboard Reveal room was called");
+        Debug.Log("boardScript Reveal room was called");
         for (int y = 0; y < boardMap.GetLength(1); y++)
         {
             for (int x = 0; x < boardMap.GetLength(0); x++)
