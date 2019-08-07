@@ -146,6 +146,7 @@
     <Compile Include="Assets\GoogleARCore\SDK\Scripts\Utility\MarshalingHelper.cs" />
     <Compile Include="Assets\Scripts\ARControllScript.cs" />
     <Compile Include="Assets\Scripts\BoardScript.cs" />
+    <Compile Include="Assets\Scripts\emptyTileScript.cs" />
     <Compile Include="Assets\Scripts\GameBoard.cs" />
     <Compile Include="Assets\Scripts\GameBoardVizualizer.cs" />
     <Compile Include="Assets\Scripts\GameManager.cs" />
