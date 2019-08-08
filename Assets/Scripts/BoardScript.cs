@@ -50,26 +50,26 @@ public class BoardScript : MonoBehaviour
             {
                 if (hit.collider.tag == "EmptyTile") //if its empty and next to player
                 {
-                    
-                    PlaceRoom(hit);
+
+                    CheckPlacement(hit);
                     Debug.Log(hit.transform.position + " a tile was hit");
                 }
                 else if (hit.collider.tag == "StartPos")
                 {
-                    
+
                 }
             }
         }
     }
 
-  
+
 
     /// <summary>
     /// Shuffle the rooms so that the order of them is unknown
     /// and adds them to the roomstack
     /// </summary>
     void ShuffleStack()
-    {             
+    {
         allRooms.Shuffle<GameObject>();
         for (int i = 0; i < allRooms.Count; i++)
         {
@@ -90,7 +90,7 @@ public class BoardScript : MonoBehaviour
                 emptyTiles[x, y].SetActive(true);
             }
         }
-    }    
+    }
 
     /// <summary>
     /// First it checks if the tile is at a startpos and if it is it changes its tag to StartTile
@@ -124,8 +124,8 @@ public class BoardScript : MonoBehaviour
                 }
 
                 Vector3 boardLeftCornerPos = new Vector3(
-                    gameObject.GetComponent<Renderer>().bounds.min.x, 
-                    gameObject.GetComponent<Renderer>().bounds.max.y, 
+                    gameObject.GetComponent<Renderer>().bounds.min.x,
+                    gameObject.GetComponent<Renderer>().bounds.max.y,
                     gameObject.GetComponent<Renderer>().bounds.max.z);
 
                 depth = boardLeftCornerPos.y + (emptyTileHightOffset); //place the Emptytile ontop of the board and not inside
@@ -133,18 +133,20 @@ public class BoardScript : MonoBehaviour
                 boardTileWidth = boardCollider.x / emptyTiles.GetLength(0); //width of a single tile on the board
                 boardTileHeight = boardCollider.z / emptyTiles.GetLength(1); //lenght of a single tile on the board 
 
-                emptyTiles[x, y].transform.position = 
-                    new Vector3(boardLeftCornerPos.x + (boardTileWidth * x + emptyTileWithOffset), 
+                emptyTiles[x, y].transform.position =
+                    new Vector3(boardLeftCornerPos.x + (boardTileWidth * x + emptyTileWithOffset),
                     depth, boardLeftCornerPos.z - (boardTileHeight * y + emptyTileWithOffset));
             }
         }
         SetEmptyTileNeighbors();
     }
 
-    //Borked, want to use this to set the available rooms that the player can move towards
-    //Redo the neighbors so that they are saved as the index values of 
+    //Should work right
     private void SetEmptyTileNeighbors()
     {
+        int xMax = emptyTiles.GetLength(0) - 1;
+        int yMax = emptyTiles.GetLength(1) - 1;
+
         for (int y = 0; y < emptyTiles.GetLength(1); y++)
         {
             for (int x = 0; x < emptyTiles.GetLength(0); x++)
@@ -154,54 +156,53 @@ public class BoardScript : MonoBehaviour
                     emptyTiles[x, y].GetComponent<emptyTileScript>().Neighbors.Add(new Vector2(x + 1, y)); //right neighbor
                     emptyTiles[x, y].GetComponent<emptyTileScript>().Neighbors.Add(new Vector2(x, y + 1)); //bottom neighbor
                 }
-                else if (x == 0 && y == emptyTiles.GetLength(1)) //bottom left corner
+                else if (x == 0 && y == yMax) //bottom left corner
                 {
                     emptyTiles[x, y].GetComponent<emptyTileScript>().Neighbors.Add(new Vector2(x + 1, y)); //right neighbor
                     emptyTiles[x, y].GetComponent<emptyTileScript>().Neighbors.Add(new Vector2(x, y - 1)); //upper neighbor
                 }
-                else if (x == emptyTiles.GetLength(0) && y == 0) //upper right corner
+                else if (x == xMax && y == yMax) //upper right corner
                 {
                     emptyTiles[x, y].GetComponent<emptyTileScript>().Neighbors.Add(new Vector2(x - 1, y)); //left neighbor
                     emptyTiles[x, y].GetComponent<emptyTileScript>().Neighbors.Add(new Vector2(x, y + 1)); //bottom neighbor
                 }
-                else if (x == emptyTiles.GetLength(0) && y == emptyTiles.GetLength(1)) //bottom right corner
+                else if (x == xMax && y == yMax) //bottom right corner
                 {
                     emptyTiles[x, y].GetComponent<emptyTileScript>().Neighbors.Add(new Vector2(x - 1, y)); //left neighbor
                     emptyTiles[x, y].GetComponent<emptyTileScript>().Neighbors.Add(new Vector2(x, y - 1)); //upper neighbor
                 }
 
-                if (y == 0 && x > 0 || x < emptyTiles.GetLength(0)) //Top row (not corner tiles)
+                if (y == 0 && x > 0 && x < xMax) //Top row (not corner tiles)
                 {
                     emptyTiles[x, y].GetComponent<emptyTileScript>().Neighbors.Add(new Vector2(x - 1, y)); //left neighbor
                     emptyTiles[x, y].GetComponent<emptyTileScript>().Neighbors.Add(new Vector2(x + 1, y)); //right neighbor
                     emptyTiles[x, y].GetComponent<emptyTileScript>().Neighbors.Add(new Vector2(x, y + 1)); //bottom neighbor
                 }
-                else if (y == emptyTiles.GetLength(1) && x > 0 || x < emptyTiles.GetLength(0)) //Bottom row (not corner tiles)
+                else if (y == yMax && x > 0 && x < xMax) //Bottom row (not corner tiles)
                 {
                     emptyTiles[x, y].GetComponent<emptyTileScript>().Neighbors.Add(new Vector2(x - 1, y)); //left neighbor
                     emptyTiles[x, y].GetComponent<emptyTileScript>().Neighbors.Add(new Vector2(x + 1, y)); //right neighbor
                     emptyTiles[x, y].GetComponent<emptyTileScript>().Neighbors.Add(new Vector2(x, y - 1)); //upper neighbor
                 }
-                else if (x == 0 && y > 0 || y < emptyTiles.GetLength(1)) //Left row (not corner tiles)
+                else if (x == 0 && y > 0 && y < yMax) //Left row (not corner tiles)
                 {
                     emptyTiles[x, y].GetComponent<emptyTileScript>().Neighbors.Add(new Vector2(x, y - 1)); //upper neighbor
                     emptyTiles[x, y].GetComponent<emptyTileScript>().Neighbors.Add(new Vector2(x, y + 1)); //bottom neighbor
                     emptyTiles[x, y].GetComponent<emptyTileScript>().Neighbors.Add(new Vector2(x + 1, y)); //right neighbor
                 }
-                else if (x == emptyTiles.GetLength(0) && y > 0 || y < emptyTiles.GetLength(1))//Right row (not corner tiles)
+                else if (x == xMax && y > 0 && y < yMax)//Right row (not corner tiles)
                 {
                     emptyTiles[x, y].GetComponent<emptyTileScript>().Neighbors.Add(new Vector2(x, y - 1)); //upper neighbor
                     emptyTiles[x, y].GetComponent<emptyTileScript>().Neighbors.Add(new Vector2(x, y + 1)); //bottom neighbor
                     emptyTiles[x, y].GetComponent<emptyTileScript>().Neighbors.Add(new Vector2(x - 1, y)); //left neighbor
                 }
-                else //if not outerrim tiles then they have neighbors on all sides 
+                else if (x > 0 && x < xMax && y > 0 && y < yMax)//if not outerrim tiles then they have neighbors on all sides 
                 {
                     emptyTiles[x, y].GetComponent<emptyTileScript>().Neighbors.Add(new Vector2(x, y - 1)); //upper neighbor
                     emptyTiles[x, y].GetComponent<emptyTileScript>().Neighbors.Add(new Vector2(x, y + 1)); //bottom neighbor
                     emptyTiles[x, y].GetComponent<emptyTileScript>().Neighbors.Add(new Vector2(x - 1, y)); //left neighbor
                     emptyTiles[x, y].GetComponent<emptyTileScript>().Neighbors.Add(new Vector2(x + 1, y)); //right neighbor
                 }
-
             }
         }
     }
@@ -214,7 +215,7 @@ public class BoardScript : MonoBehaviour
     /// <param name="player2"></param>
     /// <param name="p1hasViking"></param>
     public void PlacePlayerAvatarOnStart(GameObject player1, GameObject player2, bool p1hasViking)
-    {              
+    {
         Vector2 player1StartPos = player1.GetComponent<Player>().Position;
         Vector2 player2StartPos = player2.GetComponent<Player>().Position;
 
@@ -224,7 +225,10 @@ public class BoardScript : MonoBehaviour
             monkAvatar = Instantiate(player2);
 
             vikingAvatar.transform.position = emptyTiles[(int)player1StartPos.x, (int)player1StartPos.y].transform.position;
+            emptyTiles[(int)player1StartPos.x, (int)player1StartPos.y].GetComponent<emptyTileScript>().hasPlayer = true; //set that this tile now has a player
+
             monkAvatar.transform.position = emptyTiles[(int)player2StartPos.x, (int)player2StartPos.y].transform.position;
+            emptyTiles[(int)player2StartPos.x, (int)player2StartPos.y].GetComponent<emptyTileScript>().hasPlayer = true;
 
             vikingAvatar.GetComponent<Player>().SetPlayerColor(p1hasViking);
             monkAvatar.GetComponent<Player>().SetPlayerColor(!p1hasViking);
@@ -242,7 +246,7 @@ public class BoardScript : MonoBehaviour
             vikingAvatar.GetComponent<Player>().SetPlayerColor(!p1hasViking);
             monkAvatar.GetComponent<Player>().SetPlayerColor(p1hasViking);
         }
-       
+
     }
 
     private void TestPlayerPlacement()
@@ -250,31 +254,64 @@ public class BoardScript : MonoBehaviour
         GameManager.instance.InitGame();
     }
 
-    void PlaceRoom(RaycastHit hit)
+    void CheckPlacement(RaycastHit hit)
     {
         for (int y = 0; y < emptyTiles.GetLength(1); y++)
         {
             for (int x = 0; x < emptyTiles.GetLength(0); x++)
             {
-                if (emptyTiles[x, y].transform.position == hit.transform.position)  
+                if (hit.transform.position == emptyTiles[x,y].transform.position) //check if it hit a tile
                 {
                     for (int i = 0; i < emptyTiles[x,y].GetComponent<emptyTileScript>().Neighbors.Count; i++)
                     {
-                        Debug.Log(emptyTiles[x, y].GetComponent<emptyTileScript>().Neighbors[i].ToString());
-                        Debug.Log(x.ToString() + " :  " + y.ToString() + " originTile");
-                        Debug.Log(x.ToString() + " :  " + y.ToString() + " originTile");
-                    }
+                        int nX = (int)emptyTiles[x, y].GetComponent<emptyTileScript>().Neighbors[i].x; //neighbor X
+                        int nY = (int)emptyTiles[x, y].GetComponent<emptyTileScript>().Neighbors[i].y; //neighbor Y
 
-                    //Note to self, corridor tilesen behövs skalas om då de är mer än dubbla höjden utav eventroom D:<                
-                    emptyTiles[x, y] = Instantiate(roomStack.Dequeue());
-                    emptyTiles[x, y].transform.SetPositionAndRotation(hit.transform.position, new Quaternion(90, 0, 0, 0)); //should activate the rotation so that it is rotates up
-                    emptyTiles[x, y].SetActive(true);
+                        if (emptyTiles[nX, nY].GetComponent<emptyTileScript>().hasPlayer) //maybe set a check for the right player
+                        {
+                            PlaceRoom(hit.transform.position);
+                        }
+                        else
+                        {
+                            Debug.Log(x + " " + y + " " + "Tile wasnt next to player tile");
+                        }
+                    }
                 }
             }
         }
     }
 
-   void TestPlacementAfterPlayer()
+    void PlaceRoom(Vector3 hitPos)
+    {
+        for (int y = 0; y < emptyTiles.GetLength(1); y++)
+        {
+            for (int x = 0; x < emptyTiles.GetLength(0); x++)
+            {
+                if (emptyTiles[x, y].transform.position == hitPos) //if we hit a tile
+                {
+                    #region debug for neighbors
+                    //for (int i = 0; i < emptyTiles[x, y].GetComponent<emptyTileScript>().Neighbors.Count; i++)
+                    //{
+                    //    Debug.Log(emptyTiles[x, y].GetComponent<emptyTileScript>().Neighbors[i].ToString());
+
+                    //}
+                    //Debug.Log(x.ToString() + " :  " + y.ToString() + " originTile");
+                    #endregion
+
+
+                    //if that tile is next to player place otherwise, show error msg loop through neighbors
+
+                    //Note to self, corridor tilesen behövs skalas om då de är mer än dubbla höjden utav eventroom D:<                
+                    emptyTiles[x, y] = Instantiate(roomStack.Dequeue());
+                    emptyTiles[x, y].transform.SetPositionAndRotation(hitPos, new Quaternion(90, 0, 0, 0)); //should activate the rotation so that it is rotates up
+                    emptyTiles[x, y].SetActive(true);
+
+                }
+            }
+        }
+    }
+
+    void TestPlacementAfterPlayer()
     {
 
     }
