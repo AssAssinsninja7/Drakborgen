@@ -269,7 +269,7 @@ public class BoardScript : MonoBehaviour
 
                         if (emptyTiles[nX, nY].GetComponent<emptyTileScript>().hasPlayer) //maybe set a check for the right player
                         {
-                            PlaceRoom(hit.transform.position);
+                            PlaceRoom(hit.transform.position, SetEntranceAngle(nX, x, nY, y));
                         }
                         else
                         {
@@ -281,7 +281,7 @@ public class BoardScript : MonoBehaviour
         }
     }
 
-    void PlaceRoom(Vector3 hitPos)
+    void PlaceRoom(Vector3 hitPos, float rotationAngle)
     {
         for (int y = 0; y < emptyTiles.GetLength(1); y++)
         {
@@ -296,19 +296,48 @@ public class BoardScript : MonoBehaviour
 
                     //}
                     //Debug.Log(x.ToString() + " :  " + y.ToString() + " originTile");
-                    #endregion
+                    #endregion                  
 
-
-                    //if that tile is next to player place otherwise, show error msg loop through neighbors
-
-                    //Note to self, corridor tilesen behövs skalas om då de är mer än dubbla höjden utav eventroom D:<                
+                    //Note to self, corridor tilesen behövs skalas om då de är mer än dubbla höjden utav eventroom D:<      
+                    Destroy(emptyTiles[x, y]);
                     emptyTiles[x, y] = Instantiate(roomStack.Dequeue());
-                    emptyTiles[x, y].transform.SetPositionAndRotation(hitPos, new Quaternion(90, 0, 0, 0)); //should activate the rotation so that it is rotates up
+
+                    emptyTiles[x, y].transform.position = hitPos; //set pos to that of pressed tile
+                    var rotationVector = emptyTiles[x, y].transform.eulerAngles;
+                    rotationVector.y = rotationAngle; //set rotation to that of the way the player is moving
+                    rotationVector.x = 180; //face up
+
+                    emptyTiles[x, y].transform.eulerAngles = rotationVector;
                     emptyTiles[x, y].SetActive(true);
+
+                    //Next move player to the new room and activate rooom
 
                 }
             }
         }
+    }
+
+    float SetEntranceAngle(int nX, int x, int nY, int y)
+    {
+        float finalAngle;
+
+        if (x < nX && y == nY)
+        {
+            finalAngle = 90f; //Move left
+        }
+        else if (x > nX && y == nY)
+        {
+            finalAngle = 270f; //Move right
+        }
+        else if (y < nY && x == nX)
+        {
+            finalAngle = 180f; //Move up
+        }
+        else
+        {
+            finalAngle = 0f; //Move down
+        }
+        return finalAngle;
     }
 
     void TestPlacementAfterPlayer()
