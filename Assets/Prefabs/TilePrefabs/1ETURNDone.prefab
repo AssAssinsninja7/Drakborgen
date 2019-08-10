@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 2419981292407457436}
   m_Layer: 0
   m_Name: 1ETURNDone
-  m_TagString: Room
+  m_TagString: TurnRoom
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -112,5 +112,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38312036fe32df34787825619dce5bce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  myRoomType: 0
+  myRoomType: 2
   myExitDirections: 01000000

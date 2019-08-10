@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 4419489667300740813}
   m_Layer: 0
   m_Name: 3E134CORRIDORDone
-  m_TagString: Room
+  m_TagString: CorridorRoom
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

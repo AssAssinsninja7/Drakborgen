@@ -89,11 +89,11 @@ public class ARControllScript : MonoBehaviour
                 //Instanciate the board facing up based on where the user hit
                 boardObject = Instantiate(BoardPrefab, new Vector3(hit.Pose.position.x, hit.Pose.position.y, hit.Distance), Quaternion.Euler(0, 0, 0)); //hit.Pose.position
 
-                //for (int y = 0; y < boardObject.GetComponent<BoardScript>().emptyTiles.GetLength(1); y++)
+                //for (int y = 0; y < boardObject.GetComponent<BoardScript>().boardTiles.GetLength(1); y++)
                 //{
-                //    for (int x = 0; x < boardObject.GetComponent<BoardScript>().emptyTiles.GetLength(0); x++)
+                //    for (int x = 0; x < boardObject.GetComponent<BoardScript>().boardTiles.GetLength(0); x++)
                 //    {
-                //        Instantiate(boardObject.GetComponent<BoardScript>().emptyTiles[x, y]);
+                //        Instantiate(boardObject.GetComponent<BoardScript>().boardTiles[x, y]);
 
                 //    }
                 //}

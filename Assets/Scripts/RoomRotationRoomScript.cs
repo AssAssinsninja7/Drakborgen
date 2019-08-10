@@ -4,10 +4,13 @@ using UnityEngine;
 
 public class RoomRotationRoomScript : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+
+    public List<Vector2> Neighbors { get; set; }
+
+    
+    void Awake()
     {
-        
+        Neighbors = new List<Vector2>();
     }
 
     // Update is called once per frame

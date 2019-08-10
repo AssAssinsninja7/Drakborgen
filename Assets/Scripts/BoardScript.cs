@@ -11,7 +11,7 @@ public class BoardScript : MonoBehaviour
 
     public Queue<GameObject> roomStack; //this will be the shuffled allRooms list
 
-    private GameObject[,] emptyTiles; //The collection of hitboxes that can overlays the board "The actual Grid"
+    private GameObject[,] boardTiles; //The collection of hitboxes that can overlays the board "The actual Grid"
 
     private Vector3 boardCollider;
 
@@ -22,12 +22,12 @@ public class BoardScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        emptyTiles = new GameObject[10, 7];
+        boardTiles = new GameObject[10, 7];
         roomStack = new Queue<GameObject>();
 
         boardCollider = GetComponent<Renderer>().bounds.size;
 
-        InitializeEmptyTilesObjects();
+        InitializeBoardTilesObjects();
         CreateBoardGrid();
         ShuffleStack();
 
@@ -54,10 +54,12 @@ public class BoardScript : MonoBehaviour
                     CheckPlacement(hit);
                     Debug.Log(hit.transform.position + " a tile was hit");
                 }
-                else if (hit.collider.tag == "StartPos")
+                else if (hit.collider.tag == "StartPos") 
                 {
 
                 }
+                //Add the other roomtypes here later as well and have them just call a variant of checkplacement
+                //that just checks that the  hit is next to the player pos and then move rather than placing a room.
             }
         }
     }
@@ -78,16 +80,16 @@ public class BoardScript : MonoBehaviour
     }
 
     /// <summary>
-    /// Initialize the emptyTiles that will act as hitboxes
+    /// Initialize the boardTiles that will act as hitboxes
     /// </summary>
-    void InitializeEmptyTilesObjects()
+    void InitializeBoardTilesObjects()
     {
-        for (int y = 0; y < emptyTiles.GetLength(1); y++)
+        for (int y = 0; y < boardTiles.GetLength(1); y++)
         {
-            for (int x = 0; x < emptyTiles.GetLength(0); x++)
+            for (int x = 0; x < boardTiles.GetLength(0); x++)
             {
-                emptyTiles[x, y] = Instantiate(emptyTile); //init the the emptyTiles
-                emptyTiles[x, y].SetActive(true);
+                boardTiles[x, y] = Instantiate(emptyTile); //init the the boardTiles
+                boardTiles[x, y].SetActive(true);
             }
         }
     }
@@ -110,17 +112,17 @@ public class BoardScript : MonoBehaviour
         float emptyTileHightOffset = emptyTile.GetComponent<Renderer>().bounds.size.y / 2; //offsetHeight = emptytile prefabs height
         float emptyTileWithOffset = 0.5f; //emptyTile.GetComponent<Renderer>().bounds.size.x / 2; //offsetWidth = emptytile prefabs width 
 
-        for (int y = 0; y < emptyTiles.GetLength(1); y++)
+        for (int y = 0; y < boardTiles.GetLength(1); y++)
         {
-            for (int x = 0; x < emptyTiles.GetLength(0); x++)
+            for (int x = 0; x < boardTiles.GetLength(0); x++)
             {
                 if (x == 0 && y == 0 || x == 9 && y == 0 || x == 0 && y == 6 || x == 9 && y == 6)
                 {
-                    emptyTiles[x, y].tag = "StartTile";
+                    boardTiles[x, y].tag = "StartTile";
                 }
                 if (x == 4 && y == 3 || x == 5 && y == 3)
                 {
-                    emptyTiles[x, y].tag = "TreasureTile";
+                    boardTiles[x, y].tag = "TreasureTile";
                 }
 
                 Vector3 boardLeftCornerPos = new Vector3(
@@ -130,78 +132,78 @@ public class BoardScript : MonoBehaviour
 
                 depth = boardLeftCornerPos.y + (emptyTileHightOffset); //place the Emptytile ontop of the board and not inside
 
-                boardTileWidth = boardCollider.x / emptyTiles.GetLength(0); //width of a single tile on the board
-                boardTileHeight = boardCollider.z / emptyTiles.GetLength(1); //lenght of a single tile on the board 
+                boardTileWidth = boardCollider.x / boardTiles.GetLength(0); //width of a single tile on the board
+                boardTileHeight = boardCollider.z / boardTiles.GetLength(1); //lenght of a single tile on the board 
 
-                emptyTiles[x, y].transform.position =
+                boardTiles[x, y].transform.position =
                     new Vector3(boardLeftCornerPos.x + (boardTileWidth * x + emptyTileWithOffset),
                     depth, boardLeftCornerPos.z - (boardTileHeight * y + emptyTileWithOffset));
             }
         }
-        SetEmptyTileNeighbors();
+        SetBoardTileNeighbors();
     }
 
     //Should work right
-    private void SetEmptyTileNeighbors()
+    private void SetBoardTileNeighbors()
     {
-        int xMax = emptyTiles.GetLength(0) - 1;
-        int yMax = emptyTiles.GetLength(1) - 1;
+        int xMax = boardTiles.GetLength(0) - 1;
+        int yMax = boardTiles.GetLength(1) - 1;
 
-        for (int y = 0; y < emptyTiles.GetLength(1); y++)
+        for (int y = 0; y < boardTiles.GetLength(1); y++)
         {
-            for (int x = 0; x < emptyTiles.GetLength(0); x++)
+            for (int x = 0; x < boardTiles.GetLength(0); x++)
             {
                 if (x == 0 && y == 0) //upper left corner
                 {
-                    emptyTiles[x, y].GetComponent<emptyTileScript>().Neighbors.Add(new Vector2(x + 1, y)); //right neighbor
-                    emptyTiles[x, y].GetComponent<emptyTileScript>().Neighbors.Add(new Vector2(x, y + 1)); //bottom neighbor
+                    boardTiles[x, y].GetComponent<emptyTileScript>().Neighbors.Add(new Vector2(x + 1, y)); //right neighbor
+                    boardTiles[x, y].GetComponent<emptyTileScript>().Neighbors.Add(new Vector2(x, y + 1)); //bottom neighbor
                 }
                 else if (x == 0 && y == yMax) //bottom left corner
                 {
-                    emptyTiles[x, y].GetComponent<emptyTileScript>().Neighbors.Add(new Vector2(x + 1, y)); //right neighbor
-                    emptyTiles[x, y].GetComponent<emptyTileScript>().Neighbors.Add(new Vector2(x, y - 1)); //upper neighbor
+                    boardTiles[x, y].GetComponent<emptyTileScript>().Neighbors.Add(new Vector2(x + 1, y)); //right neighbor
+                    boardTiles[x, y].GetComponent<emptyTileScript>().Neighbors.Add(new Vector2(x, y - 1)); //upper neighbor
                 }
                 else if (x == xMax && y == yMax) //upper right corner
                 {
-                    emptyTiles[x, y].GetComponent<emptyTileScript>().Neighbors.Add(new Vector2(x - 1, y)); //left neighbor
-                    emptyTiles[x, y].GetComponent<emptyTileScript>().Neighbors.Add(new Vector2(x, y + 1)); //bottom neighbor
+                    boardTiles[x, y].GetComponent<emptyTileScript>().Neighbors.Add(new Vector2(x - 1, y)); //left neighbor
+                    boardTiles[x, y].GetComponent<emptyTileScript>().Neighbors.Add(new Vector2(x, y + 1)); //bottom neighbor
                 }
                 else if (x == xMax && y == yMax) //bottom right corner
                 {
-                    emptyTiles[x, y].GetComponent<emptyTileScript>().Neighbors.Add(new Vector2(x - 1, y)); //left neighbor
-                    emptyTiles[x, y].GetComponent<emptyTileScript>().Neighbors.Add(new Vector2(x, y - 1)); //upper neighbor
+                    boardTiles[x, y].GetComponent<emptyTileScript>().Neighbors.Add(new Vector2(x - 1, y)); //left neighbor
+                    boardTiles[x, y].GetComponent<emptyTileScript>().Neighbors.Add(new Vector2(x, y - 1)); //upper neighbor
                 }
 
                 if (y == 0 && x > 0 && x < xMax) //Top row (not corner tiles)
                 {
-                    emptyTiles[x, y].GetComponent<emptyTileScript>().Neighbors.Add(new Vector2(x - 1, y)); //left neighbor
-                    emptyTiles[x, y].GetComponent<emptyTileScript>().Neighbors.Add(new Vector2(x + 1, y)); //right neighbor
-                    emptyTiles[x, y].GetComponent<emptyTileScript>().Neighbors.Add(new Vector2(x, y + 1)); //bottom neighbor
+                    boardTiles[x, y].GetComponent<emptyTileScript>().Neighbors.Add(new Vector2(x - 1, y)); //left neighbor
+                    boardTiles[x, y].GetComponent<emptyTileScript>().Neighbors.Add(new Vector2(x + 1, y)); //right neighbor
+                    boardTiles[x, y].GetComponent<emptyTileScript>().Neighbors.Add(new Vector2(x, y + 1)); //bottom neighbor
                 }
                 else if (y == yMax && x > 0 && x < xMax) //Bottom row (not corner tiles)
                 {
-                    emptyTiles[x, y].GetComponent<emptyTileScript>().Neighbors.Add(new Vector2(x - 1, y)); //left neighbor
-                    emptyTiles[x, y].GetComponent<emptyTileScript>().Neighbors.Add(new Vector2(x + 1, y)); //right neighbor
-                    emptyTiles[x, y].GetComponent<emptyTileScript>().Neighbors.Add(new Vector2(x, y - 1)); //upper neighbor
+                    boardTiles[x, y].GetComponent<emptyTileScript>().Neighbors.Add(new Vector2(x - 1, y)); //left neighbor
+                    boardTiles[x, y].GetComponent<emptyTileScript>().Neighbors.Add(new Vector2(x + 1, y)); //right neighbor
+                    boardTiles[x, y].GetComponent<emptyTileScript>().Neighbors.Add(new Vector2(x, y - 1)); //upper neighbor
                 }
                 else if (x == 0 && y > 0 && y < yMax) //Left row (not corner tiles)
                 {
-                    emptyTiles[x, y].GetComponent<emptyTileScript>().Neighbors.Add(new Vector2(x, y - 1)); //upper neighbor
-                    emptyTiles[x, y].GetComponent<emptyTileScript>().Neighbors.Add(new Vector2(x, y + 1)); //bottom neighbor
-                    emptyTiles[x, y].GetComponent<emptyTileScript>().Neighbors.Add(new Vector2(x + 1, y)); //right neighbor
+                    boardTiles[x, y].GetComponent<emptyTileScript>().Neighbors.Add(new Vector2(x, y - 1)); //upper neighbor
+                    boardTiles[x, y].GetComponent<emptyTileScript>().Neighbors.Add(new Vector2(x, y + 1)); //bottom neighbor
+                    boardTiles[x, y].GetComponent<emptyTileScript>().Neighbors.Add(new Vector2(x + 1, y)); //right neighbor
                 }
                 else if (x == xMax && y > 0 && y < yMax)//Right row (not corner tiles)
                 {
-                    emptyTiles[x, y].GetComponent<emptyTileScript>().Neighbors.Add(new Vector2(x, y - 1)); //upper neighbor
-                    emptyTiles[x, y].GetComponent<emptyTileScript>().Neighbors.Add(new Vector2(x, y + 1)); //bottom neighbor
-                    emptyTiles[x, y].GetComponent<emptyTileScript>().Neighbors.Add(new Vector2(x - 1, y)); //left neighbor
+                    boardTiles[x, y].GetComponent<emptyTileScript>().Neighbors.Add(new Vector2(x, y - 1)); //upper neighbor
+                    boardTiles[x, y].GetComponent<emptyTileScript>().Neighbors.Add(new Vector2(x, y + 1)); //bottom neighbor
+                    boardTiles[x, y].GetComponent<emptyTileScript>().Neighbors.Add(new Vector2(x - 1, y)); //left neighbor
                 }
                 else if (x > 0 && x < xMax && y > 0 && y < yMax)//if not outerrim tiles then they have neighbors on all sides 
                 {
-                    emptyTiles[x, y].GetComponent<emptyTileScript>().Neighbors.Add(new Vector2(x, y - 1)); //upper neighbor
-                    emptyTiles[x, y].GetComponent<emptyTileScript>().Neighbors.Add(new Vector2(x, y + 1)); //bottom neighbor
-                    emptyTiles[x, y].GetComponent<emptyTileScript>().Neighbors.Add(new Vector2(x - 1, y)); //left neighbor
-                    emptyTiles[x, y].GetComponent<emptyTileScript>().Neighbors.Add(new Vector2(x + 1, y)); //right neighbor
+                    boardTiles[x, y].GetComponent<emptyTileScript>().Neighbors.Add(new Vector2(x, y - 1)); //upper neighbor
+                    boardTiles[x, y].GetComponent<emptyTileScript>().Neighbors.Add(new Vector2(x, y + 1)); //bottom neighbor
+                    boardTiles[x, y].GetComponent<emptyTileScript>().Neighbors.Add(new Vector2(x - 1, y)); //left neighbor
+                    boardTiles[x, y].GetComponent<emptyTileScript>().Neighbors.Add(new Vector2(x + 1, y)); //right neighbor
                 }
             }
         }
@@ -224,11 +226,11 @@ public class BoardScript : MonoBehaviour
             vikingAvatar = Instantiate(player1);
             monkAvatar = Instantiate(player2);
 
-            vikingAvatar.transform.position = emptyTiles[(int)player1StartPos.x, (int)player1StartPos.y].transform.position;
-            emptyTiles[(int)player1StartPos.x, (int)player1StartPos.y].GetComponent<emptyTileScript>().hasPlayer = true; //set that this tile now has a player
+            vikingAvatar.transform.position = boardTiles[(int)player1StartPos.x, (int)player1StartPos.y].transform.position;
+            boardTiles[(int)player1StartPos.x, (int)player1StartPos.y].GetComponent<emptyTileScript>().hasPlayer = true; //set that this tile now has a player
 
-            monkAvatar.transform.position = emptyTiles[(int)player2StartPos.x, (int)player2StartPos.y].transform.position;
-            emptyTiles[(int)player2StartPos.x, (int)player2StartPos.y].GetComponent<emptyTileScript>().hasPlayer = true;
+            monkAvatar.transform.position = boardTiles[(int)player2StartPos.x, (int)player2StartPos.y].transform.position;
+            boardTiles[(int)player2StartPos.x, (int)player2StartPos.y].GetComponent<emptyTileScript>().hasPlayer = true;
 
             vikingAvatar.GetComponent<Player>().SetPlayerColor(p1hasViking);
             monkAvatar.GetComponent<Player>().SetPlayerColor(!p1hasViking);
@@ -240,8 +242,8 @@ public class BoardScript : MonoBehaviour
             vikingAvatar = Instantiate(player2);
             monkAvatar = Instantiate(player1);
 
-            vikingAvatar.transform.position = emptyTiles[(int)player2StartPos.x, (int)player2StartPos.y].transform.position;
-            monkAvatar.transform.position = emptyTiles[(int)player1StartPos.x, (int)player1StartPos.y].transform.position;
+            vikingAvatar.transform.position = boardTiles[(int)player2StartPos.x, (int)player2StartPos.y].transform.position;
+            monkAvatar.transform.position = boardTiles[(int)player1StartPos.x, (int)player1StartPos.y].transform.position;
 
             vikingAvatar.GetComponent<Player>().SetPlayerColor(!p1hasViking);
             monkAvatar.GetComponent<Player>().SetPlayerColor(p1hasViking);
@@ -254,22 +256,24 @@ public class BoardScript : MonoBehaviour
         GameManager.instance.InitGame();
     }
 
-    void CheckPlacement(RaycastHit hit)
+    void CheckPlacement(RaycastHit hit) 
     {
-        for (int y = 0; y < emptyTiles.GetLength(1); y++)
+        for (int y = 0; y < boardTiles.GetLength(1); y++)
         {
-            for (int x = 0; x < emptyTiles.GetLength(0); x++)
+            for (int x = 0; x < boardTiles.GetLength(0); x++)
             {
-                if (hit.transform.position == emptyTiles[x,y].transform.position) //check if it hit a tile
+                if (hit.transform.position == boardTiles[x, y].transform.position) //check if it hit a tile
                 {
-                    for (int i = 0; i < emptyTiles[x,y].GetComponent<emptyTileScript>().Neighbors.Count; i++)
+                    for (int i = 0; i < boardTiles[x, y].GetComponent<emptyTileScript>().Neighbors.Count; i++)
                     {
-                        int nX = (int)emptyTiles[x, y].GetComponent<emptyTileScript>().Neighbors[i].x; //neighbor X
-                        int nY = (int)emptyTiles[x, y].GetComponent<emptyTileScript>().Neighbors[i].y; //neighbor Y
+                        int nX = (int)boardTiles[x, y].GetComponent<emptyTileScript>().Neighbors[i].x; //neighbor X
+                        int nY = (int)boardTiles[x, y].GetComponent<emptyTileScript>().Neighbors[i].y; //neighbor Y
 
-                        if (emptyTiles[nX, nY].GetComponent<emptyTileScript>().hasPlayer) //maybe set a check for the right player
+                        if (boardTiles[nX, nY].GetComponent<emptyTileScript>().hasPlayer) //maybe set a check for the right player
                         {
                             PlaceRoom(hit.transform.position, SetEntranceAngle(nX, x, nY, y));
+                            //maybe have a bool telling that he placement was succesful and have the gameMgr get that and then call 
+                            //moveplayer which moves the player and activates the event
                         }
                         else
                         {
@@ -283,41 +287,68 @@ public class BoardScript : MonoBehaviour
 
     void PlaceRoom(Vector3 hitPos, float rotationAngle)
     {
-        for (int y = 0; y < emptyTiles.GetLength(1); y++)
+        for (int y = 0; y < boardTiles.GetLength(1); y++)
         {
-            for (int x = 0; x < emptyTiles.GetLength(0); x++)
+            for (int x = 0; x < boardTiles.GetLength(0); x++)
             {
-                if (emptyTiles[x, y].transform.position == hitPos) //if we hit a tile
+                if (boardTiles[x, y].transform.position == hitPos) //if we hit a tile
                 {
                     #region debug for neighbors
-                    //for (int i = 0; i < emptyTiles[x, y].GetComponent<emptyTileScript>().Neighbors.Count; i++)
+                    //for (int i = 0; i < boardTiles[x, y].GetComponent<emptyTileScript>().Neighbors.Count; i++)
                     //{
-                    //    Debug.Log(emptyTiles[x, y].GetComponent<emptyTileScript>().Neighbors[i].ToString());
+                    //    Debug.Log(boardTiles[x, y].GetComponent<emptyTileScript>().Neighbors[i].ToString());
 
                     //}
                     //Debug.Log(x.ToString() + " :  " + y.ToString() + " originTile");
-                    #endregion                  
+                    #endregion
 
-                    //Note to self, corridor tilesen behövs skalas om då de är mer än dubbla höjden utav eventroom D:<      
-                    Destroy(emptyTiles[x, y]);
-                    emptyTiles[x, y] = Instantiate(roomStack.Dequeue());
+                    List<Vector2> tempNeighbors = boardTiles[x, y].GetComponent<emptyTileScript>().Neighbors; //save neigbors so we can add them to the newly instanciated emptyTile[x,y]
 
-                    emptyTiles[x, y].transform.position = hitPos; //set pos to that of pressed tile
-                    var rotationVector = emptyTiles[x, y].transform.eulerAngles;
+                    Destroy(boardTiles[x, y]);
+                    boardTiles[x, y] = Instantiate(roomStack.Dequeue());
+
+                    if (boardTiles[x,y].tag == "Room") //"Event"
+                    {
+                        boardTiles[x, y].GetComponent<RoomScript>().Neighbors = tempNeighbors; //add the old boardTiles neighbors          
+                    }
+                    else if (boardTiles[x,y].tag == "CorridorRoom")
+                    {
+                        boardTiles[x, y].GetComponent<RoomCorridorScript>().Neighbors = tempNeighbors; //add the old boardTiles neighbors          
+                    }
+                    else if (boardTiles[x, y].tag == "TurnRoom")
+                    {
+                        boardTiles[x, y].GetComponent<RoomRotationRoomScript>().Neighbors = tempNeighbors; //add the old boardTiles neighbors          
+                    }
+
+                    boardTiles[x, y].transform.position = hitPos; //set pos to that of pressed tile
+                    var rotationVector = boardTiles[x, y].transform.eulerAngles;
                     rotationVector.y = rotationAngle; //set rotation to that of the way the player is moving
                     rotationVector.x = 180; //face up
 
-                    emptyTiles[x, y].transform.eulerAngles = rotationVector;
-                    emptyTiles[x, y].SetActive(true);
+                    boardTiles[x, y].transform.eulerAngles = rotationVector;
+                    boardTiles[x, y].SetActive(true);
 
                     //Next move player to the new room and activate rooom
+
 
                 }
             }
         }
     }
 
-    float SetEntranceAngle(int nX, int x, int nY, int y)
+    /// <summary>
+    /// Takes the current clicked tiles index values and compares them to the
+    /// neighbor with the player on, it then determines which way to flip it 
+    /// based on how the orgin tiles index values compares to the neighbors 
+    /// index values. Lastly it returns the angle which the placed tile
+    /// should flip
+    /// </summary>
+    /// <param name="nX">neigbors x value</param>
+    /// <param name="x">clicked tile x value</param>
+    /// <param name="nY">neigbors y value</param>
+    /// <param name="y">clicked tile y value</param>
+    /// <returns></returns>
+    private float SetEntranceAngle(int nX, int x, int nY, int y)
     {
         float finalAngle;
 
@@ -340,9 +371,21 @@ public class BoardScript : MonoBehaviour
         return finalAngle;
     }
 
-    void TestPlacementAfterPlayer()
+    void MovePlayerAvatar(Vector3 nextPosition)
     {
+        //move player
+        //loop through tils check which tile has same pos, check tag and activate that tile event
 
+        for (int y = 0; y < boardTiles.GetLength(1); y++)
+        {
+            for (int x = 0; x < boardTiles.GetLength(0); x++)
+            {
+                if (boardTiles[x,y].transform.position = ) //if the tile is equal to the new player pos, check the tag and activate the tile, yeah and move the player
+                {
+
+                }
+            }
+        }
     }
 }
 

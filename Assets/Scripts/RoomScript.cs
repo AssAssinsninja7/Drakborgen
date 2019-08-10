@@ -11,7 +11,7 @@ public class RoomScript : MonoBehaviour
     // public so we can set in editor 
     public RoomType myRoomType;
 
-    
+    public List<Vector2> Neighbors { get; set; }
 
     private int myRoomRotation = 0;
     //                                   e1,     e2,   e3,     e4      public so we can set in editor 
@@ -23,6 +23,8 @@ public class RoomScript : MonoBehaviour
     {
         animator = GetComponent<Animator>(); 
         animator.enabled = false; //Disable animation controller since it fucks up the tiles scale
+
+        Neighbors = new List<Vector2>();
     }
 
     void Init(int aRoomRotation)

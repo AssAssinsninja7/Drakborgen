@@ -10,6 +10,8 @@ TagManager:
   - Room
   - StartTile
   - TreasureTile
+  - CorridorRoom
+  - TurnRoom
   layers:
   - Default
   - TransparentFX

@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 3502571187274948999}
   m_Layer: 0
   m_Name: 2E14PORTCULLISDone
-  m_TagString: Room
+  m_TagString: CorridorRoom
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
