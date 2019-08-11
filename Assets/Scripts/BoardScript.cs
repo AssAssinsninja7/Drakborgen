@@ -51,10 +51,10 @@ public class BoardScript : MonoBehaviour
                 if (hit.collider.tag == "EmptyTile") //if its empty and next to player
                 {
 
-                    CheckPlacement(hit);
+                    CheckPlacement(hit); //take in which player turn it is
                     Debug.Log(hit.transform.position + " a tile was hit");
                 }
-                else if (hit.collider.tag == "StartPos") 
+                else if (hit.collider.tag == "StartPos")
                 {
 
                 }
@@ -223,30 +223,46 @@ public class BoardScript : MonoBehaviour
 
         if (player1.GetComponent<Player>().HasViking) //check which gameObj avatar to save the player profile in (Instansiate in)
         {
-            vikingAvatar = Instantiate(player1);
-            monkAvatar = Instantiate(player2);
+            //vikingAvatar = Instantiate(player1);
+            //monkAvatar = Instantiate(player2);
 
-            vikingAvatar.transform.position = boardTiles[(int)player1StartPos.x, (int)player1StartPos.y].transform.position;
+            //vikingAvatar.transform.position = boardTiles[(int)player1StartPos.x, (int)player1StartPos.y].transform.position;
+            //boardTiles[(int)player1StartPos.x, (int)player1StartPos.y].GetComponent<emptyTileScript>().hasPlayer = true; //set that this tile now has a player
+
+            //monkAvatar.transform.position = boardTiles[(int)player2StartPos.x, (int)player2StartPos.y].transform.position;
+            //boardTiles[(int)player2StartPos.x, (int)player2StartPos.y].GetComponent<emptyTileScript>().hasPlayer = true;
+
+            //vikingAvatar.GetComponent<Player>().SetPlayerColor(p1hasViking);
+            //monkAvatar.GetComponent<Player>().SetPlayerColor(!p1hasViking);
+
+            //Instantiate(GameManager.instance.player1.GetComponent<Player>().playerModel);  // <- instanciate this one and set its position
+            //Instantiate(GameManager.instance.player2.GetComponent<Player>().playerModel); //set monk to be a ref of player2s gameobject   
+
+            GameManager.instance.player1.GetComponent<Player>().playerModel.transform.position = boardTiles[(int)player1StartPos.x, (int)player1StartPos.y].transform.position;
             boardTiles[(int)player1StartPos.x, (int)player1StartPos.y].GetComponent<emptyTileScript>().hasPlayer = true; //set that this tile now has a player
 
-            monkAvatar.transform.position = boardTiles[(int)player2StartPos.x, (int)player2StartPos.y].transform.position;
+            GameManager.instance.player2.GetComponent<Player>().playerModel.transform.position = boardTiles[(int)player2StartPos.x, (int)player2StartPos.y].transform.position;
             boardTiles[(int)player2StartPos.x, (int)player2StartPos.y].GetComponent<emptyTileScript>().hasPlayer = true;
 
-            vikingAvatar.GetComponent<Player>().SetPlayerColor(p1hasViking);
-            monkAvatar.GetComponent<Player>().SetPlayerColor(!p1hasViking);
+            //Debug.Log(GameManager.instance.player1.GetComponent<Player>().playerModel.);
+            //GameManager.instance.player1.GetComponent<Player>().SetPlayerColor();
+            //GameManager.instance.player2.GetComponent<Player>().SetPlayerColor();
 
+            GameManager.instance.player1.GetComponent<Player>().playerModel.GetComponent<Renderer>().material.color = Color.red; //when it tries to set the color it says that there isnt any mtrl so this needs to be fixed
+            GameManager.instance.player2.GetComponent<Player>().playerModel.GetComponent<Renderer>().material.color = Color.yellow;
             //need to offset with the height of the model
         }
         else
         {
-            vikingAvatar = Instantiate(player2);
-            monkAvatar = Instantiate(player1);
+            //vikingAvatar = Instantiate(player2);
+            //monkAvatar = Instantiate(player1);
 
-            vikingAvatar.transform.position = boardTiles[(int)player2StartPos.x, (int)player2StartPos.y].transform.position;
-            monkAvatar.transform.position = boardTiles[(int)player1StartPos.x, (int)player1StartPos.y].transform.position;
+            //vikingAvatar.transform.position = boardTiles[(int)player2StartPos.x, (int)player2StartPos.y].transform.position;
+            //monkAvatar.transform.position = boardTiles[(int)player1StartPos.x, (int)player1StartPos.y].transform.position;
 
-            vikingAvatar.GetComponent<Player>().SetPlayerColor(!p1hasViking);
-            monkAvatar.GetComponent<Player>().SetPlayerColor(p1hasViking);
+            //vikingAvatar.GetComponent<Player>().SetPlayerColor(!p1hasViking);
+            //monkAvatar.GetComponent<Player>().SetPlayerColor(p1hasViking);
+
         }
 
     }
@@ -256,7 +272,7 @@ public class BoardScript : MonoBehaviour
         GameManager.instance.InitGame();
     }
 
-    void CheckPlacement(RaycastHit hit) 
+    void CheckPlacement(RaycastHit hit)
     {
         for (int y = 0; y < boardTiles.GetLength(1); y++)
         {
@@ -271,7 +287,7 @@ public class BoardScript : MonoBehaviour
 
                         if (boardTiles[nX, nY].GetComponent<emptyTileScript>().hasPlayer) //maybe set a check for the right player
                         {
-                            PlaceRoom(hit.transform.position, SetEntranceAngle(nX, x, nY, y));
+                            PlaceRoom(hit.transform.position, boardTiles[nX, nY].transform.position, SetEntranceAngle(nX, x, nY, y));
                             //maybe have a bool telling that he placement was succesful and have the gameMgr get that and then call 
                             //moveplayer which moves the player and activates the event
                         }
@@ -285,7 +301,7 @@ public class BoardScript : MonoBehaviour
         }
     }
 
-    void PlaceRoom(Vector3 hitPos, float rotationAngle)
+    void PlaceRoom(Vector3 hitPos, Vector3 currentPlayerPos, float rotationAngle)
     {
         for (int y = 0; y < boardTiles.GetLength(1); y++)
         {
@@ -307,11 +323,11 @@ public class BoardScript : MonoBehaviour
                     Destroy(boardTiles[x, y]);
                     boardTiles[x, y] = Instantiate(roomStack.Dequeue());
 
-                    if (boardTiles[x,y].tag == "Room") //"Event"
+                    if (boardTiles[x, y].tag == "Room") //"Event"
                     {
                         boardTiles[x, y].GetComponent<RoomScript>().Neighbors = tempNeighbors; //add the old boardTiles neighbors          
                     }
-                    else if (boardTiles[x,y].tag == "CorridorRoom")
+                    else if (boardTiles[x, y].tag == "CorridorRoom")
                     {
                         boardTiles[x, y].GetComponent<RoomCorridorScript>().Neighbors = tempNeighbors; //add the old boardTiles neighbors          
                     }
@@ -371,7 +387,7 @@ public class BoardScript : MonoBehaviour
         return finalAngle;
     }
 
-    void MovePlayerAvatar(Vector3 nextPosition)
+    void MovePlayerAvatar(Vector3 nextPosition, Vector3 oldPosition, bool isPlayer1)
     {
         //move player
         //loop through tils check which tile has same pos, check tag and activate that tile event
@@ -380,9 +396,12 @@ public class BoardScript : MonoBehaviour
         {
             for (int x = 0; x < boardTiles.GetLength(0); x++)
             {
-                if (boardTiles[x,y].transform.position = ) //if the tile is equal to the new player pos, check the tag and activate the tile, yeah and move the player
+                if (boardTiles[x, y].transform.position == oldPosition) //if the tile is equal to the new player pos, check the tag and activate the tile, yeah and move the player
                 {
+                    if (true)
+                    {
 
+                    }
                 }
             }
         }

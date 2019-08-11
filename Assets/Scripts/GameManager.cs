@@ -41,12 +41,15 @@ public class GameManager : MonoBehaviour
             instance = this; //Set it to this class
 
             //Sets this to not be destroyed when reloading scene
-            DontDestroyOnLoad(gameObject);
+            DontDestroyOnLoad(gameObject);           
         }
         else if (instance != this) //If instance already exists and it's not this:
         {
             Destroy(gameObject);
         }
+        DontDestroyOnLoad(player1);
+        DontDestroyOnLoad(player2);
+
         gameInitialized = false;
         p1Turn = true;
 
@@ -169,8 +172,8 @@ public class GameManager : MonoBehaviour
     /// </summary>
      void CheckPlayerInput(bool isPlayer1)
     {
-        //arController.
-        arController.GetComponent<ARControllScript>().CheckUserHit();
+        ////arController.
+        //arController.GetComponent<ARControllScript>().CheckUserHit();
         //RaycastHit hit;
         //Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
@@ -186,6 +189,6 @@ public class GameManager : MonoBehaviour
         //    }
         //}
 
-
+        //check if any avaliable exits for player "if yes: check user input" "if no: player cant contunie -> gameover for them, next player"
     }
 }
