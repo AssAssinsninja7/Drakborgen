@@ -413,10 +413,6 @@ PrefabInstance:
       propertyPath: m_TagString
       value: EmptyTile
       objectReference: {fileID: 0}
-    - target: {fileID: 208, guid: 890a9c67737e8164f9fe47acc75a7dc1, type: 3}
-      propertyPath: m_RootOrder
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 5759594690316794213, guid: 890a9c67737e8164f9fe47acc75a7dc1,
         type: 3}
       propertyPath: m_Name
@@ -426,6 +422,10 @@ PrefabInstance:
         type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 208, guid: 890a9c67737e8164f9fe47acc75a7dc1, type: 3}
+      propertyPath: m_RootOrder
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4033114477210305273, guid: 890a9c67737e8164f9fe47acc75a7dc1,
         type: 3}

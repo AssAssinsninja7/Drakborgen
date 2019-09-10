@@ -138,6 +138,8 @@ public class BoardScript : MonoBehaviour
                 boardTiles[x, y].transform.position =
                     new Vector3(boardLeftCornerPos.x + (boardTileWidth * x + emptyTileWithOffset),
                     depth, boardLeftCornerPos.z - (boardTileHeight * y + emptyTileWithOffset));
+
+                boardTiles[x, y].transform.rotation = gameObject.transform.rotation; //set the tile rotation to that of the board (it matters when placed in with arCore)
             }
         }
         SetBoardTileNeighbors();
@@ -210,59 +212,56 @@ public class BoardScript : MonoBehaviour
     }
 
     /// <summary>
-    /// Takes in a copy of the playerprefabs and initializes the avatars based on their chosen 
-    /// Startpos and then sets the color of the avatar to that of the chosen character type
+    /// Takes in a copy of the playerprefabs and initializes the avatars to that
+    /// of the chosen character, it then sets the models positions based on the 
+    /// players chosen startpos. Lastly it offsets their placement based on the
+    /// character models height. 
     /// </summary>
     /// <param name="player1"></param>
     /// <param name="player2"></param>
     /// <param name="p1hasViking"></param>
-    public void PlacePlayerAvatarOnStart(GameObject player1, GameObject player2, bool p1hasViking)
-    {
-        Vector2 player1StartPos = player1.GetComponent<Player>().Position;
-        Vector2 player2StartPos = player2.GetComponent<Player>().Position;
-
-        if (player1.GetComponent<Player>().HasViking) //check which gameObj avatar to save the player profile in (Instansiate in)
+    public void PlacePlayerAvatarOnStart(Vector2 player1StartPos, Vector2 player2StartPos, bool p1hasViking) //maybe add the rings as a UI feature and set them here?
+    {     
+        if (p1hasViking) //check which gameObj avatar to save the player profile in (Instansiate in)
         {
-            //vikingAvatar = Instantiate(player1);
-            //monkAvatar = Instantiate(player2);
+            GameManager.instance.player1.GetComponent<Player>().playerModel = Instantiate(vikingAvatar); //set player1 to have the viking avatar
+            GameManager.instance.player2.GetComponent<Player>().playerModel = Instantiate(monkAvatar);
 
-            //vikingAvatar.transform.position = boardTiles[(int)player1StartPos.x, (int)player1StartPos.y].transform.position;
-            //boardTiles[(int)player1StartPos.x, (int)player1StartPos.y].GetComponent<emptyTileScript>().hasPlayer = true; //set that this tile now has a player
 
-            //monkAvatar.transform.position = boardTiles[(int)player2StartPos.x, (int)player2StartPos.y].transform.position;
-            //boardTiles[(int)player2StartPos.x, (int)player2StartPos.y].GetComponent<emptyTileScript>().hasPlayer = true;
+            float heightOffset = vikingAvatar.GetComponent<Renderer>().bounds.size.y / 2; 
 
-            //vikingAvatar.GetComponent<Player>().SetPlayerColor(p1hasViking);
-            //monkAvatar.GetComponent<Player>().SetPlayerColor(!p1hasViking);
-
-            //Instantiate(GameManager.instance.player1.GetComponent<Player>().playerModel);  // <- instanciate this one and set its position
-            //Instantiate(GameManager.instance.player2.GetComponent<Player>().playerModel); //set monk to be a ref of player2s gameobject   
-
-            GameManager.instance.player1.GetComponent<Player>().playerModel.transform.position = boardTiles[(int)player1StartPos.x, (int)player1StartPos.y].transform.position;
+            vikingAvatar.transform.position = new Vector3(boardTiles[(int)player1StartPos.x, (int)player1StartPos.y].transform.position.x,
+                boardTiles[(int)player1StartPos.x, (int)player1StartPos.y].transform.position.y + heightOffset, 
+                boardTiles[(int)player1StartPos.x, (int)player1StartPos.y].transform.position.z);
+            
             boardTiles[(int)player1StartPos.x, (int)player1StartPos.y].GetComponent<emptyTileScript>().hasPlayer = true; //set that this tile now has a player
 
-            GameManager.instance.player2.GetComponent<Player>().playerModel.transform.position = boardTiles[(int)player2StartPos.x, (int)player2StartPos.y].transform.position;
+            monkAvatar.transform.position = new Vector3(boardTiles[(int)player2StartPos.x, (int)player2StartPos.y].transform.position.x,
+                heightOffset + boardTiles[(int)player2StartPos.x, (int)player2StartPos.y].transform.position.y,
+                boardTiles[(int)player2StartPos.x, (int)player2StartPos.y].transform.position.z); //the heightpostion is based on the emptytile which makes it hover a littles
+
             boardTiles[(int)player2StartPos.x, (int)player2StartPos.y].GetComponent<emptyTileScript>().hasPlayer = true;
-
-            //Debug.Log(GameManager.instance.player1.GetComponent<Player>().playerModel.);
-            //GameManager.instance.player1.GetComponent<Player>().SetPlayerColor();
-            //GameManager.instance.player2.GetComponent<Player>().SetPlayerColor();
-
-            GameManager.instance.player1.GetComponent<Player>().playerModel.GetComponent<Renderer>().material.color = Color.red; //when it tries to set the color it says that there isnt any mtrl so this needs to be fixed
-            GameManager.instance.player2.GetComponent<Player>().playerModel.GetComponent<Renderer>().material.color = Color.yellow;
-            //need to offset with the height of the model
+       
         }
         else
         {
-            //vikingAvatar = Instantiate(player2);
-            //monkAvatar = Instantiate(player1);
+            GameManager.instance.player1.GetComponent<Player>().playerModel = Instantiate(monkAvatar); //set player1 to have the monk avatar
+            GameManager.instance.player2.GetComponent<Player>().playerModel = Instantiate(vikingAvatar);
 
-            //vikingAvatar.transform.position = boardTiles[(int)player2StartPos.x, (int)player2StartPos.y].transform.position;
-            //monkAvatar.transform.position = boardTiles[(int)player1StartPos.x, (int)player1StartPos.y].transform.position;
 
-            //vikingAvatar.GetComponent<Player>().SetPlayerColor(!p1hasViking);
-            //monkAvatar.GetComponent<Player>().SetPlayerColor(p1hasViking);
+            float heightOffset = vikingAvatar.GetComponent<Renderer>().bounds.size.y / 2; 
 
+            monkAvatar.transform.position = new Vector3(boardTiles[(int)player1StartPos.x, (int)player1StartPos.y].transform.position.x,
+                boardTiles[(int)player1StartPos.x, (int)player1StartPos.y].transform.position.y + heightOffset,
+                boardTiles[(int)player1StartPos.x, (int)player1StartPos.y].transform.position.z);
+
+            boardTiles[(int)player1StartPos.x, (int)player1StartPos.y].GetComponent<emptyTileScript>().hasPlayer = true; //set that this tile now has a player
+
+            vikingAvatar.transform.position = new Vector3(boardTiles[(int)player2StartPos.x, (int)player2StartPos.y].transform.position.x,
+                heightOffset + boardTiles[(int)player2StartPos.x, (int)player2StartPos.y].transform.position.y,
+                boardTiles[(int)player2StartPos.x, (int)player2StartPos.y].transform.position.z); //the heightpostion is based on the emptytile which makes it hover a little
+
+            boardTiles[(int)player2StartPos.x, (int)player2StartPos.y].GetComponent<emptyTileScript>().hasPlayer = true;
         }
 
     }

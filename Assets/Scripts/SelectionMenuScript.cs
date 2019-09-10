@@ -78,6 +78,12 @@ public class SelectionMenuScript : MonoBehaviour
     [SerializeField]
     private Canvas menuCanvas;
 
+    [SerializeField]
+    private Sprite vikingSprite;
+
+    [SerializeField]
+    private Sprite monkSprite;
+
     #endregion 
 
 
@@ -191,7 +197,7 @@ public class SelectionMenuScript : MonoBehaviour
         {
             if (player1ID == null || player2ID == null || player1ID == string.Empty || player2ID == string.Empty) //If any of the players havent enterd their IDs then the continue will still call that method
             {
-                continueButton.onClick.AddListener(SetPlayerID);
+                continueButton.onClick.AddListener(GetPlayerID);
             }
             else
             {
@@ -262,7 +268,7 @@ public class SelectionMenuScript : MonoBehaviour
     /// whats in the fields otherwise it will highligt that it's missing and request the users
     /// to re enter the information.
     /// </summary>
-    void SetPlayerID()
+    void GetPlayerID()
     {
 
             if (p1IDField.text != string.Empty && p1IDField.text != "Enter your ID") //now it can add errything maybe change it so it looks at the string itself
@@ -298,15 +304,24 @@ public class SelectionMenuScript : MonoBehaviour
         if (p1CharacterDropdown.captionText.text == "Sven Viking")
         {
             p1HasViking = true;
-
+            p1CharImg.GetComponent<Image>().sprite = vikingSprite;
+            p2CharImg.GetComponent<Image>().sprite = monkSprite;
             //Set image to vikin
         }
         else if (p1CharacterDropdown.captionText.text == "Fransiscus Monk")
         {
             p1HasViking = false;
+            p1CharImg.GetComponent<Image>().sprite = monkSprite;
+            p2CharImg.GetComponent<Image>().sprite = vikingSprite;
             //Set image to monk
         }
 
+        //Set the chosen char sprites
+        p1CharImg.enabled = true;
+        p2CharImg.enabled = true;
+
+        //activate the options boxes for the next event and 
+        //deactivate the options from this event (choosing what character)
         p2CharacterDropdown.image.enabled = true;
         p2CharacterDropdown.captionText.enabled = true;
         p2CharacterDropdown.enabled = false;

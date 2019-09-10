@@ -113,7 +113,7 @@ public class GameManager : MonoBehaviour
     {      
         if (p1ID != null && p1ID != string.Empty && p1StartPos != null)
         {
-            Undo.RecordObject(player1, "player1 info has been set"); //allows me to override the prefabs values so that they get saved
+            Undo.RecordObject(player1, "player1 info has been set"); //allows me to override the prefabs values so that they get saved whewn in the editor
             player1.GetComponent<Player>().PlayerID = p1ID;
             Undo.RecordObject(player1, "player1 character has been set");
             player1.GetComponent<Player>().HasViking = p1HasViking;
@@ -124,7 +124,7 @@ public class GameManager : MonoBehaviour
         }
         if (p2ID != null && p2ID != string.Empty && p2StartPos != null)
         {
-            Undo.RecordObject(player2, "player2 id has been set");       
+            Undo.RecordObject(player2, "player2 id has been set");
             player2.GetComponent<Player>().PlayerID = p2ID;
             Undo.RecordObject(player2, "player2 character has been set");
             player2.GetComponent<Player>().HasViking = !p1HasViking; //opposite of player1's choice
@@ -133,19 +133,8 @@ public class GameManager : MonoBehaviour
             Undo.RecordObject(player2, "player2 Start position has been set");
             player2.GetComponent<Player>().Position = p2StartPos;          
         }
-        SceneManager.LoadScene(sceneBuildIndex: 2, LoadSceneMode.Single); //1 = drakborgen scene //"DrakborgenARScene", 2 = drakborgen testscene
+        SceneManager.LoadScene(sceneBuildIndex: 2, LoadSceneMode.Single); //1 = drakborgen scene, 2 = drakborgen testscene
     }
-
-
-    //private void TestSceneInit()
-    //{
-    //    gameInitialized = true;
-    //    GameObject board = GameObject.Find("boardScript2");
-    //    boardScript = board.GetComponent<boardScript>();                 //arboardScript;
-    //    boardScript.InitboardScript(player1.GetComponent<Player>(), player2.GetComponent<Player>()); //Might want to send in the entire gameobj
-        
-    //    Debug.Log(boardScript);
-    //}
 
     /// <summary>
     /// Initialize the game by setting the refrenses to the boards script in scnene
@@ -157,7 +146,7 @@ public class GameManager : MonoBehaviour
         if (player1 != null && player2 != null) //Make sure they aint null and load next scene
         {
             boardScript = GameObject.Find("drakborgenBoard3").GetComponent<BoardScript>();                  
-            boardScript.PlacePlayerAvatarOnStart(player1, player2, player1.GetComponent<Player>().HasViking); //might want to init the players here so that the prefabs values are contained with the avatar
+            boardScript.PlacePlayerAvatarOnStart(player1.GetComponent<Player>().Position, player2.GetComponent<Player>().Position, player1.GetComponent<Player>().HasViking); //might want to init the players here so that the prefabs values are contained with the avatar
             p1Turn = true;
 
             Debug.Log(GameManager.instance.name + " has been successfully moved");

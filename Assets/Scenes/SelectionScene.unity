@@ -437,6 +437,18 @@ PrefabInstance:
       propertyPath: menuCanvas
       value: 
       objectReference: {fileID: 8004180153322676167}
+    - target: {fileID: 8004180153938564764, guid: 92ae628384949294aa8fdb038828b773,
+        type: 3}
+      propertyPath: monkSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: a64c0bc5a8d89c74790cb17cbc7eb623,
+        type: 3}
+    - target: {fileID: 8004180153938564764, guid: 92ae628384949294aa8fdb038828b773,
+        type: 3}
+      propertyPath: vikingSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 0ee78a2a471574b40a01b32a49200d0b,
+        type: 3}
     - target: {fileID: 8004180153446371595, guid: 92ae628384949294aa8fdb038828b773,
         type: 3}
       propertyPath: m_FontData.m_FontSize
