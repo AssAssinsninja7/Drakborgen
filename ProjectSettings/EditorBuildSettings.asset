@@ -11,7 +11,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/DrakborgenARScene.unity
     guid: e275273bd15437e4ebd357b6f18e865b
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/GameBoardTestScene.unity
     guid: 69d01835b1436694cae780a1bef5ddde
   m_configObjects: {}

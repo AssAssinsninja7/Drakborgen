@@ -81,7 +81,7 @@ public class ARControllScript : MonoBehaviour
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         Physics.Raycast(ray, out mouseHit, Mathf.Infinity);
 
-        if (Frame.Raycast(touch.position.x, touch.position.y, raycastFilter, out hit) || Frame.Raycast(mouseHit.point.x, mouseHit.point.y, raycastFilter, out hit))
+        if (Frame.Raycast(touch.position.x, touch.position.y, raycastFilter, out hit) || Frame.Raycast(mouseHit.point.x, mouseHit.point.y, raycastFilter, out hit)) //
         {
             currentHit = hit;
             if (boardObject == null) //Create only one board
@@ -106,7 +106,8 @@ public class ARControllScript : MonoBehaviour
 
                 // Make board model a child of the anchor.
                 boardObject.transform.parent = anchor.transform;
-               
+                
+
                 GameManager.instance.InitGame();
             }        
         } 
@@ -180,7 +181,8 @@ public class ARControllScript : MonoBehaviour
         for (int i = 0; i < newPlanes.Count; i++)
         {           
             GameObject worldGrid = Instantiate(trackedPlanePrefab, Vector3.zero, Quaternion.identity, transform);
-            worldGrid.GetComponent<boardScriptVizualizer>().Initialize(newPlanes[i]);
+            Debug.Log(i.ToString() + " many planes");
+            worldGrid.GetComponent<GameBoardVizualizer>().Initialize(newPlanes[i]);
         }
     }
 

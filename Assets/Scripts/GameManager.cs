@@ -113,27 +113,27 @@ public class GameManager : MonoBehaviour
     {      
         if (p1ID != null && p1ID != string.Empty && p1StartPos != null)
         {
-            Undo.RecordObject(player1, "player1 info has been set"); //allows me to override the prefabs values so that they get saved whewn in the editor
+            //Undo.RecordObject(player1, "player1 info has been set"); //allows me to override the prefabs values so that they get saved whewn in the editor
             player1.GetComponent<Player>().PlayerID = p1ID;
-            Undo.RecordObject(player1, "player1 character has been set");
+            //Undo.RecordObject(player1, "player1 character has been set");
             player1.GetComponent<Player>().HasViking = p1HasViking;
-            Undo.RecordObject(player1, "player1 ring has been set");
+            //Undo.RecordObject(player1, "player1 ring has been set");
             player1.GetComponent<Player>().HasRotationRing = !p2HasRotRing; //Opposite of player2's choice
-            Undo.RecordObject(player1, "player1 Start position has been set");
+            //Undo.RecordObject(player1, "player1 Start position has been set");
             player1.GetComponent<Player>().Position = p1StartPos;           
         }
         if (p2ID != null && p2ID != string.Empty && p2StartPos != null)
         {
-            Undo.RecordObject(player2, "player2 id has been set");
+            //Undo.RecordObject(player2, "player2 id has been set");
             player2.GetComponent<Player>().PlayerID = p2ID;
-            Undo.RecordObject(player2, "player2 character has been set");
+            //Undo.RecordObject(player2, "player2 character has been set");
             player2.GetComponent<Player>().HasViking = !p1HasViking; //opposite of player1's choice
-            Undo.RecordObject(player2, "player2 ring has been set");
+            //Undo.RecordObject(player2, "player2 ring has been set");
             player2.GetComponent<Player>().HasRotationRing = p2HasRotRing;
-            Undo.RecordObject(player2, "player2 Start position has been set");
+            //Undo.RecordObject(player2, "player2 Start position has been set");
             player2.GetComponent<Player>().Position = p2StartPos;          
         }
-        SceneManager.LoadScene(sceneBuildIndex: 2, LoadSceneMode.Single); //1 = drakborgen scene, 2 = drakborgen testscene
+        SceneManager.LoadScene(sceneBuildIndex: 1, LoadSceneMode.Single); //1 = drakborgen scene, 2 = drakborgen testscene
     }
 
     /// <summary>

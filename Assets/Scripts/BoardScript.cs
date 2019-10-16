@@ -230,9 +230,11 @@ public class BoardScript : MonoBehaviour
 
             float heightOffset = vikingAvatar.GetComponent<Renderer>().bounds.size.y / 2; 
 
+            //the players might not be placed after the boards ancor.transform so this might be the problem for the players in the build
+            //rewrite so it is instansiated once it finds a plane so that we can debug through the instant preview.
             vikingAvatar.transform.position = new Vector3(boardTiles[(int)player1StartPos.x, (int)player1StartPos.y].transform.position.x,
                 boardTiles[(int)player1StartPos.x, (int)player1StartPos.y].transform.position.y + heightOffset, 
-                boardTiles[(int)player1StartPos.x, (int)player1StartPos.y].transform.position.z);
+                boardTiles[(int)player1StartPos.x, (int)player1StartPos.y].transform.position.z); 
             
             boardTiles[(int)player1StartPos.x, (int)player1StartPos.y].GetComponent<emptyTileScript>().hasPlayer = true; //set that this tile now has a player
 

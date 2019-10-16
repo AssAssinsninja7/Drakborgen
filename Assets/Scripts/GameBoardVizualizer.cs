@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using GoogleARCore;
 
-public class boardScriptVizualizer : MonoBehaviour
+public class GameBoardVizualizer : MonoBehaviour
 {
     private static int s_PlaneCount = 0;
 
