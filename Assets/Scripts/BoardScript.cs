@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class BoardScript : MonoBehaviour
 {
@@ -30,6 +31,18 @@ public class BoardScript : MonoBehaviour
         InitializeBoardTilesObjects();
         CreateBoardGrid();
         ShuffleStack();
+
+        /*Create the player objects with the boards instansiation*/
+        if (GameManager.instance.player1.GetComponent<Player>().HasViking)
+        {
+            GameManager.instance.player1.GetComponent<Player>().playerModel = Instantiate(vikingAvatar); //set player1 to have the viking avatar
+            GameManager.instance.player2.GetComponent<Player>().playerModel = Instantiate(monkAvatar);
+        }
+        else
+        {
+            GameManager.instance.player1.GetComponent<Player>().playerModel = Instantiate(monkAvatar); //set player1 to have the monk avatar
+            GameManager.instance.player2.GetComponent<Player>().playerModel = Instantiate(vikingAvatar);
+        }
 
         TestPlayerPlacement();
         //place player avatar on startpos -> send in startpos from gameMRg
@@ -224,9 +237,10 @@ public class BoardScript : MonoBehaviour
     {     
         if (p1hasViking) //check which gameObj avatar to save the player profile in (Instansiate in)
         {
-            GameManager.instance.player1.GetComponent<Player>().playerModel = Instantiate(vikingAvatar); //set player1 to have the viking avatar
-            GameManager.instance.player2.GetComponent<Player>().playerModel = Instantiate(monkAvatar);
+            //GameManager.instance.player1.GetComponent<Player>().playerModel = Instantiate(vikingAvatar); //set player1 to have the viking avatar
+            //GameManager.instance.player2.GetComponent<Player>().playerModel = Instantiate(monkAvatar);
 
+            GameObject.Find("debugCanvas").GetComponentInChildren<Text>().text = GameManager.instance.player1.transform.ToString();
 
             float heightOffset = vikingAvatar.GetComponent<Renderer>().bounds.size.y / 2; 
 
@@ -247,9 +261,10 @@ public class BoardScript : MonoBehaviour
         }
         else
         {
-            GameManager.instance.player1.GetComponent<Player>().playerModel = Instantiate(monkAvatar); //set player1 to have the monk avatar
-            GameManager.instance.player2.GetComponent<Player>().playerModel = Instantiate(vikingAvatar);
+            //GameManager.instance.player1.GetComponent<Player>().playerModel = Instantiate(monkAvatar); //set player1 to have the monk avatar
+            //GameManager.instance.player2.GetComponent<Player>().playerModel = Instantiate(vikingAvatar);
 
+            GameObject.Find("debugCanvas").GetComponentInChildren<Text>().text = GameManager.instance.player1.transform.ToString();
 
             float heightOffset = vikingAvatar.GetComponent<Renderer>().bounds.size.y / 2; 
 

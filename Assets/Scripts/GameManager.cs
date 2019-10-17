@@ -84,7 +84,7 @@ public class GameManager : MonoBehaviour
                 }
                 else
                 {
-
+                   //player2 turn same same
                 }
             }
                 
