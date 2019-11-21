@@ -153,6 +153,7 @@ public class BoardScript : MonoBehaviour
                     depth, boardLeftCornerPos.z - (boardTileHeight * y + emptyTileWithOffset));
 
                 boardTiles[x, y].transform.rotation = gameObject.transform.rotation; //set the tile rotation to that of the board (it matters when placed in with arCore)
+                boardTiles[x, y].transform.parent = gameObject.transform; //Testing to see if the entire transform is needed to place the players correctly fixed floating tiles ++ but players still not
             }
         }
         SetBoardTileNeighbors();
@@ -242,14 +243,18 @@ public class BoardScript : MonoBehaviour
 
             GameObject.Find("debugCanvas").GetComponentInChildren<Text>().text = GameManager.instance.player1.transform.ToString();
 
-            float heightOffset = vikingAvatar.GetComponent<Renderer>().bounds.size.y / 2; 
+            float heightOffset = vikingAvatar.GetComponent<Renderer>().bounds.size.y / 2;
 
+            vikingAvatar.transform.parent = gameObject.transform; //testing to see if the setting the board as the parent might help with their placement
+            monkAvatar.transform.parent = gameObject.transform;
             //the players might not be placed after the boards ancor.transform so this might be the problem for the players in the build
-            //rewrite so it is instansiated once it finds a plane so that we can debug through the instant preview.
+            //rewrite so it is instantiated once it finds a plane so that we can debug through the instant preview.
+
             vikingAvatar.transform.position = new Vector3(boardTiles[(int)player1StartPos.x, (int)player1StartPos.y].transform.position.x,
-                boardTiles[(int)player1StartPos.x, (int)player1StartPos.y].transform.position.y + heightOffset, 
-                boardTiles[(int)player1StartPos.x, (int)player1StartPos.y].transform.position.z); 
-            
+                boardTiles[(int)player1StartPos.x, (int)player1StartPos.y].transform.position.y + heightOffset,
+                boardTiles[(int)player1StartPos.x, (int)player1StartPos.y].transform.position.z);
+            //vikingAvatar.transform.position = boardTiles[(int)player1StartPos.x, (int)player1StartPos.y].transform.position;
+
             boardTiles[(int)player1StartPos.x, (int)player1StartPos.y].GetComponent<emptyTileScript>().hasPlayer = true; //set that this tile now has a player
 
             monkAvatar.transform.position = new Vector3(boardTiles[(int)player2StartPos.x, (int)player2StartPos.y].transform.position.x,
