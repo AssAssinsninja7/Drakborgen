@@ -47,6 +47,10 @@ public class GameManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+        Instantiate(player1);
+        Instantiate(player2);
+
         DontDestroyOnLoad(player1);
         DontDestroyOnLoad(player2);
 
@@ -133,6 +137,10 @@ public class GameManager : MonoBehaviour
             //Undo.RecordObject(player2, "player2 Start position has been set");
             player2.GetComponent<Player>().Position = p2StartPos;          
         }
+
+        player1.GetComponent<Player>().SetPlayerModel();
+        player2.GetComponent<Player>().SetPlayerModel();
+
         SceneManager.LoadScene(sceneBuildIndex: 1, LoadSceneMode.Single); //1 = drakborgen scene, 2 = drakborgen testscene
     }
 
@@ -146,7 +154,7 @@ public class GameManager : MonoBehaviour
         if (player1 != null && player2 != null) //Make sure they aint null and load next scene
         {
             boardScript = GameObject.Find("drakborgenBoard3").GetComponent<BoardScript>();                  
-            boardScript.PlacePlayerAvatarOnStart(player1.GetComponent<Player>().Position, player2.GetComponent<Player>().Position, player1.GetComponent<Player>().HasViking); //might want to init the players here so that the prefabs values are contained with the avatar
+            //boardScript.PlacePlayerAvatarOnStart(player1.GetComponent<Player>().Position, player2.GetComponent<Player>().Position, player1.GetComponent<Player>().HasViking); //might want to init the players here so that the prefabs values are contained with the avatar
             p1Turn = true;
 
             Debug.Log(GameManager.instance.name + " has been successfully moved");

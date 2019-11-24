@@ -46,5 +46,5 @@ MonoBehaviour:
   arController: {fileID: 0}
   playerModel: {fileID: 2856674797117555912, guid: b50dc519c266bb648b4465ef17f3bdaa,
     type: 3}
-  player1: {fileID: 5631188434663571844, guid: f0b0c308a7b829b4d8677d90e9996514, type: 3}
-  player2: {fileID: 3570941093978101077, guid: 3754cceaea32ddb4eb859f60b55f0f56, type: 3}
+  player1: {fileID: 1374022843138755316, guid: f0b0c308a7b829b4d8677d90e9996514, type: 3}
+  player2: {fileID: 3060694361493319661, guid: 3754cceaea32ddb4eb859f60b55f0f56, type: 3}

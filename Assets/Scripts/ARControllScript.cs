@@ -18,12 +18,19 @@ public class ARControllScript : MonoBehaviour
     public GameObject BoardPrefab;
     public GameObject debugCanvas;
 
+    public GameObject VikingPrefab;
+    public GameObject MonkPrefab;
+
+    public Text debugText;
+
     private List<TrackedPlane> newPlanes = new List<TrackedPlane>();
     private List<TrackedPlane> allPlanes = new List<TrackedPlane>();
 
     private GameObject boardObject;
 
     private TrackableHit currentHit;
+
+    private Anchor anchor;
 
     //ARcontroller UI & Session controll (Exit when fukked)
     private bool isQuitting = false;
@@ -86,32 +93,58 @@ public class ARControllScript : MonoBehaviour
             currentHit = hit;
             if (boardObject == null) //Create only one board
             {
+                Vector3 finHitPos = new Vector3(hit.Pose.position.x, hit.Pose.position.y, hit.Distance + 13.0f);
                 //Instanciate the board facing up based on where the user hit
-                boardObject = Instantiate(BoardPrefab, new Vector3(hit.Pose.position.x, hit.Pose.position.y, hit.Distance), Quaternion.Euler(0, 0, 0)); //hit.Pose.position
+                boardObject = Instantiate(BoardPrefab, finHitPos, Quaternion.Euler(0, 0, 0)); //hit.Pose.position
 
-                //for (int y = 0; y < boardObject.GetComponent<BoardScript>().boardTiles.GetLength(1); y++)
-                //{
-                //    for (int x = 0; x < boardObject.GetComponent<BoardScript>().boardTiles.GetLength(0); x++)
-                //    {
-                //        Instantiate(boardObject.GetComponent<BoardScript>().boardTiles[x, y]);
-
-                //    }
-                //}
-
-                //boardObject.GetComponent<BoardScript>().CreateBoardGrid();
-
-                // Create an anchor to allow ARCore to track the hitpoint as understanding of the physical
-                // world evolves.
-                var anchor = hit.Trackable.CreateAnchor(hit.Pose);
+                anchor = hit.Trackable.CreateAnchor(hit.Pose);
 
                 // Make board model a child of the anchor.
                 boardObject.transform.parent = anchor.transform;
 
-                debugCanvas.GetComponentInChildren<Text>().text = GameManager.instance.ToString();
-                //GameManager.instance.InitGame();
+                SetPlayerAvatars(GameManager.instance.player1.GetComponent<Player>().HasViking, finHitPos);
+
+                GameManager.instance.InitGame();
+
+                debugCanvas.GetComponentInChildren<Text>().text = hit.Distance.ToString();
+          
+
             }        
         } 
     }
+
+    private void SetPlayerAvatars(bool p1HasViking, Vector3 hitPos)
+    {
+        float heightOffset = GameManager.instance.player1.GetComponent<Player>().vikingModel.GetComponent<Renderer>().bounds.size.y / 2;
+        hitPos.y += heightOffset;
+        GameManager.instance.player1.GetComponent<Player>().InitializePlayerModel(hitPos);
+        GameManager.instance.player2.GetComponent<Player>().InitializePlayerModel(hitPos);
+
+        
+
+
+        GameManager.instance.player1.GetComponent<Player>().transform.parent = boardObject.transform; //Set players transform parent to that of the board
+        GameManager.instance.player2.GetComponent<Player>().transform.parent = boardObject.transform; //which gets its' parent from the ancorpoint
+
+        //GameManager.instance.player1.GetComponent<Player>().SetBoardPosition(boardObject.GetComponent<BoardScript>()
+        //           .PlaceAvatarOnBoard(GameManager.instance.player1.GetComponent<Player>().Position, heightOffset));
+
+
+        //GameManager.instance.player2.GetComponent<Player>().SetBoardPosition(boardObject.GetComponent<BoardScript>()
+        //    .PlaceAvatarOnBoard(GameManager.instance.player2.GetComponent<Player>().Position, heightOffset));
+
+        GameManager.instance.player1.GetComponent<Player>().PlayerModel.transform.position =
+            boardObject.GetComponent<BoardScript>()
+                .PlaceAvatarOnBoard(GameManager.instance.player1.GetComponent<Player>().Position, heightOffset); //Set the player postions based on that of the grid of emptyTiles ontop 
+
+        GameManager.instance.player2.GetComponent<Player>().PlayerModel.transform.position =
+            boardObject.GetComponent<BoardScript>()
+                .PlaceAvatarOnBoard(GameManager.instance.player2.GetComponent<Player>().Position, heightOffset);
+
+        debugText.text = GameManager.instance.player1.GetComponent<Player>().PlayerModel.transform.position.ToString();
+        
+    }
+
 
     public void CheckUserHit()
     {

@@ -10,7 +10,10 @@ public class Player : MonoBehaviour
 
     public Vector2 Position { get; set; }
 
-    public GameObject playerModel;
+    public GameObject vikingModel;
+    public GameObject monkModel;
+
+    public GameObject PlayerModel { get; private set; }
 
 
     // Start is called before the first frame update
@@ -26,25 +29,37 @@ public class Player : MonoBehaviour
         
     }
 
-    void InitializePlayer()
+    public void InitializePlayerModel(Vector3 hitPos)
     {
-        
+        if (HasViking)
+        {
+           PlayerModel = Instantiate(vikingModel, hitPos, Quaternion.Euler(0.0f, 0.0f, 0.0f));
+        }
+        else
+        {
+           PlayerModel = Instantiate(monkModel, hitPos, Quaternion.Euler(0.0f, 0.0f, 0.0f));
+        }
     }
 
-    ///// <summary>
-    ///// Temp set capsule color to red if its the viking and to yellow if it's not
-    ///// </summary>
-    //public void SetPlayerColor(/*bool hasViking*/)
-    //{      
-    //    if (HasViking)
-    //    {
-    //        Debug.Log(playerModel.Equals(null));
+    public void SetBoardPosition(Vector3 boardPos)
+    {
+        PlayerModel.transform.position = boardPos;
+    }
 
-    //        playerModel.GetComponent<Renderer>().material.color = Color.red;
-    //    }
-    //    else
-    //    {
-    //        playerModel.GetComponent<Renderer>().material.color = Color.yellow;
-    //    }
-    //}
+    /// <summary>
+    /// Temp set capsule color to red if its the viking and to yellow if it's not
+    /// </summary>
+    public void SetPlayerModel()
+    {
+        if (HasViking)
+        {
+            vikingModel.SetActive(true);
+            monkModel.SetActive(false);
+        }
+        else
+        {
+            vikingModel.SetActive(false);
+            monkModel.SetActive(true);
+        }
+    }
 }

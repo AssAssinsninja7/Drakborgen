@@ -16,9 +16,9 @@ public class BoardScript : MonoBehaviour
 
     private Vector3 boardCollider;
 
-    public GameObject vikingAvatar;
+    //public GameObject vikingAvatar;
 
-    public GameObject monkAvatar;
+    //public GameObject monkAvatar;
 
     // Start is called before the first frame update
     void Start()
@@ -31,18 +31,6 @@ public class BoardScript : MonoBehaviour
         InitializeBoardTilesObjects();
         CreateBoardGrid();
         ShuffleStack();
-
-        /*Create the player objects with the boards instansiation*/
-        if (GameManager.instance.player1.GetComponent<Player>().HasViking)
-        {
-            GameManager.instance.player1.GetComponent<Player>().playerModel = Instantiate(vikingAvatar); //set player1 to have the viking avatar
-            GameManager.instance.player2.GetComponent<Player>().playerModel = Instantiate(monkAvatar);
-        }
-        else
-        {
-            GameManager.instance.player1.GetComponent<Player>().playerModel = Instantiate(monkAvatar); //set player1 to have the monk avatar
-            GameManager.instance.player2.GetComponent<Player>().playerModel = Instantiate(vikingAvatar);
-        }
 
         TestPlayerPlacement();
         //place player avatar on startpos -> send in startpos from gameMRg
@@ -152,8 +140,8 @@ public class BoardScript : MonoBehaviour
                     new Vector3(boardLeftCornerPos.x + (boardTileWidth * x + emptyTileWithOffset),
                     depth, boardLeftCornerPos.z - (boardTileHeight * y + emptyTileWithOffset));
 
-                boardTiles[x, y].transform.rotation = gameObject.transform.rotation; //set the tile rotation to that of the board (it matters when placed in with arCore)
                 boardTiles[x, y].transform.parent = gameObject.transform; //Testing to see if the entire transform is needed to place the players correctly fixed floating tiles ++ but players still not
+                boardTiles[x, y].transform.rotation = gameObject.transform.rotation; //set the tile rotation to that of the board (it matters when placed in with arCore)
             }
         }
         SetBoardTileNeighbors();
@@ -236,56 +224,70 @@ public class BoardScript : MonoBehaviour
     /// <param name="p1hasViking"></param>
     public void PlacePlayerAvatarOnStart(Vector2 player1StartPos, Vector2 player2StartPos, bool p1hasViking) //maybe add the rings as a UI feature and set them here?
     {     
-        if (p1hasViking) //check which gameObj avatar to save the player profile in (Instansiate in)
-        {
-            //GameManager.instance.player1.GetComponent<Player>().playerModel = Instantiate(vikingAvatar); //set player1 to have the viking avatar
-            //GameManager.instance.player2.GetComponent<Player>().playerModel = Instantiate(monkAvatar);
+        //if (p1hasViking) //check which gameObj avatar to save the player profile in (Instansiate in)
+        //{
+        //    //GameManager.instance.player1.GetComponent<Player>().playerModel = Instantiate(vikingAvatar); //set player1 to have the viking avatar
+        //    //GameManager.instance.player2.GetComponent<Player>().playerModel = Instantiate(monkAvatar);
 
-            GameObject.Find("debugCanvas").GetComponentInChildren<Text>().text = GameManager.instance.player1.transform.ToString();
+        //    GameObject.Find("debugCanvas").GetComponentInChildren<Text>().text = GameManager.instance.player1.transform.ToString();
 
-            float heightOffset = vikingAvatar.GetComponent<Renderer>().bounds.size.y / 2;
+        //    float heightOffset = vikingAvatar.GetComponent<Renderer>().bounds.size.y / 2;
 
-            vikingAvatar.transform.parent = gameObject.transform; //testing to see if the setting the board as the parent might help with their placement
-            monkAvatar.transform.parent = gameObject.transform;
-            //the players might not be placed after the boards ancor.transform so this might be the problem for the players in the build
-            //rewrite so it is instantiated once it finds a plane so that we can debug through the instant preview.
+        //    vikingAvatar.transform.parent = gameObject.transform; //testing to see if the setting the board as the parent might help with their placement
+        //    monkAvatar.transform.parent = gameObject.transform;
+        //    //the players might not be placed after the boards ancor.transform so this might be the problem for the players in the build
+        //    //rewrite so it is instantiated once it finds a plane so that we can debug through the instant preview.
 
-            vikingAvatar.transform.position = new Vector3(boardTiles[(int)player1StartPos.x, (int)player1StartPos.y].transform.position.x,
-                boardTiles[(int)player1StartPos.x, (int)player1StartPos.y].transform.position.y + heightOffset,
-                boardTiles[(int)player1StartPos.x, (int)player1StartPos.y].transform.position.z);
-            //vikingAvatar.transform.position = boardTiles[(int)player1StartPos.x, (int)player1StartPos.y].transform.position;
+        //    vikingAvatar.transform.position = new Vector3(boardTiles[(int)player1StartPos.x, (int)player1StartPos.y].transform.position.x,
+        //        boardTiles[(int)player1StartPos.x, (int)player1StartPos.y].transform.position.y + heightOffset,
+        //        boardTiles[(int)player1StartPos.x, (int)player1StartPos.y].transform.position.z);
+        //    //vikingAvatar.transform.position = boardTiles[(int)player1StartPos.x, (int)player1StartPos.y].transform.position;
 
-            boardTiles[(int)player1StartPos.x, (int)player1StartPos.y].GetComponent<emptyTileScript>().hasPlayer = true; //set that this tile now has a player
+        //    boardTiles[(int)player1StartPos.x, (int)player1StartPos.y].GetComponent<emptyTileScript>().hasPlayer = true; //set that this tile now has a player
 
-            monkAvatar.transform.position = new Vector3(boardTiles[(int)player2StartPos.x, (int)player2StartPos.y].transform.position.x,
-                heightOffset + boardTiles[(int)player2StartPos.x, (int)player2StartPos.y].transform.position.y,
-                boardTiles[(int)player2StartPos.x, (int)player2StartPos.y].transform.position.z); //the heightpostion is based on the emptytile which makes it hover a littles
+        //    monkAvatar.transform.position = new Vector3(boardTiles[(int)player2StartPos.x, (int)player2StartPos.y].transform.position.x,
+        //        heightOffset + boardTiles[(int)player2StartPos.x, (int)player2StartPos.y].transform.position.y,
+        //        boardTiles[(int)player2StartPos.x, (int)player2StartPos.y].transform.position.z); //the heightpostion is based on the emptytile which makes it hover a littles
 
-            boardTiles[(int)player2StartPos.x, (int)player2StartPos.y].GetComponent<emptyTileScript>().hasPlayer = true;
+        //    boardTiles[(int)player2StartPos.x, (int)player2StartPos.y].GetComponent<emptyTileScript>().hasPlayer = true;
        
-        }
-        else
-        {
-            //GameManager.instance.player1.GetComponent<Player>().playerModel = Instantiate(monkAvatar); //set player1 to have the monk avatar
-            //GameManager.instance.player2.GetComponent<Player>().playerModel = Instantiate(vikingAvatar);
+        //}
+        //else
+        //{
+        //    //GameManager.instance.player1.GetComponent<Player>().playerModel = Instantiate(monkAvatar); //set player1 to have the monk avatar
+        //    //GameManager.instance.player2.GetComponent<Player>().playerModel = Instantiate(vikingAvatar);
 
-            GameObject.Find("debugCanvas").GetComponentInChildren<Text>().text = GameManager.instance.player1.transform.ToString();
+        //    GameObject.Find("debugCanvas").GetComponentInChildren<Text>().text = GameManager.instance.player1.transform.ToString();
 
-            float heightOffset = vikingAvatar.GetComponent<Renderer>().bounds.size.y / 2; 
+        //    float heightOffset = vikingAvatar.GetComponent<Renderer>().bounds.size.y / 2; 
 
-            monkAvatar.transform.position = new Vector3(boardTiles[(int)player1StartPos.x, (int)player1StartPos.y].transform.position.x,
-                boardTiles[(int)player1StartPos.x, (int)player1StartPos.y].transform.position.y + heightOffset,
-                boardTiles[(int)player1StartPos.x, (int)player1StartPos.y].transform.position.z);
+        //    monkAvatar.transform.position = new Vector3(boardTiles[(int)player1StartPos.x, (int)player1StartPos.y].transform.position.x,
+        //        boardTiles[(int)player1StartPos.x, (int)player1StartPos.y].transform.position.y + heightOffset,
+        //        boardTiles[(int)player1StartPos.x, (int)player1StartPos.y].transform.position.z);
 
-            boardTiles[(int)player1StartPos.x, (int)player1StartPos.y].GetComponent<emptyTileScript>().hasPlayer = true; //set that this tile now has a player
+        //    boardTiles[(int)player1StartPos.x, (int)player1StartPos.y].GetComponent<emptyTileScript>().hasPlayer = true; //set that this tile now has a player
 
-            vikingAvatar.transform.position = new Vector3(boardTiles[(int)player2StartPos.x, (int)player2StartPos.y].transform.position.x,
-                heightOffset + boardTiles[(int)player2StartPos.x, (int)player2StartPos.y].transform.position.y,
-                boardTiles[(int)player2StartPos.x, (int)player2StartPos.y].transform.position.z); //the heightpostion is based on the emptytile which makes it hover a little
+        //    vikingAvatar.transform.position = new Vector3(boardTiles[(int)player2StartPos.x, (int)player2StartPos.y].transform.position.x,
+        //        heightOffset + boardTiles[(int)player2StartPos.x, (int)player2StartPos.y].transform.position.y,
+        //        boardTiles[(int)player2StartPos.x, (int)player2StartPos.y].transform.position.z); //the heightpostion is based on the emptytile which makes it hover a little
 
-            boardTiles[(int)player2StartPos.x, (int)player2StartPos.y].GetComponent<emptyTileScript>().hasPlayer = true;
-        }
+        //    boardTiles[(int)player2StartPos.x, (int)player2StartPos.y].GetComponent<emptyTileScript>().hasPlayer = true;
+        //}
 
+    }
+
+    public Vector3 PlaceAvatarOnBoard(Vector2 playerStartPos, float heightOffset)
+    {
+        Vector3 playerWorldPos;
+
+        int xIndex = (int)playerStartPos.x;
+        int yIndex = (int)playerStartPos.y;
+
+        playerWorldPos = new Vector3(boardTiles[xIndex, yIndex].transform.position.x,
+                                    boardTiles[xIndex, yIndex].transform.position.y + heightOffset,
+                                    boardTiles[xIndex,yIndex].transform.position.z);
+
+        return playerWorldPos;
     }
 
     private void TestPlayerPlacement()

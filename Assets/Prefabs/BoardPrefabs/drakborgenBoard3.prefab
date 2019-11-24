@@ -146,7 +146,3 @@ MonoBehaviour:
   - {fileID: 634786301, guid: 6724b9c5012950a428c502e7c57712d8, type: 3}
   - {fileID: 5783360937993191667, guid: ab0179a63e51ddf45aed5989127189e8, type: 3}
   - {fileID: 3450906091909383564, guid: 99219173621b0614ab95f6990cdab799, type: 3}
-  vikingAvatar: {fileID: 8729331848302828107, guid: 9f5653d597388014fa4d4bab9d360151,
-    type: 3}
-  monkAvatar: {fileID: 7574138312208666352, guid: d4c348a6c07225845b79bc086579b1ea,
-    type: 3}
